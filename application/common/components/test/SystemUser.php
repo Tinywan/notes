@@ -12,6 +12,8 @@
 namespace app\common\components\test;
 
 
+use think\facade\Log;
+
 class SystemUser
 {
     const STSTUS = 0;
@@ -22,6 +24,7 @@ class SystemUser
      */
     public function create()
     {
+        Log::error("create" . __METHOD__);
         return "create" . __METHOD__;
     }
 }

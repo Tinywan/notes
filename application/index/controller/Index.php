@@ -1,7 +1,7 @@
 <?php
 namespace app\index\controller;
 
-use think\Log;
+use think\facade\Log;
 
 class Index
 {
