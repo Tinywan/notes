@@ -1,11 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: admin
- * Date: 2018/6/2
- * Time: 13:45
- */
-
+/** .-----------------------------------------------------------------------------------------------------------------
+ * |  Github: https://github.com/Tinywan
+ * |  Blog: http://www.cnblogs.com/Tinywan
+ * |-------------------------------------------------------------------------------------------------------------------
+ * |  Author: Tinywan(ShaoBo Wan)
+ * |  DateTime: 2018/6/2 13:41
+ * |  Mail: Overcome.wan@Gmail.com
+ * '------------------------------------------------------------------------------------------------------------------*/
 namespace app\common\console;
 
 use app\common\components\test\SystemUser;
