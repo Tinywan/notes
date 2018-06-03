@@ -11,7 +11,9 @@
 namespace app\common\queue;
 
 use think\Db;
+use think\Exception;
 use think\queue\Job;
+use think\facade\Log;
 
 class Worker
 {
@@ -30,20 +32,33 @@ class Worker
         }
 
         $isJobDone = $this->insertDb($data);
-
         if ($isJobDone) {
             //成功删除任务
             $job->delete();
         } else {
-            //任务轮询4次后删除
-            $attempts = $job->attempts(); // 通过这个方法可以检查这个任务已经重试了几次了
-            if ($attempts > 3) {
-                // 第1种处理方式：重新发布任务,该任务延迟10秒后再执行
-                //$job->release(10);
-                // 第2种处理方式：原任务的基础上1分钟执行一次并增加尝试次数
-                //$job->failed();
-                // 第3种处理方式：删除任务
-                $job->delete();
+            // 通过这个方法可以检查这个任务已经重试了几次了
+            $attempts = $job->attempts();
+            Log::debug(" current attempts is ".$attempts);
+            // 通知的间隔频率一般是：2m,10m,10m,1h,2h,6h,15h
+            // 模拟时间：2s,10s,10s,1m,2m,6m,15m
+            switch ($attempts){
+                case 1: // 重新发布任务,该任务延迟2秒后再执行
+                    $job->release(2);
+                    break;
+                case 2:
+                    $job->release(10);
+                    break;
+                case 3:
+                    $job->release(10);
+                    break;
+                case 4:
+                    $job->release(120);
+                    break;
+                case 5:
+                    $job->release(240);
+                    break;
+                default:
+                    $job->delete();
             }
         }
     }
@@ -73,12 +88,17 @@ class Worker
      */
     private function insertDb($data)
     {
-        $result = Db::name('order_queue')->insert([
-            'utime' => time(),
-            'email' => $data['email'],
-            'username' => $data['username']
-        ]);
-        if ($result) return true;
+        try{
+            $result = Db::name('order_queue')->insert([
+                'utime' => time(),
+                'email' => $data['email'],
+                'username' => $data['username']
+            ]);
+            if ($result) return true;
+            return false;
+        } catch (Exception $e) {
+            Log::error("insertDb is error ".json_encode($e->getMessage()));
+        }
         return false;
     }
 }

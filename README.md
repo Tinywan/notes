@@ -1,5 +1,9 @@
-ThinkPHP 5.1
+学习Notes
 ===============
+
+## 功能列表
+* [x] 如何使用命令行
+* [x] 如何使用多任务队列发送邮件
 
 ## 5.1 版本注意点
 
@@ -75,7 +79,7 @@ return [
 ```
 #### 执行命令
 
-你就能在终端（terminal）中执行它
+在终端（terminal）中执行
 
 * 方式一：
 
@@ -126,7 +130,8 @@ return [
   
 #### 配置队列
 
-配置文件路径：`application\common\queue`，配置如下所示：
+配置文件路径：`application\config\queue`，配置如下所示：
+
 ```php
 return [
     // Redis 驱动
@@ -149,7 +154,66 @@ return [
     'persistent' => false,
 ];
 ```
-#### 加入/消费 队列
 
-* 加入队列：`$host/index/index/queue` 
-* 消费队列：`php think queue:work --daemon --queue workerQueue` 
+#### 创建与推送消息
+
+```php
+public function queue()
+{
+    //当前任务所需的业务数据，不能为 resource 类型，其他类型最终将转化为json形式的字符串
+    $data = [
+        'email' => '28456049@qq.com',
+        'username' => 'Tinywan' . rand(1111, 9999)
+    ];
+
+    // 当前任务归属的队列名称，如果为新队列，会自动创建
+    $queueName = 'workerQueue';
+
+    // 将该任务推送到消息队列，等待对应的消费者去执行
+    $isPushed = Queue::push(Worker::class, $data, $queueName);
+
+    // database 驱动时，返回值为 1|false; redis驱动时，返回值为 随机字符串|false
+    if ($isPushed !== false) {
+        echo '['.$queueName.']'." Job is Pushed to the MQ Success";
+    } else {
+        echo 'Pushed to the MQ is Error';
+    }
+}
+```
+> 浏览器访问推送消息：`http://tp51.env/index/index/queue`
+
+#### 队列的消费与删除
+
+* 终端（terminal）执行命令：`> php think queue:work --daemon --queue workerQueue` 
+
+* 执行（消费）结果：
+    ```php
+    > php think queue:work --daemon --queue workerQueue
+    Processed: app\common\queue\Worker
+    Processed: app\common\queue\Worker
+    Processed: app\common\queue\Worke
+    ```
+
+#### 多任务队列使用
+以下为发送邮件队列测试：
+```php
+/**
+ * 测试多任务队列
+ * @return string
+ */
+public function testMultiTaskQueue()
+{
+    $taskType = MultiTask::EMAIL;
+    $data = [
+        'email' => 'tinywan@aliyun.com',
+        'title' => "邮件标题".rand(111111,999999),
+        'content' => "邮件内容".rand(11111,999999)
+    ];
+    $res = multi_task_Queue($taskType, $data);
+    if ($res !== false) {
+        return "Job is Pushed to the MQ Success";
+    } else {
+        return 'Pushed to the MQ is Error';
+    }
+}
+```    
