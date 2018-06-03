@@ -14,13 +14,30 @@
 // +----------------------------------------------------------------------
 
 return [
-    'id'             => '',
+    'id' => '',
     // SESSION_ID的提交变量,解决flash上传跨域
     'var_session_id' => '',
     // SESSION 前缀
-    'prefix'         => 'think',
+    'prefix' => 'think',
     // 驱动方式 支持redis memcache memcached
-    'type'           => '',
+    'type' => 'redis',
     // 是否自动开启 SESSION
-    'auto_start'     => true,
+    'auto_start' => true,
+    'secure' => false,
+    // 服务器地址
+    'host' => '127.0.0.1',
+    // 服务器地址
+    'port' => '6379',
+    // 服务器地址
+    'password' => '',
+    // 服务器地址
+    'select' => 0,
+    // 过期时间
+    'expire' => '17200',
+    // 服务器地址
+    'timeout' => '0',
+    'persistent' => true,
+    // SESSION 前缀
+    'session_name' => 'RESTY_SESSION:',
+    'record' => '1200'
 ];

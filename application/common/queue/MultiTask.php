@@ -58,7 +58,6 @@ class MultiTask
         $isDone = $this->_update($data);
         if ($isDone) {
             $job->delete();
-            print(__METHOD__ . "Job MultiTask " . "\n");
         } else {
             if ($job->attempts() > 2) {
                 $job->release();
@@ -129,7 +128,7 @@ class MultiTask
     }
 
     /**
-     * 任务taskA 操作
+     * _add 操作
      * @param $data
      * @return bool
      */
@@ -185,6 +184,30 @@ class MultiTask
      * @return bool
      */
     private function _sendEmail($data)
+    {
+        $res = send_email_qq($data['email'], $data['title'], $data['content']);
+        if (isset($res['errorCode']) && ($res['errorCode'] == 0)) return true;
+        return false;
+    }
+
+    /**
+     *
+     * @param $data
+     * @return bool
+     */
+    private function _downloadExcel($data)
+    {
+        $res = send_email_qq($data['email'], $data['title'], $data['content']);
+        if (isset($res['errorCode']) && ($res['errorCode'] == 0)) return true;
+        return false;
+    }
+
+    /**
+     *
+     * @param $data
+     * @return bool
+     */
+    private function _downloadCsv($data)
     {
         $res = send_email_qq($data['email'], $data['title'], $data['content']);
         if (isset($res['errorCode']) && ($res['errorCode'] == 0)) return true;

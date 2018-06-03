@@ -8,7 +8,7 @@
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\index\controller;
+namespace app\live\controller;
 
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
