@@ -6,6 +6,8 @@
 * [x] 如何使用多任务队列发送邮件
 * [x] 缓存支持文件缓存和Redis缓存
 * [x] 通过redis实现session共享存储 (不需要修改`php.ini`配置文件) 
+* [x] 符合REST架构设计的API，提供便利的API的版本号访问地址
+* [x] 引入Trait，实现了代码的复用
 
 ## 5.1 版本注意点
 
@@ -14,6 +16,16 @@
     * 5.0版本：`\application\extra\queue.php`
     * 5.1版本：`\application\config\queue.php`
     * [thinkphp-queue 笔记](https://github.com/coolseven/notes/blob/master/thinkphp-queue/README.md)
+
+## 路由
+
+定义接口（api）路由
+```php
+Route::get("api/:version/token/user","api/:version.Token/getToken");
+// 或者 \think\facade\Route::get("api/:version/token/user","api/:version.Token/getToken");
+```
+>定义路由前访问地址：`http://tp51.env/api/v1.token/getToken`
+>定义路由后访问地址：`http://tp51.env/api/v1/token/user`
 
 ## 控制台命令
 
@@ -116,6 +128,23 @@ return [
     
     createapp\common\components\test\SystemUser::create
     ```
+#### 创建类库文件
+ 
+* 快速生成控制器：`php think make:controller live/Blog` 
+* 快速生成模型：`php think make:model index/Blog` 
+* 快速生成中间件：`php think make:middleware Auth` 
+* 创建验证器类：`php think make:validate index/User` 
+
+## Trait
+
+trait有两个功能 :
+* 提供如`interface`的合约
+* 提供如`class`的实做
+* 类成员优先级为：当前类 > Trait > 父类
+* [PHP中Trait详解及其应用](https://segmentfault.com/a/1190000008009455)
+
+所以trait是一個看起來像interface，但用起來像class的東西。
+
 
 ## 队列
 

@@ -12,6 +12,7 @@ namespace app\index\controller;
 
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
+use app\common\traits\LogRecord;
 use think\facade\Cache;
 use think\facade\Config;
 use think\facade\Env;
@@ -21,11 +22,19 @@ use think\Queue;
 
 class IndexController
 {
+    use LogRecord;
+    public function log()
+    {
+        $this->startLog();
+        $this->endLog();
+        return "Hi";
+    }
+
     public function index()
     {
-        Log::error("1111111111111111111111111");
-        var_dump(Config::get('email.qq'));
-        return "Hi";
+      Log::error("1111111111111111111111111");
+      var_dump(Config::get('email.qq'));
+      return "Hi";
     }
 
     public function cache()
