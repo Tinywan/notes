@@ -219,3 +219,28 @@ public function testMultiTaskQueue()
     }
 }
 ```    
+
+# 服务器
+
+##　nginx、php-fpm、mysql用户权限解析
+
+* 先来做个说明：`nginx`本身不能处理PHP，它只是个web服务器。当接收到客户端请求后，如果是php请求，则转发给php解释器处理，并把结果返回给客户端。如果是静态页面的话，`nginx`自身处理，然后把结果返回给客户端。
+
+* `nginx`下php解释器使用最多的就是`fastcgi`。一般情况`nginx`把`php`请求转发给`fastcgi`（即 php-fpm）管理进程处理，`fastcgi`管理进程选择`cgi`子进程进行处理，然后把处理结果返回给`nginx`。
+
+* 在这个过程中就牵涉到两个用户，一个是`nginx`运行的用户，一个是`php-fpm`运行的用户。如果访问的是一个静态文件的话，则只需要`nginx`运行的用户对文件具有读权限或者读写权限。
+
+* 而如果访问的是一个php文件的话，则首先需要`nginx`运行的用户对文件有读取权限，读取到文件后发现是一个php文件，则转发给`php-fpm`，此时则需要`php-fpm`用户对文件具有有读权限或者读写权限。
+
+## Linux
+
+* 统计8801端口连接数：`	netstat -nat | grep -i "8801" | wc -l`  
+* [查看TCP网络连接情况](http://php-note.com/article/detail/143d148cbc86442c91d2554014c8b231):`netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'`
+* 查看 Mac/Linux 某端口占用情况
+  * 1、lsof -i:端口号
+  * 2、netstat -untlp|grep 端口号 
+* 软连接：`ln -s a b`
+  > a 就是源文件，b是链接文件名，其作用是当进入b目录，实际上是链接进入了a目录
+  > 删除软链接：`rm -rf  b  注意不是 rm -rf  b/`
+*   
+
