@@ -8,6 +8,8 @@
 * [x] 通过redis实现session共享存储 (不需要修改`php.ini`配置文件) 
 * [x] 符合REST架构设计的API，提供便利的API的版本号访问地址
 * [x] 引入Trait，实现了代码的复用
+* [x] 接入基于H+后台主题UI框架
+* [x] 基于Auth认证类的权限分配及menu菜单栏目管理过滤
 
 ## 5.1 版本注意点
 
@@ -251,7 +253,7 @@ public function testMultiTaskQueue()
 
 # 服务器
 
-##　nginx、php-fpm、mysql用户权限解析
+##　nginx、php-fpm、mysql用户权限解析　
 
 * 先来做个说明：`nginx`本身不能处理PHP，它只是个web服务器。当接收到客户端请求后，如果是php请求，则转发给php解释器处理，并把结果返回给客户端。如果是静态页面的话，`nginx`自身处理，然后把结果返回给客户端。
 

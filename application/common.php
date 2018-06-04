@@ -93,3 +93,23 @@ function multi_task_Queue($taskType, $data)
     if ($isPushed) return true;
     return false;
 }
+
+
+/**
+ * 获取后台用户登录信息
+ * @return mixed
+ */
+function get_admin_info(){
+    return \think\facade\Session::get('admin_info');
+}
+
+/**
+ * 驼峰法转下划线
+ * @param $str
+ * @return string
+ */
+function tf_to_xhx($str){
+    return trim(preg_replace_callback('/([A-Z]{1})/',function($matches){
+        return '_'.strtolower($matches[0]);
+    },$str), '_');
+}
