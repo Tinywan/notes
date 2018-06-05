@@ -113,3 +113,86 @@ function tf_to_xhx($str){
         return '_'.strtolower($matches[0]);
     },$str), '_');
 }
+
+// 格式化时间戳
+function get_current_date()
+{
+    return date('Y-m-d H:i:s', time());
+}
+
+/**
+ * 返回json数据
+ * @param $success
+ * @param $code
+ * @param string $message
+ * @param array $data
+ * @return Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+ */
+function responseJson($success, $code = 0, $message = '', $data = [])
+{
+
+    if (empty($message)) {
+        $message = '未知信息';
+    }
+    if (empty($data)) {
+        $data = '';
+    }
+
+    $result = [
+        'success' => $success,
+        'message' => $message,
+        'code' => $code,
+        'data' => $data,
+    ];
+    \think\facade\Log::info('前台输出：' . json_encode($result));
+
+    $response = \think\facade\Response::create($result, 'json');
+    $response->send();
+    exit();
+}
+
+/**
+ * 添加操作日志
+ * @param string $remark 备注
+ * @param string $type admin 后台  shop 商户
+ */
+function add_operateLogs($remark, $type = 'admin')
+{
+    if ($type == 'admin') {
+        $user = Session::get('admin_info');
+    } elseif ($type == 'shop') {
+        $user = Session::get('shop_info');
+    }
+
+    $data = [
+        'uid' => $user['id'],
+        'remark' => $remark,
+        'ip' => request()->ip(),
+        'created_at' => date('Y-m-d H:i:s', time()),
+        'type' => 1,
+        'content' => json_encode(request()->param())
+    ];
+
+    if ($type == 'admin') {
+        $data['from'] = 'admin';
+    } else {
+        $data['from'] = 'shop';
+    }
+
+    AdminOperateLogs::create($data);
+}
+
+
+/**
+ * 验证权限
+ * @param string $role
+ * @return bool
+ */
+function check_role($role = ''){
+    $admin_info = get_admin_info();
+    if ($admin_info['id'] == 1){
+        return true;
+    }
+    $auth = new Auth();
+    return $auth->check($role, $admin_info['id']);
+}

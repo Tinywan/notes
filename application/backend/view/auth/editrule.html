@@ -1,0 +1,62 @@
+{include file="common/header"}
+<div class="ibox-content">
+    <form role="form" class="form-horizontal m-t" id="add">
+
+        <div class="form-group draggable">
+            <label class="col-sm-3 control-label">备注：</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" placeholder="" id="title" name="title" value="{$rule.title}">
+            </div>
+        </div>
+
+        <div class="form-group draggable">
+            <label class="col-sm-3 control-label">节点：</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" placeholder="" name="name" value="{$rule.name}">
+            </div>
+        </div>
+
+        <!--<div class="form-group draggable">-->
+            <!--<label class="col-sm-3 control-label">表达式：</label>-->
+            <!--<div class="col-sm-9">-->
+                <!--<input type="text" class="form-control" placeholder="" name="condition" value="{$rule.condition}">-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="form-group draggable">
+            <label class="col-sm-3 control-label">是否有效：
+            </label>
+
+            <div class="col-sm-9">
+                <label class="radio-inline">
+                    <input type="radio" id="radio-1" value="1" name="status" {if $rule.status eq 1}checked{/if}>有效</label>
+                <label class="radio-inline">
+                    <input type="radio" id="radio-2" value="0" name="status" {if $rule.status eq 0}checked{/if}>停用</label>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group draggable">
+            <div class="col-sm-12 col-sm-offset-3">
+                <button class="btn btn-primary btn-block" type="button" id="tt">保存</button>
+            </div>
+        </div>
+    </form>
+    <div class="clearfix"></div>
+</div>
+<script>
+    $(function(){
+        $('#tt').click(function(){
+            var data = $('#add').serialize();
+            $.post("{:url('editRule', array('id'=>$id))}", data, function(data){
+                if (data.success == true){
+                    layer.msg('保存成功', {icon:6, time:500}, function(){
+                        parent.window.location.reload();
+                    })
+                }else {
+                    layer.msg(data.message, {icon:2});
+                }
+            });
+        })
+    })
+</script>
+{include file="common/footer"}

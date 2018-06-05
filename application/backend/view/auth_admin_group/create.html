@@ -1,0 +1,125 @@
+{include file='common/header'}
+<script src="__ROOT__/static/js/layer/laydate/laydate.js"></script>
+<link href="__admin__/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link rel="stylesheet" href="__admin__/plugins/treeview/jquery.treeview.css" />
+<script src="__admin__/plugins/treeview/jquery.treeview.js"></script>
+<div>
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <form method="post" class="form-horizontal" id="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">组名称</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" name="title" type="text" AUTOCOMPLETE="off">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">状态</label>
+                    <div class="col-sm-10">
+                        <div class="radio i-checks">
+                            <label><input type="radio" value="0" name="status" > <i></i> 禁用</label>
+                        </div>
+                        <div class="radio i-checks">
+                            <label><input type="radio" value="1" name="status" checked> <i></i> 开启</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">组权限</label>
+                    <div class="col-sm-10">
+                        <label><input type="checkbox" id="aaa"> 全选</label>
+                        <ul id="browser" class="treeview-default" style="margin-top: 10px;">
+                            {foreach $rule as $v}
+                                <li> &nbsp;<input type="checkbox" class="a-{$v.id}"> <label class="folder"><span>{$v.name}</span></label>
+                                    {notempty name="$v.child"}
+                                    <ul>
+                                        {foreach $v.child as $x}
+                                            <li>&nbsp;<input type="checkbox" class="a-{$v.id}-{$x.id}"><label class="folder"> {$x.name}</label>
+                                                {notempty name="$x.role_list"}
+                                                <br>
+                                                    <ul style="display: inline-block; margin-left: 20px;">
+                                                        {foreach $x.role_list as $y}
+                                                        <label style="font-weight: 400; margin-right: 10px;"><input type="checkbox" name="rules[]" value="{$y.id}" class="a-{$v.id}-{$x.id}-{$y.id}"> {$y.title}</label>
+                                                        {/foreach}
+                                                    </ul>
+                                                {/notempty}
+                                            </li>
+                                        {/foreach}
+                                    </ul>
+                                    {/notempty}
+                                </li>
+                            {/foreach}
+                        </ul>
+                    </div>
+                </div>
+            </form>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <button class="btn btn-primary btn-block" type="button" id="sub">确定添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__ROOT__/assets/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    });
+    $(function () {
+        $('#sub').click(function () {
+            var index = layer.load(1);
+            var data = $('#form').serialize();
+            $.post("{:url('admin/auth_admin_group/save')}", data, function (data) {
+                layer.close(index);
+                if (data.success == true){
+                    layer.msg(data.message, {icon: 6, time: 800}, function () {
+                        parent.window.location.reload()
+                    })
+                }else {
+                    layer.msg(data.message, {icon: 5, time: 1000})
+                }
+            })
+        });
+
+        $("#browser").treeview();
+
+        $("[type=checkbox]").click(function(){
+
+            //当选中或取消一个权限时，也同时选中或取消所有的下级权限
+            $(this).siblings("ul").find("input").prop("checked",this.checked);
+
+            //当选中一个权限时，也要选中所有的直接上级权限
+            if(this.checked ==true){
+                $(this).parents("li").children("input").prop("checked",true);
+            }
+
+            //当某一个父权限下的子权限都不选中时，该父权限也不选中
+            var elements=$(this).parent("li").parent("ul").find("input");
+            var num=elements.length;
+            /*alert(num);*/
+            var a=0;
+            for(var i=0;i<num;i++){
+                if(elements[i].checked==false){
+                    a++;
+                }
+            }
+            if(a==num){
+                $(this).parent("li").parent("ul").siblings("input").prop("checked",false);
+            }
+        });
+
+        $('#aaa').click(function () {
+            if ($('#aaa').is(':checked')){
+                $("[type=checkbox]").prop('checked', true);
+            }else {
+                $("[type=checkbox]").prop('checked', false);
+            }
+        })
+    })
+</script>
+
+{include file='common/footer'}

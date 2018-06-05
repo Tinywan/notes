@@ -10,5 +10,6 @@
 // +----------------------------------------------------------------------
 
 return [
-    \app\common\console\CreateUser::class
+    \app\common\console\CreateUser::class,
+    \app\common\console\Crontab::class
 ];

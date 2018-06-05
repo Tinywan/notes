@@ -1,0 +1,78 @@
+{include file="common/header"}
+<div class="col-sm-12">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <!--<h2 style="width: 200px;display: inline-block">节点管理</h2>-->
+            <span class="l">
+                {if $function_rule.create}
+                <a href="javascript:;" class="btn btn-primary btn-sm radius" onclick="layeropen('{:url("addRule", array('id'=>$id))}', '添加节点', '400px', '390px')"><i class="glyphicon glyphicon-plus"></i> 添加节点</a>
+                {/if}
+                <a class="btn btn-success btn-sm" href="javascript:location.replace(location.href);" title="刷新" >刷新</a>
+            </span>
+        </div>
+        <div class="ibox-content">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr class="text-l">
+                    <!--<th width="10"><input type="checkbox" name="" value=""></th>-->
+                    <th width="70">备注</th>
+                    <th width="100">节点</th>
+                    <!--<th width="100">规则表达式</th>-->
+                    <th width="30" class="text-c">状态</th>
+                    <th width="30">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach $rule as $x}
+                    <tr class="text-l">
+                        <!--<td><input type="checkbox" name="" value=""></td>-->
+                        <td> {$x.title}</td>
+                        <td>{$x.name}</td>
+                        <!--<td>{$x.condition}</td>-->
+                        <td class="td-status text-c">
+                            {if $x.status eq 1}
+                                <font color="green"><i class="glyphicon glyphicon-ok"></i> </font>
+                            {else/}
+                                <font color="gray"> <i class="glyphicon glyphicon-remove"></i></font>
+                            {/if}
+                        </td>
+                        <td class="td-manage">
+                            {if $function_rule.edit}
+                            <a title="编辑节点" href="javascript:;"  class="ml-5" style="text-decoration:none" onclick="layeropen('{:url("editRule", array('id'=>$x['id']))}', '编辑节点', '400px', '390px')"><i class="glyphicon glyphicon-edit"></i></a> &nbsp;
+                            {/if}
+                            {if $function_rule.delete}
+                                <if condition="$x['id'] neq 1">
+                                    <a title="删除" href="javascript:;" onclick="del({$x['id']})" class="ml-5" style="text-decoration:none"><i class="glyphicon glyphicon-trash"></i></a>
+                                {/if}
+                            </if>
+                        </td>
+                    </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    /**
+     * 通用删除
+     * @param id
+     */
+    function del(id){
+        layer.confirm('你确认删除吗？', {
+            btn: ['确认','取消']
+        }, function(){
+            $.post("{:url('admin/auth/delrule')}", {id:id}, function(msg){
+                if (msg.success == true){
+                    layer.msg('删除成功', {icon:1, time:500}, function(){
+                        window.location.reload();
+                    }, 10);
+                }else {
+                    layer.msg(msg.message, {icon:2, time:1000});
+                }
+            });
+        });
+    }
+</script>
+{include file="common/footer"}

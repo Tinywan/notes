@@ -6,29 +6,19 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2018/6/2 13:41
  * |  Mail: Overcome.wan@Gmail.com
+ * |  fun: 邮件配置
  * '------------------------------------------------------------------------------------------------------------------*/
+return [
+    'workerman' => [
+        'register_ip' => '127.0.0.1',
+        'register_port' => 2346,
+        'gateway_ip' => '127.0.0.1',
+        'redis_host' => '127.0.0.1',
+    ],
+    'swoole' => [
+        'register_ip' => '127.0.0.1',
+        'gateway_ip' => '127.0.0.1',
+        'redis_host' => '127.0.0.1',
+    ]
 
-namespace app\common\queue;
-
-use think\queue\Job;
-
-class Job2
-{
-    public function task1(Job $job, $data)
-    {
-
-
-    }
-
-    public function task2(Job $job, $data)
-    {
-
-
-    }
-
-    public function failed($data)
-    {
-
-
-    }
-}
+];

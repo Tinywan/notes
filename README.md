@@ -3,13 +3,14 @@
 
 ## 功能列表
 * [x] 如何使用命令行（带参数）
-* [x] 如何使用多任务队列发送邮件
+* [x] 如何使用多任务队列（如：发送邮件）
 * [x] 缓存支持文件缓存和Redis缓存
 * [x] 通过redis实现session共享存储 (不需要修改`php.ini`配置文件) 
 * [x] 符合REST架构设计的API，提供便利的API的版本号访问地址
 * [x] 引入Trait，实现了代码的复用
 * [x] 接入基于H+后台主题UI框架
 * [x] 基于Auth认证类的权限分配及menu菜单栏目管理过滤
+* [x] GatewayWorker简单的使用
 
 ## 5.1 版本注意点
 
@@ -129,6 +130,24 @@ return [
     From GanSu
     
     createapp\common\components\test\SystemUser::create
+    ```    
+    
+#### Crontab 命令行案例
+
+* 查看命令帮助：
+
+    ```php
+    >php think crontab --help
+    Usage:
+      crontab [options] [--] <name>
+    
+    Arguments:
+      name                  the name of the task that crontab needs to run
+    ```
+* 执行MySQL数据库自动备份脚本:
+
+    ```php
+    >php think crontab mysqldump
     ```
 #### 创建类库文件
  

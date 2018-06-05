@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "18055fe52b80dc62f7d50f80ef4cc5a6",
+    "content-hash": "b6f86615b216032a208ad87994cf7d97",
     "packages": [
         {
             "name": "phpmailer/phpmailer",
@@ -390,17 +390,78 @@
             "time": "2016-10-08T06:07:03+00:00"
         },
         {
-            "name": "workerman/workerman",
-            "version": "v3.5.9",
+            "name": "workerman/gateway-worker",
+            "version": "v3.0.9",
             "source": {
                 "type": "git",
-                "url": "https://github.com/walkor/Workerman.git",
-                "reference": "0bf5cf018912286a26bd14e1981dfc060fd98bb0"
+                "url": "https://github.com/walkor/GatewayWorker.git",
+                "reference": "0d91d66dd5cdcc05a3c6ab17dc7c15087728baed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/walkor/Workerman/0bf5cf018912286a26bd14e1981dfc060fd98bb0.zip",
-                "reference": "0bf5cf018912286a26bd14e1981dfc060fd98bb0",
+                "url": "https://files.phpcomposer.com/files/walkor/GatewayWorker/0d91d66dd5cdcc05a3c6ab17dc7c15087728baed.zip",
+                "reference": "0d91d66dd5cdcc05a3c6ab17dc7c15087728baed",
+                "shasum": ""
+            },
+            "require": {
+                "workerman/workerman": ">=3.1.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GatewayWorker\\": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://www.workerman.net",
+            "keywords": [
+                "communication",
+                "distributed"
+            ],
+            "time": "2018-05-22T16:57:48+00:00"
+        },
+        {
+            "name": "workerman/gatewayclient",
+            "version": "v3.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/walkor/GatewayClient.git",
+                "reference": "b4f47ed2d8097d3ce8aed23ba2cd37c98345cffb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/walkor/GatewayClient/b4f47ed2d8097d3ce8aed23ba2cd37c98345cffb.zip",
+                "reference": "b4f47ed2d8097d3ce8aed23ba2cd37c98345cffb",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GatewayClient\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://www.workerman.net",
+            "time": "2018-05-22T17:03:01+00:00"
+        },
+        {
+            "name": "workerman/workerman",
+            "version": "v3.5.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/walkor/Workerman.git",
+                "reference": "37124ceb2e6de051589a3d8e7bb20ddebc86d87c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/walkor/Workerman/37124ceb2e6de051589a3d8e7bb20ddebc86d87c.zip",
+                "reference": "37124ceb2e6de051589a3d8e7bb20ddebc86d87c",
                 "shasum": ""
             },
             "require": {
@@ -433,7 +494,7 @@
                 "asynchronous",
                 "event-loop"
             ],
-            "time": "2018-05-29T05:40:06+00:00"
+            "time": "2018-06-04T13:18:02+00:00"
         },
         {
             "name": "workerman/workerman-for-win",
