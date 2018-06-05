@@ -16,21 +16,21 @@ class BaseBackendController extends BaseController
     {
         parent::__construct();
         //验证登录状态
-        if (!$this->checkLogin()){
-            $this->redirect('/backend/login');
-        }
+//        if (!$this->checkLogin()){
+//            $this->redirect('/backend/login');
+//        }
 
         $this->auth = new Auth();
         $this->admin_info = get_admin_info();
 
         // 验证权限(排除id为1的系统管理员)
-        if ($this->admin_info['id'] != 1 && !$this->checkRole()){
-            if ($this->request->isAjax()){
-                return $this->error(false, -1, '权限不足！');
-            }else{
-                return $this->error('权限不足！');
-            }
-        }
+//        if ($this->admin_info['id'] != 1 && !$this->checkRole()){
+//            if ($this->request->isAjax()){
+//                return $this->error(false, -1, '权限不足！');
+//            }else{
+//                return $this->error('权限不足！');
+//            }
+//        }
     }
 
     /**

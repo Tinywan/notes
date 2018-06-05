@@ -209,7 +209,7 @@ trait Curd
     {
         $list = $this->getList();
 
-        if ($this->views['index'] != 'curd/index') $this->view = new View();
+        if ($this->views['index'] != 'curd/index') $this->view = new \think\facade\View();
 
         $this->view->assign([
             'list' => $list,
