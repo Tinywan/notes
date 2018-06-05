@@ -13,6 +13,7 @@ namespace app\common\traits\controller;
 
 use think\Db;
 use think\facade\App;
+use think\facade\Env;
 use think\facade\Validate;
 use think\facade\View;
 use traits\controller\Jump;
@@ -146,14 +147,12 @@ trait Curd
 
     public function __construct()
     {
-        parent::__construct();
         // 初始化模型
         if ($this->model()) {
             $this->model = App::invokeClass($this->model());
         }
-        // 自定义视图路径
-        $this->view = new View(['view_path' => ROOT_PATH . 'application/common/library/traits/view/']);
-
+        // 自定义视图路径 app\common\traits\controller
+        $this->view = View::config(['view_path' => Env::get('root_path') . 'application/common/traits/view/']);
         $this->init();
         $this->initField();
         $this->dbPre = config('database.prefix');
@@ -208,9 +207,7 @@ trait Curd
     public function index()
     {
         $list = $this->getList();
-
         if ($this->views['index'] != 'curd/index') $this->view = new \think\facade\View();
-
         $this->view->assign([
             'list' => $list,
             'list_array' => $list->toArray(),

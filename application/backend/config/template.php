@@ -16,6 +16,7 @@
 return [
   // 全局替换
   'tpl_replace_string'  =>  [
+    '__COMMON__'=>'/assets',
     '__STATIC__'=>'/assets/backend',
     '__JS__' => '/assets/backend/js',
     '__CSS__' => '/assets/backend/css',

@@ -4,11 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>Tinywan 工作室-后台管理</title>
+    <title>后台管理</title>
     <!--[if lt IE 9]>
     <meta http-equiv="refresh" content="0;ie.html" />
     <![endif]-->
     <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico">
     <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="__CSS__/animate.css" rel="stylesheet">
@@ -24,31 +25,23 @@
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element">
-                        <span><img alt="image" class="img-circle" src="__IMG__/profile_small.jpg"/></span>
+                        <span><img alt="image" class="img-circle" src="__IMG__/profile_small.jpg" style="width: 64px; height: 64px;" /></span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">Tinywan</strong></span>
-                                <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
+                               <span class="block m-t-xs"><strong class="font-bold">1111</strong></span>
+                                <span class="text-muted text-xs block">111<b class="caret"></b></span>
                                 </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a class="J_menuItem" href="form_avatar.html">修改头像</a>
-                            </li>
-                            <li><a class="J_menuItem" href="profile.html">个人资料</a>
-                            </li>
-                            <li><a class="J_menuItem" href="contacts.html">联系我们</a>
-                            </li>
-                            <li><a class="J_menuItem" href="mailbox.html">信箱</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li><a href="login.html">安全退出</a>
+                            <li class="logout"><a href="#">安全退出</a>
                             </li>
                         </ul>
                     </div>
                     <div class="logo-element">H+
                     </div>
                 </li>
-                {foreach $sidebar as $v}
+                <li>
+                    {foreach $sidebar as $v}
                 <li>
                     <a href="#">
                         <i class="{$v.icon}"></i>
@@ -304,6 +297,84 @@
             }
         })
     }
+</script>
+<script>
+    /**
+     * 与后台建立websocket连接
+     */
+    if (Notification.permission !== 'denied') {
+        // 用户没有选择是否显示通知，向用户请求许可
+        Notification.requestPermission(function(permission) {
+            if (permission === "granted") {
+//                alert('设置成功！下次就能收到通知喽~')
+            }
+        });
+    }
+
+    ws = new WebSocket("ws://<?php echo $_SERVER['HTTP_HOST']; ?>:9502");
+    ws.onmessage = function(e){
+        var data = eval("("+e.data+")");
+        var type = data.type || '';
+        switch(type){
+            case 'init':
+                // 将client_id与当前登录用户id绑定
+                $.post("/public/admin/cash/gateway/bind", {client_id: data.text}, function(data){
+                    console.log('bind success..')
+                }, 'json');
+                break;
+            case 'ping':
+                //心跳检测，防止长时间不操作而断开连接
+                console.log('online...');
+                break;
+            case 'message':
+                // 成功收款后通知信息
+                var zhText = data.text;
+
+                var _zhText = encodeURI(zhText);
+                document.body.innerHTML += "<audio autoplay=\"autoplay\">";
+                document.body.innerHTML += "<source src=\"https://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&vol=5&spd=4&per=0&text="+ _zhText +"\" type=\"audio/mpeg\" />";
+                document.body.innerHTML += "<embed height=\"0\" width=\"0\" src=\"https://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&vol=5&spd=4&per=0&text="+ _zhText +"\" />";
+                document.body.innerHTML += "</audio>";
+
+                if (!("Notification" in window)) {
+                    //不支持 notification 调用网页版通知
+                    toastr.success('收到消息：'+ zhText);
+
+                } else if (Notification.permission === "granted") { // 允许通知
+                    var n = new Notification("收到消息：", {
+                        icon : "https://{$_SERVER['HTTP_HOST']}/public/assets/logo.png",
+                        body : zhText ,
+                        data : ''
+                    });
+
+                    n.onshow = function() {
+                        // 5秒后自动关闭消息框
+                        setTimeout(function() {
+                            n.close();
+                        }, 5000);
+                    };
+
+                    n.onclick = function(){
+                        window.focus();
+                        n.close();
+                    };
+                    n.onclose = function(){
+                        window.focus();
+                    }
+                }else if (Notification.permission !== 'denied') { // 用户没有选择是否显示通知，向用户请求许可
+                    Notification.requestPermission(function(permission) {
+                        if (permission === "granted") {
+                            alert('设置成功！下次就能收到通知喽~')
+                        }
+                    });
+                }
+                console.log(e.data);
+                break;
+            default :
+                // 其它为匹配消息
+                console.log(e.data);
+        }
+    };
 </script>
 </body>
 </html>
