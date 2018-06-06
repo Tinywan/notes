@@ -27,7 +27,7 @@ class AdminController extends BaseBackendController
     function init()
     {
         $this->label = '管理员';
-        $this->route = 'admin/admin';
+        $this->route = 'backend/admin';
 
         $this->translations = [
             'id' => ['text' => '#'],

@@ -11,6 +11,10 @@
 * [x] 接入基于H+后台主题UI框架
 * [x] 基于Auth认证类的权限分配及menu菜单栏目管理过滤
 * [x] GatewayWorker简单的使用
+* [x] PHPExcel与ajax结合进行文件异步下载
+  > 思路：生成该文件并直接存储于当前目录，返回文件的下载地址，前台ajax成功返回后，通过返回的地址进行文件下载 
+* [x] phpspreadsheet 导出文件支持Excel、Csv、Html格式导出 
+* [ ] Swoole 接入  
 
 ## 5.1 版本注意点
 

@@ -13,6 +13,7 @@ namespace app\index\controller;
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
 use app\common\traits\LogRecord;
+use think\Controller;
 use think\facade\Cache;
 use think\facade\Config;
 use think\facade\Env;
@@ -20,7 +21,7 @@ use think\facade\Log;
 use think\facade\Session;
 use think\Queue;
 
-class IndexController
+class IndexController extends Controller
 {
     use LogRecord;
     public function log()
@@ -128,6 +129,23 @@ class IndexController
         } else {
             return 'Pushed to the MQ is Error';
         }
+    }
+
+    // table 标签输出
+    public function echoTable()
+    {
+        $html = '<table border="1">';
+        $html.= '<tr>';
+        $html.= '<th>Month</th>';
+        $html.= '<th>Savings</th>';
+        $html.= '</tr>';
+        $html.= '<tr>';
+        $html.= '<td>January</td>';
+        $html.= '<td>$100</td>';
+        $html.= '</tr>';
+        $html.= '</table>';
+        $this->assign('html',$html);
+        return $this->fetch();
     }
 
 }
