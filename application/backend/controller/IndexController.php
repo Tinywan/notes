@@ -4,7 +4,7 @@ namespace app\backend\controller;
 
 use app\common\controller\BaseBackendController;
 use app\common\model\AdminSidebar;
-use app\common\model\AdminUser;
+use app\common\model\Admin;
 use app\common\model\BackendSidebar;
 use think\facade\Session;
 
@@ -24,7 +24,7 @@ class IndexController extends BaseBackendController
 
     public function session()
     {
-        $res = AdminUser::get(1);
+        $res = Admin::get(1);
         $sidebar = Session::set('admin_info',$res);
         halt($sidebar);
         $this->assign('sidebar', $sidebar);

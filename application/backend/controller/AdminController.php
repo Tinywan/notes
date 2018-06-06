@@ -3,6 +3,7 @@
 namespace app\backend\controller;
 
 use app\common\controller\BaseBackendController;
+use app\common\model\Admin;
 use app\common\model\AuthAdminGroupAccess;
 use app\common\traits\controller\Curd;
 use think\facade\Validate;
@@ -17,7 +18,7 @@ class AdminController extends BaseBackendController
      */
     function model()
     {
-        return \app\common\model\AdminUser::class;
+        return Admin::class;
     }
 
     /**
@@ -67,8 +68,9 @@ class AdminController extends BaseBackendController
     {
         $data = request()->post();
 
-        $validate = new Validate($this->getValidateRule(), [], $this->getValidateFieldName());
+        $validate = Validate::make($this->getValidateRule(), [], $this->getValidateFieldName());
         $result = $validate->check($data);
+
         if (!$result) {
             if (request()->isAjax()) {
                 return responseJson(false, -1, $validate->getError());
@@ -78,7 +80,6 @@ class AdminController extends BaseBackendController
         }
         $data['created_at'] = time();
         $data['updated_at'] = time();
-
         $data = $this->disposeData($data);
         $res = $this->model->allowField(true)->save($data);
         if ($res) {

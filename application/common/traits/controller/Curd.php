@@ -314,7 +314,6 @@ trait Curd
      */
     public function save(){
         $data = request()->post();
-
         $validate = new Validate($this->getValidateRule(), $this->getValidateMessage(), $this->getValidateFieldName());
         $result   = $validate->check($data);
         if(!$result){
@@ -514,7 +513,7 @@ trait Curd
     public function update($id){
         $data = request()->post();
 
-        $validate = new Validate($this->getEditValidateRule($id), $this->getValidateMessage(), $this->getValidateFieldName());
+        $validate = Validate::make($this->getEditValidateRule($id), $this->getValidateMessage(), $this->getValidateFieldName());
         $result   = $validate->check($data);
         if(!$result){
             if (request()->isAjax()){

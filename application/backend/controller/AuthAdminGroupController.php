@@ -3,6 +3,7 @@
 namespace app\backend\controller;
 
 use app\common\controller\BaseBackendController;
+use app\common\model\AdminSidebar;
 use app\common\model\AuthAdminGroup;
 use app\common\model\AuthRule;
 use app\common\traits\controller\Curd;
