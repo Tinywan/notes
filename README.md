@@ -14,6 +14,7 @@
 * [x] PHPExcel与ajax结合进行文件异步下载
   > 思路：生成该文件并直接存储于当前目录，返回文件的下载地址，前台ajax成功返回后，通过返回的地址进行文件下载 
 * [x] phpspreadsheet 导出文件支持Excel、Csv、Html格式导出 
+* [x] 读取 Excel 上传文件后批量导入MySQL数据库 
 * [ ] Swoole 接入  
 
 ## 5.1 版本注意点
