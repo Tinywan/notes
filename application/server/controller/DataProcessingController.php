@@ -175,4 +175,56 @@ class DataProcessingController
         header('Cache-Control: max-age=0');
         $objWriter->save('php://output');
     }
+
+    // 数据导入
+    public function excelImport()
+    {
+        $inputFileName = ROOT_PATH.'/public/static/city-code.xlsx';
+        // 读取excel文件
+        $inputFileType = PHPExcel_IOFactory::identify($inputFileName); // Excel2007
+        // 设置以Excel格式
+        $objReader = PHPExcel_IOFactory::createReader($inputFileType); // return obj
+        // 载入excel文件
+        $objPHPExce = $objReader->load($inputFileName);
+
+        // 读取第一個工作表
+        $sheet =$objPHPExce->getSheet(0);
+        // 取得总行数
+        $highestRow = $sheet->getHighestRow();
+        // 取得总列数
+        $highestColumm  = $sheet->getHighestColumn();
+
+        $data = [];
+        for ($column = 'A'; $column <= $highestColumm; $column++) {
+            for ($row = 2; $row <= $highestRow; $row++) {
+                $data[$row][] = $sheet->getCell($column.$row)->getValue();
+            }
+        }
+        $newData = [];
+        $time = time();
+        foreach ($data as $k=>$v) {
+            if($v[2] == null) {
+                $newData[] = [
+                    'city_code'=>$v[0],
+                    'channel'=>'saas',
+                    'city_name'=>$v[1],
+                    'tid'=>null,
+                    'created_at'=>$time,
+                    'updated_at'=>$time
+                ];
+            } elseif ($v[2] != null && $v[3] != null) {
+                $newData[] = [
+                    'city_code'=>$v[0],
+                    'channel'=>'saas',
+                    'city_name'=>$v[3],
+                    'tid'=>0,
+                    'created_at'=>$time,
+                    'updated_at'=>$time
+                ];
+            }
+        }
+
+        $db = Db::name('bank_city_test')->insertAll($newData);
+        halt($db);
+    }
 }
