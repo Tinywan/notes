@@ -231,7 +231,7 @@ class DataProcessingController
             }
         }
 
-        $db = Db::name('bank_city_test')->insertAll($newData);
+        $db = Db::name('bank_city')->insertAll($newData);
         halt($db);
     }
 }

@@ -15,6 +15,7 @@
   > 思路：生成该文件并直接存储于当前目录，返回文件的下载地址，前台ajax成功返回后，通过返回的地址进行文件下载 
 * [x] phpspreadsheet 导出文件支持Excel、Csv、Html格式导出 
 * [x] 读取 Excel 上传文件后批量导入MySQL数据库 
+* [x] 使用[Parsedown](https://github.com/erusev/parsedown)扩展`Markdown`转换为html文件显示  
 * [ ] Swoole 接入  
 
 ## 5.1 版本注意点
@@ -24,6 +25,7 @@
     * 5.0版本：`\application\extra\queue.php`
     * 5.1版本：`\application\config\queue.php`
     * [thinkphp-queue 笔记](https://github.com/coolseven/notes/blob/master/thinkphp-queue/README.md)
+* 视图输出模版 `{$html}`必须为`{$html|raw}`      
 
 ## 路由
 

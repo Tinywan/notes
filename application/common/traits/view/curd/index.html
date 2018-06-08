@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <?php echo $table;?>
+                {$table|raw}
                 {if $function.delete eq 1}
                 <div style="padding-left: 20px;">
                     <label><input type="checkbox" class="all"> 全选 </label> &nbsp;

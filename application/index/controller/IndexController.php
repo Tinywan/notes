@@ -148,4 +148,25 @@ class IndexController extends Controller
         return $this->fetch();
     }
 
+
+    /**
+     * 读取markdown 显示为html文件
+     */
+    public function readMarkdown()
+    {
+        $inputFileName = Env::get('ROOT_PATH') . '/public/static/Readme.md';
+        $content = file_get_contents($inputFileName);
+        $Parsedown = new \Parsedown();
+        echo $Parsedown->text($content);
+    }
+
+    public function highlight()
+    {
+        $inputFileName = Env::get('ROOT_PATH') . '/public/static/Readme.md';
+        $markdown = file_get_contents($inputFileName); #读取指定目录下的README.md文件
+        $Parsedown = new \Parsedown();
+        $this->assign("html",$Parsedown->text($markdown)); #传到前台
+        return $this->fetch();
+    }
+
 }
