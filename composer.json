@@ -28,7 +28,8 @@
         "workerman/gateway-worker": "^3.0",
         "phpoffice/phpspreadsheet": "^1.2",
         "phpoffice/phpexcel": "^1.8",
-        "erusev/parsedown": "^1.7"
+        "erusev/parsedown": "^1.7",
+        "nesbot/carbon": "^1.29"
     },
     "autoload": {
         "psr-4": {
