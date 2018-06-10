@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "d8c36d8b8fb59a09dd0fce3fe04ee585",
@@ -418,16 +418,16 @@
         },
         {
             "name": "topthink/framework",
-            "version": "v5.1.15",
+            "version": "v5.1.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/framework.git",
-                "reference": "04d8180148fe11610a9601ed6a7d7320998d21f1"
+                "reference": "e0a8bdc52957a8f9774353fbfa0b9fd6ee206188"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/top-think/framework/04d8180148fe11610a9601ed6a7d7320998d21f1.zip",
-                "reference": "04d8180148fe11610a9601ed6a7d7320998d21f1",
+                "url": "https://files.phpcomposer.com/files/top-think/framework/e0a8bdc52957a8f9774353fbfa0b9fd6ee206188.zip",
+                "reference": "e0a8bdc52957a8f9774353fbfa0b9fd6ee206188",
                 "shasum": ""
             },
             "require": {
@@ -465,7 +465,7 @@
                 "orm",
                 "thinkphp"
             ],
-            "time": "2018-06-01T03:56:50+00:00"
+            "time": "2018-06-08T04:10:59+00:00"
         },
         {
             "name": "topthink/think-helper",
@@ -663,16 +663,16 @@
         },
         {
             "name": "workerman/gatewayclient",
-            "version": "v3.0.9",
+            "version": "v3.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/walkor/GatewayClient.git",
-                "reference": "b4f47ed2d8097d3ce8aed23ba2cd37c98345cffb"
+                "reference": "85ffc1ee84ca303d9c4c5efc2f5235d5d7031601"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/walkor/GatewayClient/b4f47ed2d8097d3ce8aed23ba2cd37c98345cffb.zip",
-                "reference": "b4f47ed2d8097d3ce8aed23ba2cd37c98345cffb",
+                "url": "https://files.phpcomposer.com/files/walkor/GatewayClient/85ffc1ee84ca303d9c4c5efc2f5235d5d7031601.zip",
+                "reference": "85ffc1ee84ca303d9c4c5efc2f5235d5d7031601",
                 "shasum": ""
             },
             "type": "library",
@@ -686,20 +686,20 @@
                 "MIT"
             ],
             "homepage": "http://www.workerman.net",
-            "time": "2018-05-22T17:03:01+00:00"
+            "time": "2018-06-08T03:57:05+00:00"
         },
         {
             "name": "workerman/workerman",
-            "version": "v3.5.10",
+            "version": "v3.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/walkor/Workerman.git",
-                "reference": "37124ceb2e6de051589a3d8e7bb20ddebc86d87c"
+                "reference": "c83e189b5855d91f99a7d01ac58f5bbc7161b5e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/walkor/Workerman/37124ceb2e6de051589a3d8e7bb20ddebc86d87c.zip",
-                "reference": "37124ceb2e6de051589a3d8e7bb20ddebc86d87c",
+                "url": "https://files.phpcomposer.com/files/walkor/Workerman/c83e189b5855d91f99a7d01ac58f5bbc7161b5e5.zip",
+                "reference": "c83e189b5855d91f99a7d01ac58f5bbc7161b5e5",
                 "shasum": ""
             },
             "require": {
@@ -732,7 +732,7 @@
                 "asynchronous",
                 "event-loop"
             ],
-            "time": "2018-06-04T13:18:02+00:00"
+            "time": "2018-06-07T09:36:14+00:00"
         },
         {
             "name": "workerman/workerman-for-win",

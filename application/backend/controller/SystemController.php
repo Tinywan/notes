@@ -12,8 +12,8 @@ class SystemController extends BaseBackendController
     public function sideBar()
     {
         $side = AdminSidebar::where(['tid' => 0,'status' => 1])->order('sort')->select();
-        $side_child = AdminSidebar::where(['tid' => ['neq', 0], 'status' => 1])->order('sort')->select();
-
+        $side_child = AdminSidebar::where('status','=',1)
+          ->where('tid','neq', 0)->order('sort')->select();
         if (!empty($side)){
             foreach ($side as $key => &$value) {
                 $child = array();

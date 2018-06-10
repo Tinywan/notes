@@ -7,6 +7,7 @@ use app\common\model\AdminSidebar;
 use app\common\model\AuthAdminGroup;
 use app\common\model\AuthRule;
 use app\common\traits\controller\Curd;
+use think\facade\View;
 
 class AuthAdminGroupController extends BaseBackendController
 {
@@ -46,7 +47,8 @@ class AuthAdminGroupController extends BaseBackendController
     public function create()
     {
         $rule = $this->getAuthRule();
-        return view()->assign('rule', $rule);
+        View::assign('rule', $rule);
+        return View::fetch('/backend/auth_admin_group/create');
     }
 
     /**
@@ -95,8 +97,14 @@ class AuthAdminGroupController extends BaseBackendController
      */
     protected function getAuthRule(){
         $rule_list = AuthRule::all(['status' => 1]);
-        $one_menu_list = AdminSidebar::where(['status' => 1, 'tid' => 0])->order('sort')->select();
-        $two_menu_list = AdminSidebar::where(['status' => 1, 'tid' => ['neq', 0]])->order('sort')->select();
+        $one_menu_list = AdminSidebar::where(['status' => 1, 'tid' => 0])
+          ->field('id,name,tid')
+          ->order('sort')
+          ->select();
+        $two_menu_list = AdminSidebar::where(['status' => 1, 'tid' => ['neq', 0]])
+          ->field('id,name,tid')
+          ->order('sort')
+          ->select();
 
         $two_list = [];
 

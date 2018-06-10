@@ -1,8 +1,8 @@
 {include file='common/header'}
-<script src="__ROOT__/static/js/layer/laydate/laydate.js"></script>
-<link href="__admin__/css/plugins/iCheck/custom.css" rel="stylesheet">
-<link rel="stylesheet" href="__admin__/plugins/treeview/jquery.treeview.css" />
-<script src="__admin__/plugins/treeview/jquery.treeview.js"></script>
+<script src="__JS__/layer/laydate/laydate.js"></script>
+<link href="__CSS__/plugins/iCheck/custom.css" rel="stylesheet">
+<link rel="stylesheet" href="__JS__/plugins/treeview/jquery.treeview.css" />
+<script src="__JS__/plugins/treeview/jquery.treeview.js"></script>
 <div>
     <div class="ibox float-e-margins">
         <div class="ibox-content">
@@ -61,7 +61,7 @@
         </div>
     </div>
 </div>
-<script src="__ROOT__/assets/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script src="__JS__/plugins/iCheck/icheck.min.js"></script>
 <script>
     $(document).ready(function () {
         $('.i-checks').iCheck({
@@ -73,7 +73,7 @@
         $('#sub').click(function () {
             var index = layer.load(1);
             var data = $('#form').serialize();
-            $.post("{:url('admin/auth_admin_group/save')}", data, function (data) {
+            $.post("{:url('backend/auth_admin_group/save')}", data, function (data) {
                 layer.close(index);
                 if (data.success == true){
                     layer.msg(data.message, {icon: 6, time: 800}, function () {

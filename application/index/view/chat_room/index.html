@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GatewayWorker的websocket连接</title>
+</head>
+<body>
+<h1>GatewayWorker的websocket连接</h1>
+<div class="row">
+    websocket send content：<input type="text" style="height: 50px; width: 100%;" name="data" id="data">
+    <p></p>
+    <button id="submit" onclick="sub()">send info</button>
+    <p></p>
+    <div id="output"></div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
+<script language="javascript" type="text/javascript">
+    var wsUri = "ws://notes.env:7272/";
+    var outputContent;
+    var roomId = 'L06777';
+    var userId = 4840043;
+    var userName = 'Tinywan' + Math.random();
+
+    // 把当新链接的客户端加入到当前直播间,消息类型：{"type":"join","roomId":"1002","userId":"88","userName":"userName"}
+    var joinContent = {
+        "type": "join",
+        "roomId": roomId,
+        "userId": userId,
+        "userName": userName
+    };
+
+    // 初始化页面操作
+    function init() {
+        outputContent = document.getElementById("output");
+        initWebSocket();
+    }
+
+    function initWebSocket() {
+        websocket = new ReconnectingWebSocket(wsUri);
+        websocket.onopen = function (evt) {
+            onOpen(evt)
+        };
+        websocket.onclose = function (evt) {
+            onClose(evt)
+        };
+        websocket.onmessage = function (evt) {
+            onMessage(evt)
+        };
+        websocket.onerror = function (evt) {
+            onError(evt)
+        };
+    }
+
+    function onOpen(evt) {
+        console.log("CONNECTED");
+    }
+
+    // 接收数据
+    function onMessage(evt) {
+        var data = eval("(" + evt.data + ")");
+        var type = data.type || '';
+        switch (type) {
+            case 'init':
+                // 把当新链接的客户端加入到当前直播间
+                console.log('-------init--------' + data);
+                websocket.send(JSON.stringify(joinContent));
+                writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
+                break;
+            case 'join':
+                console.log('-------join--------' + data);
+                writeToScreen(
+                    '<span style="color: blue;"> ' + ' 新用户: ' + '</span>' +
+                    '<span style="color: red;"> ' + data.userName + '</span>' +
+                    '<span style="color: green;"> ' + data.joinTime + '</span>' +
+                    '<span style="color: black;"> ' + data.msg + '</span>'
+                );
+                break;
+            case 'say':
+                console.log('say======' + data);
+                writeToScreen(
+                    '<span style="color: blue;"> ' + ' Chat: ' + '</span>' +
+                    '<span style="color: red;"> ' + data.userName + '</span>' +
+                    '<span style="color: #D2691E;"> ' + data.commentTime + '</span>' +
+                    '<span style="color: black;"> ' + data.content + '</span>'
+                );
+                break;
+            default :
+                console.log(data);
+                break;
+        }
+    }
+
+    function onError(evt) {
+        console.log('<span style="color: red;">ERROR:</span> ' + evt.data);
+    }
+
+    function onClose(evt) {
+        console.log("DISCONNECTED");
+    }
+
+    function writeToScreen(message) {
+        var pre = document.createElement("p");
+        pre.style.wordWrap = "break-word";
+        pre.innerHTML = message;
+        outputContent.appendChild(pre);
+    }
+
+    function sub() {
+        var text = document.getElementById('data').value;
+        // {"type":"say",,"msg":"Welcome 111111111111Live Room"}
+        var sayContent = {
+            "type": "say",
+            "roomId": roomId,
+            "userId": userId,
+            "userName": userName,
+            "content": text
+        };
+        websocket.send(JSON.stringify(sayContent));
+    }
+    window.addEventListener("load", init, false);
+</script>
+</body>
+</html>

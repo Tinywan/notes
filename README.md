@@ -10,7 +10,7 @@
 * [x] 引入Trait，实现了代码的复用
 * [x] 接入基于H+后台主题UI框架
 * [x] 基于Auth认证类的权限分配及menu菜单栏目管理过滤
-* [x] GatewayWorker简单的使用
+* [x] 结合[GatewayWorker](https://github.com/walkor/GatewayWorker)实现简单的聊天功能 
 * [x] PHPExcel与ajax结合进行文件异步下载
   > 思路：生成该文件并直接存储于当前目录，返回文件的下载地址，前台ajax成功返回后，通过返回的地址进行文件下载 
 * [x] phpspreadsheet 导出文件支持Excel、Csv、Html格式导出 
@@ -25,7 +25,8 @@
     * 5.0版本：`\application\extra\queue.php`
     * 5.1版本：`\application\config\queue.php`
     * [thinkphp-queue 笔记](https://github.com/coolseven/notes/blob/master/thinkphp-queue/README.md)
-* 视图输出模版 `{$html}`必须为`{$html|raw}`      
+* 视图输出`html`标签， `{$html}`必须为`{$html|raw}`        
+* 模板渲染规则 `小写+下划线`，如：`addSidebar`则试图为`add_sidebar.html`          
 
 ## 路由
 

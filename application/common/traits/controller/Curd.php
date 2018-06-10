@@ -287,7 +287,7 @@ trait Curd
     public function create(){
         if ($this->function['create'] == 0){ $this->error('页面不存在！'); }
 
-        if ($this->views['create'] != 'curd/create') $this->view = new View();
+        if ($this->views['create'] != 'curd/create') $this->view = new \think\facade\View();
 
         $this->view->assign([
             'form_html' => $this->getCreateHtml(),
@@ -496,7 +496,7 @@ trait Curd
         $info = $this->model->get($id);
         if (empty($info)) $this->error('记录不存在！');
 
-        if ($this->views['edit'] != 'curd/edit') $this->view = new View();
+        if ($this->views['edit'] != 'curd/edit') $this->view = new \think\facade\View();
 
         $this->view->assign([
             'form_html' => $this->getEditHtml($info->toArray()),
