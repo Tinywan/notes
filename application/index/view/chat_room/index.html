@@ -16,7 +16,7 @@
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
 <script language="javascript" type="text/javascript">
-    var wsUri = "ws://139.224.239.21:7272/";
+    var wsUri = "ws://127.0.0.1:7272/";
     var outputContent;
     var roomId = 'L06777';
     var userId = 4840043;
@@ -67,28 +67,35 @@
                 websocket.send(JSON.stringify(joinContent));
                 writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
                 break;
-            case 'join':
+            case 'join': // 加入直播间
                 console.log('join=======>' + data);
                 writeToScreen(
-                    '<span style="color: blue;"> ' + ' 新用户: ' + '</span>' +
+                    '<span style="color: blue;"> ' + ' 进入: ' + '</span>' +
                     '<span style="color: red;"> ' + data.userName + '</span>' +
                     '<span style="color: green;"> ' + data.joinTime + '</span>' +
                     '<span style="color: black;"> ' + data.msg + '</span>'
                 );
                 break;
-            case 'say':
+            case 'say': // 发表评论
                 console.log('say========>' + data);
                 writeToScreen(
-                    '<span style="color: blue;"> ' + ' Chat: ' + '</span>' +
+                    '<span style="color: blue;"> ' + ' 聊天: ' + '</span>' +
                     '<span style="color: red;"> ' + data.userName + '</span>' +
                     '<span style="color: #D2691E;"> ' + data.commentTime + '</span>' +
                     '<span style="color: black;"> ' + data.content + '</span>'
                 );
                 break;
-            case 'logout':
+            case 'notice': // 系统通知
+                console.log('notice========>' + data);
+                writeToScreen(
+                    '<span style="color: red;"> ' + ' 系统公告: ' + '</span>' +
+                    '<span style="color: red;"> ' + data.msg + '</span>'
+                );
+                break;
+            case 'logout': // 用户退出
                 console.log('logout=======>' + data);
                 writeToScreen(
-                    '<span style="color: blue;"> ' + ' logout: ' + '</span>' +
+                    '<span style="color: blue;"> ' + ' 退出: ' + '</span>' +
                     '<span style="color: black;"> ' + data.msg + '</span>'
                 );
                 break;
