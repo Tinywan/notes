@@ -13,6 +13,7 @@
 * [x] 结合[GatewayWorker](https://github.com/walkor/GatewayWorker)实现简单的聊天功能
   * [x] 服务端到客户端发/收送消息，通过框架发送，中间件为TP5       
   * [x] 客户端到客户端发/收送消息，通过WEB客户端发送，中间件为GateWorker     
+  * [x] 自动加载历史聊天数据       
 * [x] PHPExcel与ajax结合进行文件异步下载
   > 思路：生成该文件并直接存储于当前目录，返回文件的下载地址，前台ajax成功返回后，通过返回的地址进行文件下载 
 * [x] phpspreadsheet 导出文件支持Excel、Csv、Html格式导出 

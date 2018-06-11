@@ -68,5 +68,6 @@ class ChatRoomController extends Controller
         Gateway::$registerAddress = '127.0.0.1:1238';
         // 向任意群组的网站页面发送数据，如果开启，则会向页面发送两条一样的消息
         Gateway::sendToGroup($roomId, json_encode($resData));
+        return true;
     }
 }
