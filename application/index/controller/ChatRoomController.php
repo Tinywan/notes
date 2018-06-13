@@ -61,13 +61,12 @@ class ChatRoomController extends Controller
           'type' => 'notice',
           'roomId' => $roomId,
           'userName' => $this->userName,
-          'msg' => "这是系统公告信息！！！", // 发送给客户端的消息，而不是聊天发送的内容
+          'msg' => "这是系统公告信息！发送给客户端的消息", // 发送给客户端的消息，而不是聊天发送的内容
           'joinTime' => $serverTime // 加入时间
         ];
         // 设置GatewayWorker服务的Register服务ip和端口，请根据实际情况改成实际值
         Gateway::$registerAddress = '127.0.0.1:1238';
         // 向任意群组的网站页面发送数据，如果开启，则会向页面发送两条一样的消息
         Gateway::sendToGroup($roomId, json_encode($resData));
-        return true;
     }
 }

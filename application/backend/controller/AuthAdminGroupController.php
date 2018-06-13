@@ -46,9 +46,11 @@ class AuthAdminGroupController extends BaseBackendController
      */
     public function create()
     {
+        $this->view = View::init();
         $rule = $this->getAuthRule();
-        View::assign('rule', $rule);
-        return View::fetch('/backend/auth_admin_group/create');
+        return View::fetch('backend@auth_admin_group/create',[
+          'rule'=>$rule
+        ]);
     }
 
     /**

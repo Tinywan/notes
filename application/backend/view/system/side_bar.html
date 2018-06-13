@@ -30,7 +30,7 @@
                         <td><b>{$v.sort}</b></td>
                         <td>
                             {if $function_rule.edit}
-                            <a title="编辑侧边栏" href="javascript:;" onclick="layeropen('{:url("backend/system/editsidebar", array('id'=>$v['id']))}', '编辑侧边栏', '450px', '390px')" class="btn btn-xs btn-success" style="text-decoration:none">编辑</a> &nbsp;
+                            <a title="编辑侧边栏" href="javascript:;" onclick="layeropen('{:url('backend/system/editsidebar', array('id'=>$v['id']))}', '编辑侧边栏', '450px', '390px')" class="btn btn-xs btn-success" style="text-decoration:none">编辑</a> &nbsp;
                             {/if}
                             {if $function_rule.delete}
                             <a title="删除" href="javascript:;" onclick="del({$v.id})" class="btn btn-xs btn-danger" style="text-decoration:none">删除</a>

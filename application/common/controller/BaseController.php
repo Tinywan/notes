@@ -12,6 +12,11 @@ class BaseController extends Controller
         parent::__construct();
     }
 
+    public function initialize()
+    {
+        parent::initialize();
+    }
+
     protected function sendSmsCode($mobile, $type)
     {
 
