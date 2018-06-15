@@ -14,6 +14,7 @@ use app\common\queue\MultiTask;
 use app\common\queue\Worker;
 use app\common\traits\LogRecord;
 use think\Controller;
+use think\Db;
 use think\facade\Cache;
 use think\facade\Config;
 use think\facade\Env;
@@ -24,6 +25,7 @@ use think\Queue;
 class IndexController extends Controller
 {
     use LogRecord;
+
     public function log()
     {
         $this->startLog();
@@ -33,19 +35,19 @@ class IndexController extends Controller
 
     public function index()
     {
-      Log::error("1111111111111111111111111");
-      var_dump(Config::get('email.qq'));
-      return "Hi";
+        Log::error("1111111111111111111111111");
+        var_dump(Config::get('email.qq'));
+        return "Hi";
     }
 
     public function cache()
     {
         // 默认使用文件缓存
-        Cache::set("username","Tinywan");
+        Cache::set("username", "Tinywan");
         echo Cache::get("username");
 
         // 使用Redis缓存
-        Cache::store('redis')->set("RedisUserName","Tinywan11");
+        Cache::store('redis')->set("RedisUserName", "Tinywan11");
         echo Cache::store('redis')->get("RedisUserName");
     }
 
@@ -53,7 +55,7 @@ class IndexController extends Controller
     {
         echo 11111111;
         // 赋值（当前作用域）
-        Session::set('name','thinkphp-Tinywan');
+        Session::set('name', 'thinkphp-Tinywan');
         // 赋值think作用域
         //Session::set('name','thinkphp','think');
     }
@@ -79,8 +81,8 @@ class IndexController extends Controller
         $second3later = time() + 3;
         for ($i = 0; $i < 5; $i++) {
             //延迟3秒
-            $redis->zAdd('OrderId', $second3later, "OID0000001".$i);
-            print_r("ms:redis生成了一个订单任务：订单ID为"."OID0000001".$i."\r\n");
+            $redis->zAdd('OrderId', $second3later, "OID0000001" . $i);
+            print_r("ms:redis生成了一个订单任务：订单ID为" . "OID0000001" . $i . "\r\n");
         }
     }
 
@@ -135,16 +137,16 @@ class IndexController extends Controller
     public function echoTable()
     {
         $html = '<table border="1">';
-        $html.= '<tr>';
-        $html.= '<th>Month</th>';
-        $html.= '<th>Savings</th>';
-        $html.= '</tr>';
-        $html.= '<tr>';
-        $html.= '<td>January</td>';
-        $html.= '<td>$100</td>';
-        $html.= '</tr>';
-        $html.= '</table>';
-        $this->assign('html',$html);
+        $html .= '<tr>';
+        $html .= '<th>Month</th>';
+        $html .= '<th>Savings</th>';
+        $html .= '</tr>';
+        $html .= '<tr>';
+        $html .= '<td>January</td>';
+        $html .= '<td>$100</td>';
+        $html .= '</tr>';
+        $html .= '</table>';
+        $this->assign('html', $html);
         return $this->fetch();
     }
 
@@ -165,8 +167,55 @@ class IndexController extends Controller
         $inputFileName = Env::get('ROOT_PATH') . '/public/static/Readme.md';
         $markdown = file_get_contents($inputFileName); #读取指定目录下的README.md文件
         $Parsedown = new \Parsedown();
-        $this->assign("html",$Parsedown->text($markdown)); #传到前台
+        $this->assign("html", $Parsedown->text($markdown)); #传到前台
         return $this->fetch();
+    }
+
+    public function bankCity()
+    {
+        $sql = "INSERT INTO tinywan_admin (username,password,status) VALUES ('tinywan11','121111','1')";
+        $res = Db::query($sql);
+        halt($res);
+    }
+
+
+    public function genTree9($items)
+    {
+        $tree = array(); //格式化好的树
+        foreach ($items as $item) {
+            if (isset($items[$item['pid']])) {
+                $items[$item['pid']]['son'][] = &$items[$item['id']];
+            } else {
+                $tree[] = &$items[$item['id']];
+            }
+        }
+        return $tree;
+    }
+
+    //无限极分类
+    /*
+    * @ $pk 当前 id
+    * @ $pid 父级 id
+    * @ $child定义下级开始 的K
+    * @ 下级开始坐标
+    * */
+    public function make_tree($list, $pk = 'id', $pid = 'sjdl', $child = '_child', $root = 0)
+    {
+        $tree = array();
+        $packData = array();
+        foreach ($list as $data) {
+            //转换为带有主键id的数组
+            $packData[$data[$pk]] = $data; //$packData[1]=$data; $packData[2]=$data
+        }
+        foreach ($packData as $key => $val) {
+            if ($val[$pid] == $root) { //代表跟节点
+                $tree[] = &$packData[$key];
+            } else {
+                //找到其父类
+                $packData[$val[$pid]][$child][] = &$packData[$key];
+            }
+        }
+        return $tree;
     }
 
 }
