@@ -2,48 +2,50 @@
 ===============
 
 ## 功能列表
-* [x] 如何使用命令行（带参数）
-* [x] 如何使用多任务队列（如：发送邮件）
-* [x] 缓存支持文件缓存和Redis缓存
-* [x] 通过redis实现session共享存储 (不需要修改`php.ini`配置文件) 
-* [x] 符合REST架构设计的API，提供便利的API的版本号访问地址
-* [x] 引入Trait，实现了代码的复用
-* [x] 接入基于H+后台主题UI框架
-* [x] 基于Auth认证类的权限分配及menu菜单栏目管理过滤
-* [x] 结合[GatewayWorker](https://github.com/walkor/GatewayWorker)实现简单的聊天功能
+- [x] 如何使用命令行（带参数）
+- [x] 如何使用多任务队列（如：发送邮件）
+- [x] 缓存支持文件缓存和Redis缓存
+- [x] 通过redis实现session共享存储 (不需要修改`php.ini`配置文件) 
+- [x] 符合REST架构设计的API，提供便利的API的版本号访问地址
+- [x] 引入Trait，实现了代码的复用
+- [x] 接入基于H+后台主题UI框架
+- [x] 基于Auth认证类的权限分配及menu菜单栏目管理过滤
+- [x] 结合[GatewayWorker](https://github.com/walkor/GatewayWorker)实现简单的聊天功能
   * [x] 服务端到客户端发/收送消息，通过框架发送，中间件为TP5       
   * [x] 客户端到客户端发/收送消息，通过WEB客户端发送，中间件为GateWorker     
   * [x] 自动加载历史聊天数据       
-* [x] PHPExcel与ajax结合进行文件异步下载
+- [x] PHPExcel与ajax结合进行文件异步下载
   > 思路：生成该文件并直接存储于当前目录，返回文件的下载地址，前台ajax成功返回后，通过返回的地址进行文件下载 
-* [x] phpspreadsheet 导出文件支持Excel、Csv、Html格式导出 
-* [x] 读取 Excel 上传文件后批量导入MySQL数据库 
-* [x] 使用[Parsedown](https://github.com/erusev/parsedown)扩展`Markdown`转换为html文件显示  
-* [ ] Swoole 接入  
+- [x] phpspreadsheet 导出文件支持Excel、Csv、Html格式导出 
+- [x] 读取 Excel 上传文件后批量导入MySQL数据库 
+- [x] 使用[Parsedown](https://github.com/erusev/parsedown)扩展`Markdown`转换为html文件显示  
+- [x] 模型闭包更新数据  
+- [x] 支付宝沙箱模式支付（无需商户账号） 
+- [ ] Swoole 接入  
 
-## 5.1 版本注意点
+## 5.1 版本注意点  
 
-* 记录日志，由`use think\Log;`修改为`use think\facade\Log;`
-* 队列配置文件的不同
-    * 5.0版本：`\application\extra\queue.php`
-    * 5.1版本：`\application\config\queue.php`
-    * [thinkphp-queue 笔记](https://github.com/coolseven/notes/blob/master/thinkphp-queue/README.md)
-* 视图输出`html`标签， `{$html}`必须为`{$html|raw}`        
-* 模板渲染规则 `小写+下划线`，如：`addSidebar`则试图为`add_sidebar.html`          
+* 记录日志，由`use think\Log;`修改为`use think\facade\Log;`  
+* 队列配置文件的不同  
+    * 5.0版本：`\application\extra\queue.php`  
+    * 5.1版本：`\application\config\queue.php`  
+    * [thinkphp-queue 笔记](https://github.com/coolseven/notes/blob/master/thinkphp-queue/README.md)  
+* 视图输出`html`标签， `{$html}`必须为`{$html|raw}`  
+* 模板渲染规则 `小写+下划线`，如：`addSidebar`则试图为`add_sidebar.html`   
 
-## 路由
+## 路由  
 
-定义接口（api）路由
+定义接口（api）路由  
 ```php
 Route::get("api/:version/token/user","api/:version.Token/getToken");
 // 或者 \think\facade\Route::get("api/:version/token/user","api/:version.Token/getToken");
-```
->定义路由前访问地址：`http://tp51.env/api/v1.token/getToken`
->定义路由后访问地址：`http://tp51.env/api/v1/token/user`
+```  
+>定义路由前访问地址：`http://tp51.env/api/v1.token/getToken`  
+>定义路由后访问地址：`http://tp51.env/api/v1/token/user`  
 
-## 控制台命令
+## 控制台命令  
 
-#### 创建一个命令
+#### 创建一个命令  
 
 ```php
 namespace app\common\console;
@@ -96,20 +98,20 @@ class CreateUser extends Command
 > 你必须在 configure() 方法中配置命令的名称，然后可选地定义一个帮助信息 和 输入选项及输入参数  
 > `app\common\components\test\SystemUser`为一个需要运行的组件
 
-#### 配置命令
+#### 配置命令  
 
-配置命令之后，然后在 application 目录下面的 command.php（如果不存在则创建）文件中添加如下内容：
+配置命令之后，然后在 application 目录下面的 command.php（如果不存在则创建）文件中添加如下内容：  
 
 ```php
 return [
     \app\common\console\CreateUser::class
 ];
-```
-#### 执行命令
+```  
+#### 执行命令  
 
-在终端（terminal）中执行
+在终端（terminal）中执行  
 
-* 方式一：
+* 方式一：  
 
     ```php
     >php think hello Tinywan
@@ -117,7 +119,7 @@ return [
     Default User
     ```
 
-* 方式二：
+* 方式二：  
 
     ```php
     >php think hello Tinywan --city shanghai
@@ -126,32 +128,32 @@ return [
     Default User
     ```
 
-* 方式三：
+* 方式三：  
     ```php
     >php think hello systemUser
      Hello,systemUser!
      
      createapp\common\components\test\SystemUser::create
-    ```
+    ```  
 
-* 方式四：
+* 方式四：  
     ```php
     php think hello systemUser --city GanSu
     Hello,systemUser!
     From GanSu
-    
-    createapp\common\components\test\SystemUser::create
-    ```    
-    
-#### Crontab 命令行案例
 
-* 查看命令帮助：
+    createapp\common\components\test\SystemUser::create
+    ```
+
+#### Crontab 命令行案例  
+
+* 查看命令帮助：  
 
     ```php
     >php think crontab --help
     Usage:
       crontab [options] [--] <name>
-    
+
     Arguments:
       name                  the name of the task that crontab needs to run
     ```
@@ -161,7 +163,7 @@ return [
     >php think crontab mysqldump
     ```
 #### 创建类库文件
- 
+
 * 快速生成控制器：`php think make:controller live/Blog` 
 * 快速生成模型：`php think make:model index/Blog` 
 * 快速生成中间件：`php think make:middleware Auth` 
@@ -190,7 +192,7 @@ trait有两个功能 :
 * 否则，给数据库插入一条记录
 * 如果记录插入成功，则直接**删除任务**
 * 否则延迟发送4次后不再发送
-  
+
 #### 配置队列
 
 配置文件路径：`application\config\queue`，配置如下所示：
@@ -279,11 +281,22 @@ public function testMultiTaskQueue()
         return 'Pushed to the MQ is Error';
     }
 }
-```    
+```
 
-# 服务器
+## 闭包玩法  
 
-##　nginx、php-fpm、mysql用户权限解析　
+#### 模型闭包更新数据    
+
+```php
+$res = new Admin();
+$re = $res->save(['username'=>'Tinyaiai'],function ($query){
+   $query->where('status','=',1)->where('id','=',5);
+});
+```
+
+# 服务器  
+
+## nginx、php-fpm、mysql用户权限解析　
 
 * 先来做个说明：`nginx`本身不能处理PHP，它只是个web服务器。当接收到客户端请求后，如果是php请求，则转发给php解释器处理，并把结果返回给客户端。如果是静态页面的话，`nginx`自身处理，然后把结果返回给客户端。
 

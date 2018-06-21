@@ -9,5 +9,11 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-\think\facade\Route::get("api/:version/token/get","api/:version.Token/getToken");
-\think\facade\Route::get("api/:version/token/user","api/:version.Token/getUser");
+use \think\facade\Route;
+
+Route::get("api/:version/token/get","api/:version.Token/getToken");
+Route::get("api/:version/token/user","api/:version.Token/getUser");
+
+// 支付接口
+Route::get("api/notify","api/Pay/notifyUrl");
+Route::get("api/return","api/Pay/returnUrl");

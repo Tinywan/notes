@@ -10,6 +10,7 @@
 
 namespace app\index\controller;
 
+use app\common\model\Admin;
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
 use app\common\traits\LogRecord;
@@ -167,6 +168,15 @@ class IndexController extends Controller
         $Parsedown = new \Parsedown();
         $this->assign("html",$Parsedown->text($markdown)); #传到前台
         return $this->fetch();
+    }
+
+    public function updateData()
+    {
+        $res = new Admin();
+        $re = $res->save(['username'=>'Tinyaiai'],function ($query){
+           $query->where('status','=',1)->where('id','=',5);
+        });
+        var_dump($re);
     }
 
 }

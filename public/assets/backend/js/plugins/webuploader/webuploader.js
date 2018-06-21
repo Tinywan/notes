@@ -317,15 +317,15 @@
              * @return {Class} 返回子类。
              * @example
              * function Person() {
-             *     console.log( 'Super' );
+             *     console.logs( 'Super' );
              * }
              * Person.prototype.hello = function() {
-             *     console.log( 'hello' );
+             *     console.logs( 'hello' );
              * };
              *
              * var Manager = Base.inherits( Person, {
              *     world: function() {
-             *         console.log( 'World' );
+             *         console.logs( 'World' );
              *     }
              * });
              *
@@ -337,7 +337,7 @@
              * instance.world();    // => World
              *
              * // 子类的__super__属性指向父类
-             * console.log( Manager.__super__ === Person );    // => true
+             * console.logs( Manager.__super__ === Person );    // => true
              */
             inherits: function( Super, protos, staticProtos ) {
                 var child;
@@ -381,7 +381,7 @@
              * @method bindFn
              * @example
              * var doSomething = function() {
-             *         console.log( this.name );
+             *         console.logs( this.name );
              *     },
              *     obj = {
              *         name: 'Object Name'
@@ -395,8 +395,8 @@
 
             /**
              * 引用Console.log如果存在的话，否则引用一个[空函数noop](#WebUploader:Base.noop)。
-             * @grammar Base.log( args... ) => undefined
-             * @method log
+             * @grammar Base.logs( args... ) => undefined
+             * @method logs
              */
             log: (function() {
                 if ( window.console ) {
@@ -431,7 +431,7 @@
              * @example
              * function doSomthing() {
              *     var args = Base.slice( arguments, 1 );
-             *     console.log( args );
+             *     console.logs( args );
              * }
              *
              * doSomthing( 'ignored', 'arg2', 'arg3' );    // => Array ["arg2", "arg3"]
@@ -469,12 +469,12 @@
              * @param {Number} [pointLength=2] 精确到的小数点数。
              * @param {Array} [units=[ 'B', 'K', 'M', 'G', 'TB' ]] 单位数组。从字节，到千字节，一直往上指定。如果单位数组里面只指定了到了K(千字节)，同时文件大小大于M, 此方法的输出将还是显示成多少K.
              * @example
-             * console.log( Base.formatSize( 100 ) );    // => 100B
-             * console.log( Base.formatSize( 1024 ) );    // => 1.00K
-             * console.log( Base.formatSize( 1024, 0 ) );    // => 1K
-             * console.log( Base.formatSize( 1024 * 1024 ) );    // => 1.00M
-             * console.log( Base.formatSize( 1024 * 1024 * 1024 ) );    // => 1.00G
-             * console.log( Base.formatSize( 1024 * 1024 * 1024, 0, ['B', 'KB', 'MB'] ) );    // => 1024MB
+             * console.logs( Base.formatSize( 100 ) );    // => 100B
+             * console.logs( Base.formatSize( 1024 ) );    // => 1.00K
+             * console.logs( Base.formatSize( 1024, 0 ) );    // => 1K
+             * console.logs( Base.formatSize( 1024 * 1024 ) );    // => 1.00M
+             * console.logs( Base.formatSize( 1024 * 1024 * 1024 ) );    // => 1.00G
+             * console.logs( Base.formatSize( 1024 * 1024 * 1024, 0, ['B', 'KB', 'MB'] ) );    // => 1024MB
              */
             formatSize: function( size, pointLength, units ) {
                 var unit;
@@ -551,7 +551,7 @@
              * Mediator.installTo( obj );
              *
              * obj.on( 'testa', function( arg1, arg2 ) {
-             *     console.log( arg1, arg2 ); // => 'arg1', 'arg2'
+             *     console.logs( arg1, arg2 ); // => 'arg1', 'arg2'
              * });
              *
              * obj.trigger( 'testa', 'arg1', 'arg2' );
@@ -564,7 +564,7 @@
              * 就是第一个参数为`type`，记录当前是什么事件在触发。此类`callback`的优先级比脚低，会再正常`callback`执行完后触发。
              * ```javascript
              * obj.on( 'all', function( type, arg1, arg2 ) {
-             *     console.log( type, arg1, arg2 ); // => 'testa', 'arg1', 'arg2'
+             *     console.logs( type, arg1, arg2 ); // => 'testa', 'arg1', 'arg2'
              * });
              * ```
              *
@@ -3010,8 +3010,8 @@
              * @description 返回指定状态的文件集合，不传参数将返回所有状态的文件。
              * @for  Uploader
              * @example
-             * console.log( uploader.getFiles() );    // => all files
-             * console.log( uploader.getFiles('error') )    // => all error files.
+             * console.logs( uploader.getFiles() );    // => all files
+             * console.logs( uploader.getFiles('error') )    // => all error files.
              */
             getFiles: function() {
                 return this.queue.getFiles.apply( this.queue, arguments );
@@ -4424,12 +4424,12 @@
              *
              *         // 及时显示进度
              *         .progress(function(percentage) {
-             *             console.log('Percentage:', percentage);
+             *             console.logs('Percentage:', percentage);
              *         })
              *
              *         // 完成
              *         .then(function(val) {
-             *             console.log('md5 result:', val);
+             *             console.logs('md5 result:', val);
              *         });
              *
              * });
@@ -5411,7 +5411,7 @@
         //         i,
         //         b;
         //     if (!length || offset + length > dataView.byteLength) {
-        //         Base.log('Invalid Exif data: Invalid thumbnail data.');
+        //         Base.logs('Invalid Exif data: Invalid thumbnail data.');
         //         return;
         //     }
         //     hexData = [];
@@ -6196,7 +6196,7 @@
 
                     // benchmarking
                     // var duration = new Date().getTime() - time_start;
-                    // console.log('Encoding time: '+ currentQuality + 'ms');
+                    // console.logs('Encoding time: '+ currentQuality + 'ms');
                     //
 
                     return jpegDataUri
@@ -6221,7 +6221,7 @@
 
                 initQuantTables(sf);
                 currentQuality = quality;
-                // console.log('Quality set to: '+quality +'%');
+                // console.logs('Quality set to: '+quality +'%');
             }
 
             function init(){
@@ -6235,7 +6235,7 @@
 
                 setQuality(quality);
                 // var duration = new Date().getTime() - time_start;
-                // console.log('Initialization '+ duration + 'ms');
+                // console.logs('Initialization '+ duration + 'ms');
             }
 
             init();
@@ -6388,7 +6388,7 @@
                 //             tmp = x;
                 //             x = y;
                 //             y = iw * s - tmp - w;
-                //             console.log(ih * s, tmp, w)
+                //             console.logs(ih * s, tmp, w)
                 //             break;
                 //     }
 
@@ -7615,7 +7615,7 @@
                 uid = parts[ 0 ];
                 type = parts[ 1 ];
 
-                // console.log.apply( console, arguments );
+                // console.logs.apply( console, arguments );
 
                 if ( type === 'Ready' && uid === me.uid ) {
                     me.trigger('ready');
@@ -7623,7 +7623,7 @@
                     clients[ uid ].trigger( type.toLowerCase(), evt, obj );
                 }
 
-                // Base.log( evt, obj );
+                // Base.logs( evt, obj );
             }
 
             // flash的接受器。
@@ -8006,7 +8006,7 @@
     /**
      * @fileOverview 日志组件，主要用来收集错误信息，可以帮助 webuploader 更好的定位问题和发展。
      *
-     * 如果您不想要启用此功能，请在打包的时候去掉 log 模块。
+     * 如果您不想要启用此功能，请在打包的时候去掉 logs 模块。
      *
      * 或者可以在初始化的时候通过 options.disableWidgets 属性禁用。
      *
@@ -8014,7 +8014,7 @@
      * WebUploader.create({
      *     ...
      *
-     *     disableWidgets: 'log',
+     *     disableWidgets: 'logs',
      *
      *     ...
      * })
@@ -8098,7 +8098,7 @@
      */
     define('webuploader',[
         'preset/all',
-        'widgets/log'
+        'widgets/logs'
     ], function( preset ) {
         return preset;
     });
