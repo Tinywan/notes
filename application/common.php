@@ -224,3 +224,14 @@ function rand_char($length = 6)
     }
     return $password;
 }
+
+// 本地Redis
+function location_redis()
+{
+    return \redis\BaseRedis::location();
+}
+
+function message_redis()
+{
+    return \redis\BaseRedis::message();
+}

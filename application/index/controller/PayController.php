@@ -12,6 +12,8 @@
 namespace app\index\controller;
 
 
+use redis\BaseRedis;
+use think\Config;
 use think\Controller;
 use think\Env;
 use Yansongda\Pay\Pay;
@@ -46,5 +48,13 @@ class PayController extends Controller
     public function test()
     {
         var_dump(file_get_contents('../logs/123.txt'));
+    }
+
+    public function testRedis()
+    {
+        var_dump(config('redis.message'));
+        $redis = location_redis();
+        $redis->set("UserName",'Tinywan11111');
+        halt($redis);
     }
 }
