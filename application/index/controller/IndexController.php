@@ -36,7 +36,10 @@ class IndexController extends Controller
     public function index()
     {
         Log::error("1111111111111111111111111");
-        var_dump(Config::get('email.qq'));
+        Log::debug("2222222");
+        print_r(Env::get());
+        //var_dump(Config::get('email.qq'));
+        var_dump(file_get_contents(Env::get('ROOT_PATH').'/logs/123.txt'));
         return "Hi";
     }
 

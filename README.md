@@ -25,7 +25,8 @@
 
 ## 5.1 版本注意点  
 
-* 记录日志，由`use think\Log;`修改为`use think\facade\Log;`  
+* 记录日志，由`use think\Log;`修改为`use think\facade\Log;`
+  > 自定义日志文件路径，请使用绝对路径：`'path' => Env::get('ROOT_PATH').'/logs'`  
 * 队列配置文件的不同  
     * 5.0版本：`\application\extra\queue.php`  
     * 5.1版本：`\application\config\queue.php`  
