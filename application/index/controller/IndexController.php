@@ -30,16 +30,16 @@ class IndexController extends Controller
     {
         $this->startLog();
         $this->endLog();
+        echo session_save_path();
         return "Hi";
     }
 
     public function index()
     {
-        Log::error("1111111111111111111111111");
+        Log::error("88888888");
         Log::debug("2222222");
-        print_r(Env::get());
-        //var_dump(Config::get('email.qq'));
-        var_dump(file_get_contents(Env::get('ROOT_PATH').'/logs/123.txt'));
+        Log::error(get_current_date()."--------------error 这是一条错误日志------------");
+        Log::warning(get_current_date()."--------------error 这是一条错误日志------------");
         return "Hi";
     }
 
