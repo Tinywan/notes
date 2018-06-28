@@ -26,6 +26,11 @@ class IndexController extends Controller
 {
     use LogRecord;
 
+    public function last_insert_id()
+    {
+        var_dump(get_next_id());
+    }
+
     public function log()
     {
         $this->startLog();
@@ -38,8 +43,8 @@ class IndexController extends Controller
     {
         Log::error("88888888");
         Log::debug("2222222");
-        Log::error(get_current_date()."--------------error 这是一条错误日志------------");
-        Log::warning(get_current_date()."--------------error 这是一条错误日志------------");
+        Log::error(get_current_date() . "--------------error 这是一条错误日志------------");
+        Log::warning(get_current_date() . "--------------error 这是一条错误日志------------");
         return "Hi";
     }
 
@@ -100,8 +105,8 @@ class IndexController extends Controller
     {
         //当前任务所需的业务数据 . 不能为 resource 类型，其他类型最终将转化为json形式的字符串
         $data = [
-            'email' => '28456049@qq.com',
-            'username' => 'Tinywan' . rand(1111, 9999)
+          'email' => '28456049@qq.com',
+          'username' => 'Tinywan' . rand(1111, 9999)
         ];
         // 当前任务归属的队列名称，如果为新队列，会自动创建
         $queueName = 'workerQueue';
@@ -123,9 +128,9 @@ class IndexController extends Controller
     {
         $taskType = MultiTask::EMAIL;
         $data = [
-            'email' => 'tinywan@aliyun.com',
-            'title' => "注册邮件",
-            'content' => "邮件内容" . rand(11111, 999999)
+          'email' => 'tinywan@aliyun.com',
+          'title' => "注册邮件",
+          'content' => "邮件内容" . rand(11111, 999999)
         ];
         //$res = send_email_qq($data['email'], $data['title'], $data['content']);
         $res = multi_task_Queue($taskType, $data);

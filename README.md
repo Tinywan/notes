@@ -25,6 +25,7 @@
    * 自定义日志目录（模块独立配置），项目根目录`/logs`     
    * `Index`模块支持远程Socket调试日志打印到浏览器的console中        
    * 免费socketlog-server服务：`slog.tinywan.com`        
+- [x] 数据表字符串自增实现,方法：`get_next_id($model = 'order', $increase = 1)`,新增数据表`_sequence_order`  
 - [ ] Swoole 接入  
 
 ## 5.1 版本注意点  

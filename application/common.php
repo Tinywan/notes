@@ -1,14 +1,17 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2016 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: 流年 <liu21st@gmail.com>
-// +----------------------------------------------------------------------
 
+/**
+ * 根据数据表获取最新的插入值
+ * @param string $model 数据库自增表
+ * @param int $increase
+ * @return string
+ */
+function get_next_id($model = 'order', $increase = 1)
+{
+    \think\Db::execute("update _sequence_".$model." set value = last_insert_id(value + $increase)");
+    $id = \think\Db::getLastInsID();
+    return sprintf('L%05d', $id);
+}
 // 应用公共文件
 
 function curl_request($url, $post = '', $cookie = '', $returnCookie = 0)
