@@ -25,12 +25,13 @@ class PayController
     public function returnUrl(Request $request)
     {
         $getData = $request->param();
+        Log::error(get_current_date(). '-支付宝同步结果-' . json_encode($getData));
         $aliPay = Pay::alipay(config('pay.alipay'));
         try {
             $data = $aliPay->verify($getData);
-            Log::error(getCurrentDate() . '-支付宝同步结果-' . json_encode($data->all()));
+            Log::error(get_current_date() . '-支付宝同步结果-' . json_encode($data->all()));
         } catch (Exception $e) {
-            Log::error(getCurrentDate() . '-支付宝同步异常信息-' . json_encode($e->getMessage()));
+            Log::error(get_current_date() . '-支付宝同步异常信息-' . json_encode($e->getMessage()));
         }
         // 签名验证无异常
         if (!empty($data)) {
