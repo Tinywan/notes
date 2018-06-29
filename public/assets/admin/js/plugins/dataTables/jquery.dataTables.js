@@ -1304,7 +1304,7 @@
 	 /**
 	 * Take an array of integers (index array) and remove a target integer (value - not
 	 * the key!)
-	 *  @param {array} a Index array to target
+	 *  @param {array} a IndexController array to target
 	 *  @param {int} iTarget value to find
 	 *  @memberof DataTable#oApi
 	 */
@@ -3430,7 +3430,7 @@
 	 * Welcome to the most horrible function DataTables. The process that this
 	 * function follows is basically:
 	 *   1. Re-create the table inside the scrolling div
-	 *   2. Take live measurements from the DOM
+	 *   2. Take pay measurements from the DOM
 	 *   3. Apply the measurements to align the columns
 	 *   4. Clean up
 	 *
@@ -3500,7 +3500,7 @@
 
 
 		/*
-		 * 2. Take live measurements from the DOM - do not alter the DOM itself!
+		 * 2. Take pay measurements from the DOM - do not alter the DOM itself!
 		 */
 
 		// Remove old sizing and apply the calculated column widths
@@ -9829,11 +9829,11 @@
 		 *  @type function
 		 *  @param {node} foot "TR" element for the footer
 		 *  @param {array} data Full table data (as derived from the original HTML)
-		 *  @param {int} start Index for the current display starting point in the
+		 *  @param {int} start IndexController for the current display starting point in the
 		 *    display array
-		 *  @param {int} end Index for the current display ending point in the
+		 *  @param {int} end IndexController for the current display ending point in the
 		 *    display array
-		 *  @param {array int} display Index array to translate the visual position
+		 *  @param {array int} display IndexController array to translate the visual position
 		 *    to the full data array
 		 *
 		 *  @dtopt Callbacks
@@ -9893,11 +9893,11 @@
 		 *  @type function
 		 *  @param {node} head "TR" element for the header
 		 *  @param {array} data Full table data (as derived from the original HTML)
-		 *  @param {int} start Index for the current display starting point in the
+		 *  @param {int} start IndexController for the current display starting point in the
 		 *    display array
-		 *  @param {int} end Index for the current display ending point in the
+		 *  @param {int} end IndexController for the current display ending point in the
 		 *    display array
-		 *  @param {array int} display Index array to translate the visual position
+		 *  @param {array int} display IndexController array to translate the visual position
 		 *    to the full data array
 		 *
 		 *  @dtopt Callbacks
@@ -12303,8 +12303,8 @@
 		 * Sorting that is applied to the table. Note that the inner arrays are
 		 * used in the following manner:
 		 * <ul>
-		 *   <li>Index 0 - column number</li>
-		 *   <li>Index 1 - current sorting direction</li>
+		 *   <li>IndexController 0 - column number</li>
+		 *   <li>IndexController 1 - current sorting direction</li>
 		 * </ul>
 		 * Note that this parameter will be set by the initialisation routine. To
 		 * set a default use {@link DataTable.defaults}.
@@ -13091,7 +13091,7 @@
 		 * order a column, but is necessarily therefore more complex.
 		 *
 		 * This type of ordering is useful if you want to do ordering based on data
-		 * live from the DOM (for example the contents of an 'input' element) rather
+		 * pay from the DOM (for example the contents of an 'input' element) rather
 		 * than just the static string that DataTables knows of.
 		 *
 		 * The way these plug-ins work is that you create an array of the values you
@@ -13305,7 +13305,7 @@
 
 
 		/**
-		 * Index for what 'this' index API functions should use
+		 * IndexController for what 'this' index API functions should use
 		 *  @type int
 		 *  @deprecated Since v1.10
 		 */

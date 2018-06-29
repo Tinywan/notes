@@ -41,6 +41,7 @@ class IndexController extends Controller
 
     public function index()
     {
+        $res = Db::name('order')->count();
         Log::error("88888888");
         Log::debug("2222222");
         Log::error(get_current_date() . "--------------error 这是一条错误日志------------");

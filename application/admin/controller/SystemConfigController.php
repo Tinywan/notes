@@ -9,7 +9,7 @@
  * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\backend\controller;
+namespace app\admin\controller;
 
 
 use app\common\model\SystemConfig;
@@ -25,7 +25,7 @@ class SystemConfigController
     }
 
     public function init(){
-        $this->route = 'backend/system_config';
+        $this->route = 'admin/system_config';
         $this->label = '系统配置';
         $this->order = ['id' => 'asc'];
 

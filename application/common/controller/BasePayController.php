@@ -4,16 +4,20 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/6/29 23:26
+ * |  DateTime: 2018/6/3 21:11
  * |  Mail: Overcome.wan@Gmail.com
- * |  Desc: 路由配置信息
+ * |  Desc: 支付基类控制器
  * '------------------------------------------------------------------------------------------------------------------*/
 
-use  \think\facade\Route;
+namespace app\common\controller;
 
-/**
- * 登录路由配置
- */
-Route::any('/admin/login', 'index/auth/adminLogin');
-Route::any('/merchant/login', 'index/auth/merchantLogin');
-Route::any('/agents/login', 'index/auth/agentsLogin');
+use think\App;
+use think\Controller;
+
+class BasePayController extends Controller
+{
+    public function __construct(App $app = null)
+    {
+        parent::__construct($app);
+    }
+}

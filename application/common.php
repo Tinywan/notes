@@ -10,7 +10,8 @@ function get_next_id($model = 'order', $increase = 1)
 {
     \think\Db::execute("update _sequence_".$model." set value = last_insert_id(value + $increase)");
     $id = \think\Db::getLastInsID();
-    return sprintf('L%05d', $id);
+    return $id;
+    //return sprintf('L%05d', $id);
 }
 // 应用公共文件
 
@@ -241,11 +242,11 @@ function check_role($role = ''){
 
 
 /**
- * 生成随机字符
+ * 获取加密盐
  * @param int $length
  * @return string
  */
-function rand_char($length = 6)
+function get_salt($length = 8)
 {
     // 密码字符集，可任意添加你需要的字符
     $chars = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',

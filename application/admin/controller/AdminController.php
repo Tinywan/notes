@@ -1,6 +1,6 @@
 <?php
 
-namespace app\backend\controller;
+namespace app\admin\controller;
 
 use app\common\controller\BaseBackendController;
 use app\common\model\Admin;
@@ -28,7 +28,7 @@ class AdminController extends BaseBackendController
     function init()
     {
         $this->label = '管理员';
-        $this->route = 'backend/admin';
+        $this->route = 'admin/admin';
 
         $this->translations = [
             'id' => ['text' => '#'],

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\backend\controller;
+namespace app\admin\controller;
 
 use app\common\controller\BaseBackendController;
 use app\common\model\AdminSidebar;
@@ -29,10 +29,10 @@ class SystemController extends BaseBackendController
             unset($value);
         }
         $this->assign('function_rule', [
-            'create' => check_role('backend/system/addsidebar'),
-            'edit' => check_role('backend/system/editsidebar'),
-            'delete' => check_role('backend/system/delsidebar'),
-            'rule' => check_role('backend/auth/rule'),
+            'create' => check_role('admin/system/addsidebar'),
+            'edit' => check_role('admin/system/editsidebar'),
+            'delete' => check_role('admin/system/delsidebar'),
+            'rule' => check_role('admin/auth/rule'),
         ]);
         $this->assign('sidebar', $side);
         return view();

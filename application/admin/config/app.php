@@ -14,11 +14,11 @@ return [
   ],
   // 不验证权限节点
   'public' => [
-    'backend/index/index', //后台框架
-    'backend/index/welcome', // 后台主页
-    'backend/system/cleancache', //清除缓存
-    'backend/system/updatepassword', //修改密码
-    'backend/system/upLoad', //上传文件
+    'admin/index/index', //后台框架
+    'admin/index/welcome', // 后台主页
+    'admin/system/cleancache', //清除缓存
+    'admin/system/updatepassword', //修改密码
+    'admin/system/upLoad', //上传文件
   ],
 
   'config_group' => [

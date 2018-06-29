@@ -1,6 +1,6 @@
 <?php
 
-namespace app\backend\controller;
+namespace app\admin\controller;
 
 use app\common\controller\BaseBackendController;
 use app\common\model\AdminSidebar;
@@ -18,7 +18,7 @@ class AuthAdminGroupController extends BaseBackendController
     }
 
     public function init(){
-        $this->route = 'backend/auth_admin_group';
+        $this->route = 'admin/auth_admin_group';
         $this->label = '用户组';
         $this->translations = [
             'id'  => ['text' => '#'],
@@ -48,7 +48,7 @@ class AuthAdminGroupController extends BaseBackendController
     {
         $this->view = View::init();
         $rule = $this->getAuthRule();
-        return View::fetch('backend@auth_admin_group/create',[
+        return View::fetch('admin@auth_admin_group/create',[
           'rule'=>$rule
         ]);
     }

@@ -8,7 +8,7 @@
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\live\controller;
+namespace app\index\controller;
 
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
@@ -16,7 +16,7 @@ use think\facade\Config;
 use think\facade\Log;
 use think\Queue;
 
-class Index
+class DemoController
 {
     public function index()
     {

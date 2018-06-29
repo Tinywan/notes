@@ -6,14 +6,5 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2018/6/29 23:26
  * |  Mail: Overcome.wan@Gmail.com
- * |  Desc: 路由配置信息
+ * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
-
-use  \think\facade\Route;
-
-/**
- * 登录路由配置
- */
-Route::any('/admin/login', 'index/auth/adminLogin');
-Route::any('/merchant/login', 'index/auth/merchantLogin');
-Route::any('/agents/login', 'index/auth/agentsLogin');

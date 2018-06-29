@@ -34,27 +34,27 @@ class AuthController extends Controller
      */
     public function adminLogin()
     {
-        if (Session::has('admin_info')){
-            $this->redirect('backend/index/index');
+        if (Session::has('admin_info')) {
+            $this->redirect('admin/index/index');
         }
-        if ($this->request->isPost()){
+        if ($this->request->isPost()) {
             $data = request()->post();
-            if (empty($data['username']) || empty($data['password'])){
+            if (empty($data['username']) || empty($data['password'])) {
                 return responseJson(false, -1, '请输入用户名或密码');
             }
-            if (empty($data['captcha']) || !captcha_check($data['captcha'])){
+            if (empty($data['captcha']) || !captcha_check($data['captcha'])) {
                 return responseJson(false, -1, '验证码错误');
             };
-            $admin = Admin::where(['username'  => $data['username']])->find();
-            if (empty($admin)){
+            $admin = Admin::where(['username' => $data['username']])->find();
+            if (empty($admin)) {
                 return responseJson(false, -1, '账号或密码错误');
             }
             $user = Admin::where([
-                'username'  => $data['username'],
-                'password'  => md5(md5($data['password']).md5($admin->salt))
+              'username' => $data['username'],
+              'password' => md5(md5($data['password']) . md5($admin->salt))
             ])->find();
 
-            if (empty($user)){
+            if (empty($user)) {
                 return responseJson(false, -1, '账号或密码错误');
             }
             $ip = request()->ip();
@@ -72,20 +72,21 @@ class AuthController extends Controller
      * 后台管理退出
      * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
      */
-    public function logout(){
+    public function logout()
+    {
         $type = $this->request->param('type', 'admin');
-        if ($type == 'admin'){
+        if ($type == 'admin') {
             Session::delete('admin_info');
-            if (!Session::has('admin_info')){
+            if (!Session::has('admin_info')) {
                 return responseJson(true, 0, '退出成功！');
-            }else{
+            } else {
                 return responseJson(false, -1, '退出失败！');
             }
-        }elseif($type == 'merchant'){
+        } elseif ($type == 'merchant') {
             Session::delete('merchant_info');
-            if (!Session::has('merchant_info')){
+            if (!Session::has('merchant_info')) {
                 return responseJson(true, 0, '退出成功！');
-            }else{
+            } else {
                 return responseJson(false, -1, '退出失败！');
             }
         }
@@ -99,28 +100,29 @@ class AuthController extends Controller
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function merchantLogin(){
-        if (Session::has('merchant_info')){
+    public function merchantLogin()
+    {
+        if (Session::has('merchant_info')) {
             $this->redirect('merchant/index/index');
         }
-        if ($this->request->isPost()){
+        if ($this->request->isPost()) {
             $data = request()->post();
-            if (empty($data['mch_id']) || empty($data['password'])){
+            if (empty($data['mch_id']) || empty($data['password'])) {
                 return responseJson(false, -1, '请输入商户号或密码');
             }
-            if (empty($data['captcha']) || !captcha_check($data['captcha'])){
+            if (empty($data['captcha']) || !captcha_check($data['captcha'])) {
                 return responseJson(false, -1, '验证码错误');
             };
             $merchant = Merchant::get($data['mch_id']);
-            if (empty($merchant)){
+            if (empty($merchant)) {
                 return responseJson(false, -1, '账号或密码错误');
             }
             $user = Merchant::where([
-                'id'  => $data['mch_id'],
-                'password'  => md5(md5($data['password']).md5($merchant->salt))
+              'id' => $data['mch_id'],
+              'password' => md5(md5($data['password']) . md5($merchant->salt))
             ])->find();
 
-            if (empty($user)){
+            if (empty($user)) {
                 return responseJson(false, -1, '账号或密码错误');
             }
             $ip = request()->ip();

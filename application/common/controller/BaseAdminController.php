@@ -1,13 +1,15 @@
 <?php
-
 namespace app\common\controller;
 
 use app\common\library\Auth;
-use think\facade\Cache;
-use think\facade\Session;
+use app\common\model\ChannelMerchant;
+use app\common\model\ChannelMerchantAccount;
+use app\common\model\PayChannelConfig;
+use think\Cache;
+use think\Session;
 
-class BaseBackendController extends BaseController
-{
+class BaseAdminController extends BaseController {
+
     protected $auth;
     protected $admin_info;
     protected $sidebar;

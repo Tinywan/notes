@@ -13,15 +13,15 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => '127.0.0.1',
+    'hostname'        => 'www.tinywan.com',
     // 数据库名
-    'database'        => 'tinywan',
+    'database'        => 'pay',
     // 用户名
-    'username'        => 'root',
+    'username'        => 'pay',
     // 密码
-    'password'        => 'root',
+    'password'        => 'test_9E729C979044BB4FD821E2C9C05C78F06D9E23E5',
     // 端口
-    'hostport'        => '',
+    'hostport'        => '3306',
     // 连接dsn
     'dsn'             => '',
     // 数据库连接参数
@@ -29,7 +29,7 @@ return [
     // 数据库编码默认采用utf8
     'charset'         => 'utf8',
     // 数据库表前缀
-    'prefix'          => 'tinywan_',
+    'prefix'          => 'pay_',
     // 数据库调试模式
     'debug'           => true,
     // 数据库部署方式:0 集中式(单一服务器),1 分布式(主从服务器)

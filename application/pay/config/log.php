@@ -10,18 +10,13 @@
 // +----------------------------------------------------------------------
 
 // +----------------------------------------------------------------------
-// | 模板设置
+// | 日志设置
 // +----------------------------------------------------------------------
-
 return [
-   // 默认模板渲染规则 1 解析为小写+下划线
-  'auto_rule'    => 1,
-  // 全局替换
-  'tpl_replace_string'  =>  [
-    '__COMMON__'=>'/assets',
-    '__STATIC__'=>'/assets/backend',
-    '__JS__' => '/assets/backend/js',
-    '__CSS__' => '/assets/backend/css',
-    '__IMG__' => '/assets/backend/img',
-  ]
+//    'type' => 'socket',
+//    'host' => 'slog.tinywan.com',
+//    //日志强制记录到配置的client_id
+//    'force_client_ids' => ['tinywan123456','Tinywan_123','www123456'],
+//    //限制允许读取日志的client_id
+//    'allow_client_ids' => ['tinywan123456'],
 ];
