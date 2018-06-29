@@ -26,6 +26,8 @@
    * `Index`模块支持远程Socket调试日志打印到浏览器的console中        
    * 免费socketlog-server服务：`slog.tinywan.com`        
 - [x] 如何实现数据库自定义自增字段实现,方法：`get_next_id($model = 'order', $increase = 1)`,新增数据表`_sequence_order`  
+- [x] 通过命令行自动每日凌晨进行`账户金额清算`和`账户金额结算`  
+- [ ] `支付异步`和`提现异步`以及`转账异步`回调如何通过分布式队列去完成   
 - [ ] Swoole 接入  
 
 ## 5.1 版本注意点  
@@ -255,11 +257,12 @@ public function queue()
 
 #### 队列的消费与删除
 
-* 终端（terminal）执行命令：`> php think queue:work --daemon --queue workerQueue` 
+* 终端（terminal）执行命令：`> php think queue:work --daemon --queue multiTaskQueue` 
 
 * 执行（消费）结果：
+
     ```php
-    > php think queue:work --daemon --queue workerQueue
+    > php think queue:work --daemon --queue multiTaskQueue
     Processed: app\common\queue\Worker
     Processed: app\common\queue\Worker
     Processed: app\common\queue\Worke
@@ -288,6 +291,7 @@ public function testMultiTaskQueue()
     }
 }
 ```
+> 发送前先执行 `php think queue:work --daemon --queue multiTaskQueue`
 
 ## 闭包玩法  
 

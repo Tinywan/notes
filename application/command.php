@@ -11,5 +11,6 @@
 
 return [
     \app\common\console\CreateUser::class,
-    \app\common\console\Crontab::class
+    \app\common\console\Crontab::class,
+    \app\common\console\Pay::class
 ];
