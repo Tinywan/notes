@@ -29,7 +29,7 @@ class AccountsService
      */
     public function accountClearing()
     {
-        Log::error(get_current_date().' 每天凌晨,按照订单表去清算... '.__METHOD__);
+
         $taskType = MultiTask::EMAIL;
         $data = [
           'email' => '756684177@qq.com',
@@ -38,9 +38,9 @@ class AccountsService
         ];
         $res = multi_task_Queue($taskType, $data);
         if ($res !== false) {
-            return "Job is Pushed to the MQ Success";
+            Log::info(get_current_date().' 每天凌晨,按照订单表去清算... ');
         } else {
-            return 'Pushed to the MQ is Error';
+            Log::error(get_current_date().' 每天凌晨,按照订单表去清算... '.json($res));
         }
     }
 

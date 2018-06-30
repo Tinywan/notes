@@ -13,25 +13,10 @@
 // | 日志设置
 // +----------------------------------------------------------------------
 return [
-    'type'        => 'File',
-    // 日志保存目录
-    'path'        => Env::get('ROOT_PATH').'/logs/pay',
-    // 日志记录级别，使用数组表示，设置只记录需要的日志
-    'level'       => [
-        'debug',
-        'error',
-        'sql'
-    ],
-    // 单文件日志写入
-    'single'      => false,
-    // 独立日志级别
-    'apart_level' => [
-        'debug',
-        'error',
-        'sql'
-    ],
-    // 最大日志文件数量
-    'max_files'   => 0,
-    // 是否关闭日志写入
-    'close'       => false,
+//    'type' => 'socket',
+//    'host' => 'slog.tinywan.com',
+//    //日志强制记录到配置的client_id
+//    'force_client_ids' => ['tinywan123456','Tinywan_123','www123456'],
+//    //限制允许读取日志的client_id
+//    'allow_client_ids' => ['tinywan123456'],
 ];

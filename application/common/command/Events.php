@@ -9,7 +9,7 @@
  * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\console;
+namespace app\common\command;
 
 
 use GatewayClient\Gateway;

@@ -129,9 +129,9 @@ class IndexController extends Controller
     {
         $taskType = MultiTask::EMAIL;
         $data = [
-          'email' => 'tinywan@aliyun.com',
-          'title' => "注册邮件",
-          'content' => "邮件内容" . rand(11111, 999999)
+          'email' => '756684177@qq.com',
+          'title' => "把保存在内存中的日志信息",
+          'content' => "把保存在内存中的日志信息（用指定的记录方式）写入，并清空内存中的日志" . rand(11111, 999999)
         ];
         //$res = send_email_qq($data['email'], $data['title'], $data['content']);
         $res = multi_task_Queue($taskType, $data);

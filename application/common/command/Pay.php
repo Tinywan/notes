@@ -13,10 +13,10 @@
  *      1、http://www.sohu.com/a/148256569_679243
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\console;
-
+namespace app\common\command;
 
 use app\pay\service\AccountsService;
+use app\pay\service\RedisSubscribe;
 use think\console\Command;
 use think\console\Input;
 use think\console\input\Argument;
@@ -42,6 +42,9 @@ class Pay extends Command
         } elseif ($type == 'settlement') {
             // 结算服务
             $this->accountSettlement();
+        }elseif ($type == 'psubscribe') {
+            // 发布订阅任务
+            $this->psubscribe();
         }
     }
 
@@ -64,5 +67,14 @@ class Pay extends Command
     {
         $service = new AccountsService();
         $service->accountSettlement();
+    }
+
+    /**
+     * Redis 发布订阅模式
+     */
+    private function psubscribe()
+    {
+        $service = new RedisSubscribe();
+        $service->sub();
     }
 }

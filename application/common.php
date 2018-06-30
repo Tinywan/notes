@@ -71,7 +71,7 @@ function send_email_qq($address, $subject, $content)
     if (empty($email_smtp_host) || empty($email_username) || empty($email_password) || empty($email_from_name)) {
         return ["errorCode" => 1, "msg" => '邮箱请求参数不全，请检测邮箱的合法性'];
     }
-    $phpmailer = new PHPMailer\PHPMailer\PHPMailer();
+    $phpmailer = new \PHPMailer\PHPMailer\PHPMailer();
     $phpmailer->SMTPDebug = 0;
     $phpmailer->IsSMTP();
     $phpmailer->SMTPAuth = true;

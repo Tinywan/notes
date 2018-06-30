@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 
 return [
-    \app\common\console\CreateUser::class,
-    \app\common\console\Crontab::class,
-    \app\common\console\Pay::class
+    \app\common\command\CreateUser::class,
+    \app\common\command\Crontab::class,
+    \app\common\command\Pay::class
 ];

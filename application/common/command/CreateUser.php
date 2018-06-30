@@ -7,7 +7,7 @@
  * |  DateTime: 2018/6/2 13:41
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
-namespace app\common\console;
+namespace app\common\command;
 
 use app\common\components\test\SystemUser;
 use think\console\Command;

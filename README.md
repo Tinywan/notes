@@ -27,6 +27,11 @@
    * 免费socketlog-server服务：`slog.tinywan.com`        
 - [x] 如何实现数据库自定义自增字段实现,方法：`get_next_id($model = 'order', $increase = 1)`,新增数据表`_sequence_order`  
 - [x] 通过命令行自动每日凌晨进行`账户金额清算`和`账户金额结算`  
+- [x] 分布式之延时任务，生成订单60秒后，给用户发短信。
+    * 修改Redis配置文件，开启`键空间通知`,重启Redis服务   
+    * 执行多任务队列`php think queue:work --daemon --queue multiTaskQueue`(发送短信)   
+    * 使用命令行开启订阅模式`php think pay psubscribe`（阻塞模式），Linux 守护进程。  
+    * 设置订单有效期`setex S120012018033017194343904 3 value001`   
 - [ ] `支付异步`和`提现异步`以及`转账异步`回调如何通过分布式队列去完成   
 - [ ] Swoole 接入  
 
@@ -52,7 +57,7 @@ Route::get("api/:version/token/user","api/:version.Token/getToken");
 >定义路由后访问地址：`http://tp51.env/api/v1/token/user`  
 
 ## 控制台命令  
-
+通过命令行的方式执行一些URL访问不方便或者安全性较高的操作，如：清除缓存文件`php think clear`
 #### 创建一个命令  
 
 ```php
