@@ -22,42 +22,71 @@ use think\facade\Log;
 
 class RedisSubscribe
 {
-    public function sub()
+    // 支付类型
+    const PAY = 'PAY';
+
+    // 回调处理
+    const NOTICE = 'NOTICE';
+
+    /**
+     * orderDelayMessage
+     */
+    public function orderDelayMessage()
     {
         $msg = "Tinywan";
         $redis = BaseRedis::location();
         $redis->setOption(\Redis::OPT_READ_TIMEOUT, -1);
         $redis->psubscribe(array('__keyevent@0__:expired'), function ($redis, $pattern, $chan, $orderNo) use ($msg) {
-            Log::error(get_current_date() . $msg . ' 订阅成功的订单号为: ' . $orderNo);
-            $this->createOrderSendCode($orderNo);
+            Log::error('回调的 KEY = ' . $orderNo);
+            // 这里处理更多的业务逻辑
+            list($type, $order_no, $time) = explode(':', $orderNo);
+            switch ($type) {
+                case self::PAY:
+                    if ($time == 5) {
+                        $this->createOrderSendCode($order_no);
+                    } elseif ($time == 30) {
+                        $this->orderAutoCancel($order_no);
+                    }
+                    break;
+                case self::NOTICE:
+                    Log::error('NOTICE...');
+                    break;
+                default:
+                    Log::error('default message');
+            }
         });
     }
 
     /**
      * 生成订单60秒后,给用户发短信
-     * 由于短息你叫昂贵我这里使用邮件代替了
      * @param $orderNo
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @return bool
      */
     private function createOrderSendCode($orderNo)
     {
         $orderInfo = Order::where('order_no', '=', $orderNo)->find();
+        if (!$orderInfo) {
+            Log::error($orderNo . " 订单号不存在");
+            return false;
+        }
+
         $merchantInfo = Merchant::get($orderInfo->mch_id);
-        Log::error(get_current_date() . ' 生成订单60秒后,给用户发短信，订单号为：' . $orderNo);
+        if (!$merchantInfo) {
+            Log::error($orderNo() . " 商户不存在");
+            return false;
+        }
         // 发送一份邮件
         $taskType = MultiTask::EMAIL;
         $data = [
-            'email' => $merchantInfo->email,
-            'title' => "订单号: " . $orderNo,
-            'content' => "让您做一个电商平台，您如何设置一个在买家下订单后的”第60秒“发短信通知卖家发货 " . rand(11111, 999999)
+          'email' => $merchantInfo->email,
+          'title' => "订单号: " . $orderNo,
+          'content' => "让您做一个电商平台，您如何设置一个在买家下订单后的发短信通知卖家发货 " . rand(11111, 999999)
         ];
         $res = multi_task_Queue($taskType, $data);
         if ($res !== false) {
-            Log::error(get_current_date() . ' 短信 Success ');
+            Log::error('用户发短信发送成功');
         } else {
-            Log::error(get_current_date() . ' 短信 Error ');
+            Log::error('用户发短信发送失败');
         }
     }
 
@@ -70,8 +99,7 @@ class RedisSubscribe
      */
     private function orderAutoCancel($orderNo)
     {
-        $orderInfo = Order::where('order_no', '=', $orderNo)->find();
-        Log::error(get_current_date() . ' 11订单信息:' . $orderNo);
-        Log::error(get_current_date() . ' 22订单信息:' . json_encode($orderInfo));
+        //$orderInfo = Order::where('order_no', '=', $orderNo)->find();
+        Log::error('自动取消订单号:' . $orderNo);
     }
 }

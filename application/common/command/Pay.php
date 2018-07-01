@@ -15,15 +15,29 @@
 
 namespace app\common\command;
 
+use app\pay\controller\OrderController;
 use app\pay\service\AccountsService;
 use app\pay\service\RedisSubscribe;
 use think\console\Command;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\Output;
+use think\facade\Log;
 
 class Pay extends Command
 {
+    // 清算服务
+    const TYPE_CLEARING = 'clearing';
+
+    // 结算服务
+    const TYPE_SETTLEMENT = 'settlement';
+
+    // 发布订阅任务
+    const TYPE_ORDER_SUBSCRIBE = 'orderSubscribe';
+
+    // 订单延迟消息
+    const TYPE_ORDER_DELAY_MESSAGE = 'orderDelayMessage';
+
     // 配置指令
     public function configure()
     {
@@ -36,15 +50,21 @@ class Pay extends Command
     public function execute(Input $input, Output $output)
     {
         $type = $input->getArgument('type');
-        if ($type == "clearing") {
-            // 清算服务
-            $this->accountClearing();
-        } elseif ($type == 'settlement') {
-            // 结算服务
-            $this->accountSettlement();
-        }elseif ($type == 'psubscribe') {
-            // 发布订阅任务
-            $this->psubscribe();
+        switch ($type) {
+            case static::TYPE_CLEARING: // 清算服务
+                $this->accountClearing();
+                break;
+            case static::TYPE_SETTLEMENT: // 结算服务
+                $this->accountSettlement();
+                break;
+            case static::TYPE_ORDER_SUBSCRIBE: // 发布订阅任务
+                $this->orderSubscribe();
+                break;
+            case static::TYPE_ORDER_DELAY_MESSAGE: // 订单延迟消息
+                $this->orderDelayMessage();
+                break;
+            default:
+                Log::error('未知的执行指令' . $type);
         }
     }
 
@@ -70,11 +90,22 @@ class Pay extends Command
     }
 
     /**
-     * Redis 发布订阅模式
+     * 通过 Redis 发布订阅模式实现 延时任务
+     * key设置规范: type   : orderId : dealyTime
+     *            业务类型 :  订单ID : 延迟时间 (eg：PAY:S120012018040414374458006:10)
      */
-    private function psubscribe()
+    private function orderSubscribe()
     {
         $service = new RedisSubscribe();
-        $service->sub();
+        $service->orderDelayMessage();
+    }
+
+    /**
+     * 通过 Redis 有序集合实现延时任务
+     */
+    private function orderDelayMessage()
+    {
+        $order = new OrderController();
+        $order->messageTest();
     }
 }

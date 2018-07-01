@@ -1,6 +1,3 @@
-学习Notes
-===============
-
 ## 功能列表
 - [x] 如何使用命令行（带参数）
 - [x] 如何使用多任务队列（如：发送邮件）
@@ -27,11 +24,15 @@
    * 免费socketlog-server服务：`slog.tinywan.com`        
 - [x] 如何实现数据库自定义自增字段实现,方法：`get_next_id($model = 'order', $increase = 1)`,新增数据表`_sequence_order`  
 - [x] 通过命令行自动每日凌晨进行`账户金额清算`和`账户金额结算`  
-- [x] 分布式之延时任务，生成订单60秒后，给用户发短信。
-    * 修改Redis配置文件，开启`键空间通知`,重启Redis服务   
-    * 执行多任务队列`php think queue:work --daemon --queue multiTaskQueue`(发送短信)   
-    * 使用命令行开启订阅模式`php think pay psubscribe`（阻塞模式），Linux 守护进程。  
-    * 设置订单有效期`setex S120012018033017194343904 3 value001`   
+- [x] [分布式之延时任务方案解析](https://www.cnblogs.com/rjzheng/p/8972725.html)
+    * 生成订单60秒后，给用户发短信
+        * 修改Redis配置文件，开启`键空间通知`,重启Redis服务   
+        * 执行多任务队列`php think queue:work --daemon --queue multiTaskQueue`(发送短信)   
+        * 使用命令行开启订阅模式`php think pay psubscribe`（阻塞模式），Linux 守护进程。  
+        * 设置订单有效期`setex S120012018033017194343904 3 value001`   
+    * 延迟订单删除操作        
+        * 通过`有序集合(sorted set)` 实现          
+        * 通过`有序集合(sorted set)` 实现          
 - [ ] `支付异步`和`提现异步`以及`转账异步`回调如何通过分布式队列去完成   
 - [ ] Swoole 接入  
 
