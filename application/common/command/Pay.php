@@ -106,6 +106,7 @@ class Pay extends Command
     private function orderDelayMessage()
     {
         $order = new OrderController();
-        $order->messageTest();
+        $order->consumerDelayMessage();
+        //$order->messageTest();
     }
 }

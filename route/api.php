@@ -14,6 +14,8 @@ use \think\facade\Route;
 Route::get("api/:version/token/get","api/:version.Token/getToken");
 Route::get("api/:version/token/user","api/:version.Token/getUser");
 
+Route::get("api/:version/test/index","api/auth.:version.Test/index");
+
 /**
  * 支付接口
  */
