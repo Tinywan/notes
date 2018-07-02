@@ -15,6 +15,7 @@
 
 namespace app\common\command;
 
+use app\index\controller\NsqController;
 use app\pay\controller\OrderController;
 use app\pay\service\AccountsService;
 use app\pay\service\RedisSubscribe;
@@ -38,12 +39,14 @@ class Pay extends Command
     // 订单延迟消息
     const TYPE_ORDER_DELAY_MESSAGE = 'orderDelayMessage';
 
+    const NSQ_SUB_MESSAGE = 'nsq';
+
     // 配置指令
     public function configure()
     {
         $this->setName('pay')
-          ->addArgument('type', Argument::REQUIRED, "the type of the task that pay needs to run")
-          ->setDescription('this is payment system command line tools');
+            ->addArgument('type', Argument::REQUIRED, "the type of the task that pay needs to run")
+            ->setDescription('this is payment system command line tools');
     }
 
     // 执行指令
@@ -62,6 +65,9 @@ class Pay extends Command
                 break;
             case static::TYPE_ORDER_DELAY_MESSAGE: // 订单延迟消息
                 $this->orderDelayMessage();
+                break;
+            case static::NSQ_SUB_MESSAGE: // 订单延迟消息
+                $this->nsqSubMessage();
                 break;
             default:
                 Log::error('未知的执行指令' . $type);
@@ -108,5 +114,14 @@ class Pay extends Command
         $order = new OrderController();
         $order->consumerDelayMessage();
         //$order->messageTest();
+    }
+
+    /**
+     * Nsq
+     */
+    public function nsqSubMessage()
+    {
+        $nsq = new NsqController();
+        $nsq->nsqSubMessage();
     }
 }
