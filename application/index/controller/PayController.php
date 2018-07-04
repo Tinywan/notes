@@ -13,6 +13,7 @@ namespace app\index\controller;
 
 
 use think\Controller;
+use think\facade\Log;
 use Yansongda\Pay\Pay;
 
 class PayController extends Controller
@@ -21,9 +22,10 @@ class PayController extends Controller
     {
         $order = [
           'out_trade_no' => rand(11111,99999).time(),
-          'total_amount' => '0.01',
+          'total_amount' => rand(11,99),
           'subject' => '商品测试001',
         ];
+        Log::error('-----------'.json_encode($order));
         $alipay = Pay::alipay(config('pay.alipay'))->web($order);
         return $alipay->send();
     }

@@ -12,6 +12,7 @@ namespace app\index\controller;
 
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
+use Medz\IdentityCard\China\Identity;
 use redis\BaseRedis;
 use think\facade\Config;
 use think\facade\Log;

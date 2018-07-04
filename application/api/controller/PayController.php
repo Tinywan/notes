@@ -8,10 +8,10 @@
  * |  Mail: Overcome.wan@Gmail.com
  * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
+
 namespace app\api\controller;
 
 use app\common\library\enum\OrderStatusEnum;
-use app\common\model\Order;
 use think\Db;
 use think\Exception;
 use think\facade\Log;
@@ -21,11 +21,17 @@ use app\common\model\WxOrder as WxOrderModel;
 
 class PayController
 {
+    // 订单延迟key
+    const ORDER_DELAY_KEY = 'QUEUES:DELAY:ORDER';
+
+    // 支付异步key
+    const PAY_NOTICE_KEY = 'QUEUES:PAY:NOTICE';
+
     // 同步结果 Get 方式
-    public function returnUrl(Request $request)
+    public function returnUrl()
     {
-        $getData = $request->param();
-        Log::error(get_current_date(). '-支付宝同步结果-' . json_encode($getData));
+        $getData = Request::param();
+        Log::error(get_current_date() . '-支付宝同步结果-' . json_encode($getData));
         $aliPay = Pay::alipay(config('pay.alipay'));
         try {
             $data = $aliPay->verify($getData);
@@ -36,12 +42,29 @@ class PayController
         // 签名验证无异常
         if (!empty($data)) {
             echo '同步结果 success';
+            $redis = location_redis();
+            $millisecond = get_millisecond();
+            $redis->zAdd(self::ORDER_DELAY_KEY, $millisecond, json_encode($getData));
             halt($data);
         }
     }
 
+    // 异步通知 消息队列
+    public function notifyUrl()
+    {
+        Log::error(get_current_date() . '-支付宝异步通知数据-1' . json_encode($_POST));
+        if (Request::isPost()) {
+            $redis = location_redis();
+            $postData = Request::param();
+            Log::error(get_current_date() . '-支付宝异步通知数据-2' . json_encode($postData));
+            //延迟3秒
+            $millisecond = get_millisecond();
+            $redis->zAdd(self::ORDER_DELAY_KEY, $millisecond, json_encode($postData));
+        }
+    }
+
     // 异步通知 POST
-    public function notifyUrl(Request $request)
+    public function notifyQueuesUrl(Request $request)
     {
         // 第一步： 在通知返回参数列表中，除去sign、sign_type两个参数外，凡是通知返回回来的参数皆是待验签的参数。
         // 第二步： 将剩下参数进行url_decode, 然后进行字典排序，组成字符串，得到待签名字符串：
@@ -87,7 +110,7 @@ class PayController
             if ($data['trade_status'] == "TRADE_SUCCESS") {
                 // 启动事务
                 Db::startTrans();
-                try{
+                try {
                     if ($orderInfo['status'] == 1) {
                         $orderUpdate['id'] = $orderInfo->id;
                         $orderUpdate['status'] = OrderStatusEnum::PAID;
@@ -98,7 +121,7 @@ class PayController
                     //更新订单状态
                     Db::name('wx_order')->update($orderUpdate);
                     Db::commit();
-                }catch (Exception $e){
+                } catch (Exception $e) {
                     Db::rollback();
                     Log::error("订单状态更新异常" . $e->getMessage());
                     throw $e;

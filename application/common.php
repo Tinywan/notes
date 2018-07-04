@@ -8,11 +8,12 @@
  */
 function get_next_id($model = 'order', $increase = 1)
 {
-    \think\Db::execute("update _sequence_".$model." set value = last_insert_id(value + $increase)");
+    \think\Db::execute("update _sequence_" . $model . " set value = last_insert_id(value + $increase)");
     $id = \think\Db::getLastInsID();
     return $id;
     //return sprintf('L%05d', $id);
 }
+
 // 应用公共文件
 
 function curl_request($url, $post = '', $cookie = '', $returnCookie = 0)
@@ -90,13 +91,13 @@ function send_email_qq($address, $subject, $content)
             if (false === filter_var($address, FILTER_VALIDATE_EMAIL)) {
                 return ["errorCode" => 1, "msg" => '邮箱格式错误'];
             }
-            $phpmailer->AddAddress($addressv, $address.'的['.$subject.']');
+            $phpmailer->AddAddress($addressv, $address . '的[' . $subject . ']');
         }
     } else {
         if (false === filter_var($address, FILTER_VALIDATE_EMAIL)) {
             return ["errorCode" => 1, "msg" => '邮箱格式错误'];
         }
-        $phpmailer->AddAddress($address, $address.'的['.$subject.']');
+        $phpmailer->AddAddress($address, $address . '的[' . $subject . ']');
     }
     $phpmailer->Subject = $subject;
     $phpmailer->Body = $content;
@@ -114,8 +115,7 @@ function send_email_qq($address, $subject, $content)
  */
 function multi_task_Queue($taskType, $data)
 {
-    if (empty($taskType) || !is_numeric($taskType) || empty($data))
-    {
+    if (empty($taskType) || !is_numeric($taskType) || empty($data)) {
         return ["errorCode" => 10002, "msg" => '请求参数错误'];
     }
     switch ($taskType) {
@@ -142,7 +142,8 @@ function multi_task_Queue($taskType, $data)
  * 获取后台用户登录信息
  * @return mixed
  */
-function get_admin_info(){
+function get_admin_info()
+{
     return \think\facade\Session::get('admin_info');
 }
 
@@ -151,10 +152,11 @@ function get_admin_info(){
  * @param $str
  * @return string
  */
-function tf_to_xhx($str){
-    return trim(preg_replace_callback('/([A-Z]{1})/',function($matches){
-        return '_'.strtolower($matches[0]);
-    },$str), '_');
+function tf_to_xhx($str)
+{
+    return trim(preg_replace_callback('/([A-Z]{1})/', function ($matches) {
+        return '_' . strtolower($matches[0]);
+    }, $str), '_');
 }
 
 // 格式化时间戳
@@ -182,10 +184,10 @@ function responseJson($success, $code = 0, $message = '', $data = [])
     }
 
     $result = [
-        'success' => $success,
-        'message' => $message,
-        'code' => $code,
-        'data' => $data,
+      'success' => $success,
+      'message' => $message,
+      'code' => $code,
+      'data' => $data,
     ];
     \think\facade\Log::info('前台输出：' . json_encode($result));
 
@@ -208,12 +210,12 @@ function add_operateLogs($remark, $type = 'admin')
     }
 
     $data = [
-        'uid' => $user['id'],
-        'remark' => $remark,
-        'ip' => request()->ip(),
-        'created_at' => date('Y-m-d H:i:s', time()),
-        'type' => 1,
-        'content' => json_encode(request()->param())
+      'uid' => $user['id'],
+      'remark' => $remark,
+      'ip' => request()->ip(),
+      'created_at' => date('Y-m-d H:i:s', time()),
+      'type' => 1,
+      'content' => json_encode(request()->param())
     ];
 
     if ($type == 'admin') {
@@ -231,9 +233,10 @@ function add_operateLogs($remark, $type = 'admin')
  * @param string $role
  * @return bool
  */
-function check_role($role = ''){
+function check_role($role = '')
+{
     $admin_info = get_admin_info();
-    if ($admin_info['id'] == 1){
+    if ($admin_info['id'] == 1) {
         return true;
     }
     $auth = new Auth();
@@ -250,18 +253,17 @@ function get_salt($length = 8)
 {
     // 密码字符集，可任意添加你需要的字符
     $chars = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
-      'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's',
-      't', 'u', 'v', 'w', 'x', 'y','z', 'A', 'B', 'C', 'D',
-      'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M', 'N', 'O',
-      'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y','Z',
+      'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+      't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
+      'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+      'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
       '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!',
-      '@','#', '$', '%', '^', '&', '*', '(', ')', '-', '_',
-      '[', ']', '{','}', '<', '>', '~', '`', '+', '=', ',',
+      '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_',
+      '[', ']', '{', '}', '<', '>', '~', '`', '+', '=', ',',
       '.', ';', ':', '/', '?', '|');
     $keys = array_rand($chars, $length);
     $password = '';
-    for($i = 0; $i < $length; $i++)
-    {
+    for ($i = 0; $i < $length; $i++) {
         // 将 $length 个数组元素连接成字符串
         $password .= $chars[$keys[$i]];
     }
@@ -277,4 +279,15 @@ function location_redis()
 function message_redis()
 {
     return \redis\BaseRedis::message();
+}
+
+/**
+ * 获取毫秒数
+ * @return float
+ */
+function get_millisecond()
+{
+    list($msec, $sec) = explode(' ', microtime());
+    $millisecond = (float)sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000);
+    return $millisecond;
 }
