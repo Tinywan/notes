@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "127f2d2f3466f12eb761784893ea91c8",
+    "content-hash": "a1f151360d7256106df0a3bbaec8f8c0",
     "packages": [
         {
             "name": "erusev/parsedown",
@@ -232,6 +232,98 @@
                 "url"
             ],
             "time": "2017-03-20T17:10:46+00:00"
+        },
+        {
+            "name": "medz/gb-t-2260",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/medz/gb-t-2260.git",
+                "reference": "2ca11429d83a85843f7ab8c6eb3efc978dc8202b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/medz/gb-t-2260/2ca11429d83a85843f7ab8c6eb3efc978dc8202b.zip",
+                "reference": "2ca11429d83a85843f7ab8c6eb3efc978dc8202b",
+                "shasum": ""
+            },
+            "bin": [
+                "scripts/raw-build.php"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "php/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Seven Du",
+                    "email": "shiweidu@outlook.com",
+                    "homepage": "https://github.com/medz",
+                    "role": "The tool source developer"
+                }
+            ],
+            "description": "中华人民共和国国家标准 GB/T 2260 行政区划代码",
+            "homepage": "https://github.com/medz/gb-t-2260",
+            "keywords": [
+                "2260",
+                "China",
+                "GB",
+                "GB-T",
+                "GB-T 2260"
+            ],
+            "time": "2018-05-26T11:08:07+00:00"
+        },
+        {
+            "name": "medz/id-card-of-china",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/medz/id-card-of-china.git",
+                "reference": "b916ff3d1946f7e6229ed0995571a630c0bfd1d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/medz/id-card-of-china/b916ff3d1946f7e6229ed0995571a630c0bfd1d3.zip",
+                "reference": "b916ff3d1946f7e6229ed0995571a630c0bfd1d3",
+                "shasum": ""
+            },
+            "require": {
+                "medz/gb-t-2260": "^1.0",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Medz\\IdentityCard\\China\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Seven Du",
+                    "email": "shiweidu@outlook.com"
+                }
+            ],
+            "description": "中华人民共和国身份证（The identity card of the people's Republic of China）",
+            "keywords": [
+                "China",
+                "card",
+                "id",
+                "identity"
+            ],
+            "time": "2018-05-27T09:42:45+00:00"
         },
         {
             "name": "monolog/monolog",

@@ -23,61 +23,7 @@ class MultiTask
     const MSG = 3; // 消息
 
     /**
-     * Mysql 数据库
-     * @param Job $job
-     * @param $data
-     */
-    public function add(Job $job, $data)
-    {
-        $isDone = $this->_add($data);
-        if ($isDone) {
-            $job->delete();
-            print(__METHOD__ . " Job MultiTask " . "\n");
-        } else {
-            $attempts = $job->attempts();
-            switch ($attempts) {
-                case 1: // 重新发布任务,该任务延迟2秒后再执行
-                    $job->release(2);
-                    break;
-                case 2:
-                    $job->release(10);
-                    break;
-                default:
-                    $job->delete();
-            }
-        }
-    }
-
-    /**
-     * 更新
-     * @param Job $job
-     * @param $data
-     */
-    public function update(Job $job, $data)
-    {
-        $isDone = $this->_update($data);
-        if ($isDone) {
-            $job->delete();
-        } else {
-            if ($job->attempts() > 2) {
-                $job->release();
-            }
-        }
-    }
-
-    /**
-     * 删除
-     * @param Job $job
-     * @param $data
-     */
-    public function delete(Job $job, $data)
-    {
-        $this->_delete($data);
-        $job->delete();
-    }
-
-    /**
-     * sendSms
+     * 发送短信
      * @param Job $job
      * @param $data 数据格式
        $data = [
@@ -121,44 +67,15 @@ class MultiTask
         }
     }
 
+    /**
+     * 发送消息
+     * @param Job $job
+     * @param $data
+     */
     public function sendMsg(Job $job, $data)
     {
         $this->_sendSms($data);
         $job->delete();
-    }
-
-    /**
-     * _add 操作
-     * @param $data
-     * @return bool
-     */
-    private function _add($data)
-    {
-        try {
-            $result = Db::name('resty_wx_user1')->insert($data);
-            if ($result) return true;
-            return false;
-        } catch (Exception $e) {
-            Log::error(__CLASS__ . __METHOD__ . json_encode($e->getMessage()));
-        }
-        return false;
-    }
-
-    /**
-     * _update
-     * @param $data
-     * @return bool
-     */
-    private function _update($data)
-    {
-        try {
-            $result = Db::name('resty_wx_user1')->update($data);
-            if ($result) return true;
-            return false;
-        } catch (Exception $e) {
-            Log::error(__CLASS__ . __METHOD__ . json_encode($e->getMessage()));
-        }
-        return false;
     }
 
     /**
@@ -211,6 +128,95 @@ class MultiTask
     {
         $res = send_email_qq($data['email'], $data['title'], $data['content']);
         if (isset($res['errorCode']) && ($res['errorCode'] == 0)) return true;
+        return false;
+    }
+
+    /**
+     * ================================================Mysql 数据库=============================================
+     * @param Job $job
+     * @param $data
+     */
+    public function add(Job $job, $data)
+    {
+        $isDone = $this->_add($data);
+        if ($isDone) {
+            $job->delete();
+            print(__METHOD__ . " Job MultiTask " . "\n");
+        } else {
+            $attempts = $job->attempts();
+            switch ($attempts) {
+                case 1: // 重新发布任务,该任务延迟2秒后再执行
+                    $job->release(2);
+                    break;
+                case 2:
+                    $job->release(10);
+                    break;
+                default:
+                    $job->delete();
+            }
+        }
+    }
+
+    /**
+     * 更新
+     * @param Job $job
+     * @param $data
+     */
+    public function update(Job $job, $data)
+    {
+        $isDone = $this->_update($data);
+        if ($isDone) {
+            $job->delete();
+        } else {
+            if ($job->attempts() > 2) {
+                $job->release();
+            }
+        }
+    }
+
+    /**
+     * 删除
+     * @param Job $job
+     * @param $data
+     */
+    public function delete(Job $job, $data)
+    {
+        $this->_delete($data);
+        $job->delete();
+    }
+
+
+    /**
+     * _add 操作
+     * @param $data
+     * @return bool
+     */
+    private function _add($data)
+    {
+        try {
+            $result = Db::name('resty_wx_user1')->insert($data);
+            if ($result) return true;
+            return false;
+        } catch (Exception $e) {
+            Log::error(__CLASS__ . __METHOD__ . json_encode($e->getMessage()));
+        }
+        return false;
+    }
+
+    /**
+     * _update
+     * @param $data
+     * @return bool
+     */
+    private function _update($data)
+    {
+        try {
+            $result = Db::name('resty_wx_user1')->update($data);
+            if ($result) return true;
+            return false;
+        } catch (Exception $e) {
+            Log::error(__CLASS__ . __METHOD__ . json_encode($e->getMessage()));
+        }
         return false;
     }
 
