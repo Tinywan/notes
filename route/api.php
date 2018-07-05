@@ -13,11 +13,17 @@ use \think\facade\Route;
 
 Route::get("api/:version/token/get","api/:version.Token/getToken");
 Route::get("api/:version/token/user","api/:version.Token/getUser");
-
 Route::get("api/:version/test/index","api/auth.:version.Test/index");
 
 /**
- * 支付接口
+ * +----------------------------------------------------------------------支付接口
  */
-Route::get("api/notify","api/Pay/notifyUrl");
-Route::get("api/return","api/Pay/returnUrl");
+
+// 网关 http://openapi.tinywan.com/v1/gateway.do
+Route::get(":version/gateway.do","api/:version.Gateway/payDo");
+
+// 回调 http://openapi.tinywan.com/api/v1/return
+Route::rule("api/:version/return","api/:version.Gateway/returnUrl");
+
+// 这里配置路由一定是post呀，坑啊
+Route::rule("api/:version/notify","api/:version.Gateway/notifyUrl");

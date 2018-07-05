@@ -4,15 +4,14 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/6/21 21:43
+ * |  DateTime: 2018/7/5 18:02
  * |  Mail: Overcome.wan@Gmail.com
  * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\api\service;
-
-
-class Pay
-{
-
-}
+return [
+    //支付渠道路由
+    'payment_channel_route' => [
+        'alipay' => \app\api\channel\AliPay::class,
+    ],
+];

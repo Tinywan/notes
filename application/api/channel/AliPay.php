@@ -4,15 +4,17 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/6/12 10:23
+ * |  DateTime: 2018/7/5 18:04
  * |  Mail: Overcome.wan@Gmail.com
  * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\api\controller\v1;
+namespace app\api\channel;
 
-
-class Pay
+class AliPay
 {
-
+    public function gateWay()
+    {
+        return __METHOD__;
+    }
 }

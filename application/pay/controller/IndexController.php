@@ -11,21 +11,20 @@
 namespace app\pay\controller;
 
 use app\common\controller\BasePayController;
-use think\Db;
 use think\facade\Log;
+use Yansongda\Pay\Pay;
 
 class IndexController extends BasePayController
 {
     public function index()
     {
-        Log::error('1'.__METHOD__);
-        return "Hi ".__METHOD__;
-    }
-
-    public function sql()
-    {
-        $res = Db::name('order')->count();
-        Log::debug(get_current_date().' SQL '.$res);
-        return "Hi ".__METHOD__;
+        $order = [
+            'out_trade_no' => rand(11111,99999).time(),
+            'total_amount' => rand(11,99),
+            'subject' => '商品测试001'.rand(11111111,888888888888),
+        ];
+        Log::error('-----------'.json_encode($order));
+        $alipay = Pay::alipay(config('pay.alipay'))->web($order);
+        return $alipay->send();
     }
 }

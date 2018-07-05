@@ -21,12 +21,13 @@ namespace app\api\controller\v1;
 // chat_histories 聊天历史会员，暂未实现。
 
 use app\api\service\UserService;
+use app\common\controller\BaseApiController;
 use GatewayClient\Gateway;
 use think\Db;
 use think\Exception;
 use think\facade\Request;
 
-class ChatController
+class ChatController extends BaseApiController
 {
     // 用户信息
     public $user;

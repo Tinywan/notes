@@ -17,7 +17,8 @@
 - [x] 读取 Excel 上传文件后批量导入MySQL数据库 
 - [x] 使用[Parsedown](https://github.com/erusev/parsedown)扩展`Markdown`转换为html文件显示  
 - [x] 模型闭包更新数据，更高级的使用    
-- [x] 支付宝沙箱模式支付（无需商户账号） 
+- [x] 支付宝沙箱模式支付（无需商户账号）
+  > 配置路由请注意，异步回调为`post`，`Route::post("api/:version/notify")` 
 - [x] 自定义日志  
    * 自定义日志目录（模块独立配置），项目根目录`/logs`     
    * `Index`模块支持远程Socket调试日志打印到浏览器的console中        
