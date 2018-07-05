@@ -18,12 +18,6 @@ use think\facade\Request;
 
 class GatewayController extends BaseApiController
 {
-    // 订单延迟key
-    const ORDER_DELAY_KEY = 'QUEUES:DELAY:ORDER';
-
-    // 支付异步key
-    const PAY_NOTICE_KEY = 'QUEUES:PAY:NOTICE';
-
     public function payDo()
     {
         // 1、签证 - 创建支付订单
@@ -35,13 +29,14 @@ class GatewayController extends BaseApiController
      * 同步通知
      * @return string
      */
-    public function returnUrl()
+    public function returnUrl(PayService $payService)
     {
-        if (Request::isGet()) {
-            $getData = Request::param();
-            Log::error(get_current_date() . '-同步结果-' . json_encode($getData));
-            return __METHOD__;
+        $result = $payService->returnUrl();
+        if (!$result) {
+            $error = $payService->getError();
+            Log::error(get_current_date() . ' 网关接口异步通知处理失败，错误原因: ' . json_encode($error));
         }
+        return "支付成功";
     }
 
     /**
@@ -51,9 +46,11 @@ class GatewayController extends BaseApiController
     public function notifyUrl(PayService $payService)
     {
         $result = $payService->notifyUrl();
-        if(!$result){
-            Log::error('异步通知处理失败'.json_encode());
+        if (!$result) {
+            $error = $payService->getError();
+            Log::error(get_current_date() . ' 网关接口异步通知处理失败，错误原因: ' . json_encode($error));
         }
+        Log::debug(get_current_date() . ' 网关接口异步通知处理成功 ');
         return $result;
     }
 
