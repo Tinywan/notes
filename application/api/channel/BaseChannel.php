@@ -25,7 +25,6 @@ class BaseChannel
       'data' => []
     ];
 
-
     /**
      * 设置返回消息
      * @param $success

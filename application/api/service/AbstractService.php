@@ -32,7 +32,7 @@ abstract class AbstractService
      * @param $data
      * @return mixed
      */
-    public function setError($success, $msg, $errorCode = 0, $data)
+    public function setError($success, $msg, $errorCode = 0, array $data = [])
     {
         $this->error = [
             'success' => $success,
@@ -50,5 +50,18 @@ abstract class AbstractService
     public function getError()
     {
         return $this->error;
+    }
+
+    protected function returnData($success, $code, $message = '', $data = [])
+    {
+        if (!empty($data['channel_order_no'])) {
+            unset($data['channel_order_no']);
+        }
+        return [
+            'success' => $success,
+            'code' => $code,
+            'message' => $message,
+            'data' => $data
+        ];
     }
 }

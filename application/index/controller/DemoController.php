@@ -15,7 +15,9 @@ use app\common\queue\Worker;
 use Medz\IdentityCard\China\Identity;
 use redis\BaseRedis;
 use think\facade\Config;
+use think\facade\Env;
 use think\facade\Log;
+use think\helper\Time;
 use think\Queue;
 
 class DemoController
@@ -56,6 +58,26 @@ class DemoController
     {
         $res = send_email_qq('756684177@qq.com', 'test', 'content');
         var_dump($res);
+    }
+
+    public function fastCgi()
+    {
+        echo "program start...\r\n";
+        $file = Env::get('ROOT_PATH') . '/logs/aliPay.log';
+        file_put_contents($file,'start-time:'.get_current_date()."\r\n",FILE_APPEND);
+        fastcgi_finish_request();
+
+        sleep(1);
+        echo 'debug...'."\r\n";
+        file_put_contents($file, 'start-proceed:'.date('Y-m-d H:i:s')."\r\n", FILE_APPEND);
+
+        sleep(10);
+        file_put_contents($file, 'end-time:'.date('Y-m-d H:i:s')."\r\n", FILE_APPEND);
+    }
+
+    public function timeTest()
+    {
+        halt(Time::yesterday());
     }
 
 }

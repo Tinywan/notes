@@ -13,16 +13,42 @@ namespace app\api\controller\v1;
 
 use app\api\service\PayService;
 use app\common\controller\BaseApiController;
+use think\facade\App;
 use think\facade\Log;
-use think\facade\Request;
 
 class GatewayController extends BaseApiController
 {
+    // 接口列表
+    const API_LIST = [
+        'pay.trade.gateWay' => [PayService::class, 'gateWay'],
+        'pay.trade.unPayWap' => [PayService::class, 'unPayWap'],
+        'pay.trade.unQuickpay' => [PayService::class, 'unQuickpay'],
+    ];
+
+    /**
+     * 支付网关
+     * @return string
+     */
     public function payDo()
     {
-        // 1、签证 - 创建支付订单
-        // 1、接口适配
-        return __METHOD__;
+        // 1、公共参数验证
+        $post = $this->request->post();
+        Log::debug('公共参数验证------------' . json_encode($post));
+        $data = [
+            'mch_id' => $post['mch_id'],
+            'method' => $post['method'],
+            'version' => $post['version'],
+            'timestamp' => $post['timestamp'],
+            'content' => $post['content'],
+            'sign' => $post['sign'],
+        ];
+        // 2、支付路由
+        $routeControl = App::invokeClass(static::API_LIST[$data['method'][0]]);
+        $routeAction = static::API_LIST[$data['method'][1]];
+        Log::debug('支付路由------------' . json_encode($routeControl));
+        $result = $routeControl->$routeAction($data);
+        Log::debug('支付结果------------' . json_encode($result));
+        return $post;
     }
 
     /**
@@ -35,6 +61,7 @@ class GatewayController extends BaseApiController
         if (!$result) {
             $error = $payService->getError();
             Log::error(get_current_date() . ' 网关接口异步通知处理失败，错误原因: ' . json_encode($error));
+            return json($error);
         }
         return "支付成功";
     }

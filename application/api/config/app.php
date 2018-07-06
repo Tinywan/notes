@@ -14,4 +14,6 @@ return [
     'payment_channel_route' => [
         'alipay' => \app\api\channel\AliPay::class,
     ],
+    // 默认输出类型
+    'default_return_type'   => 'json',
 ];

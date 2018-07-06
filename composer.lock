@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "127f2d2f3466f12eb761784893ea91c8",
+    "content-hash": "363aeec545bb60af1a90498adf14f31c",
     "packages": [
         {
             "name": "erusev/parsedown",
@@ -904,12 +904,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/framework.git",
-                "reference": "833fcaf0f29f23bdceaae655f64d10c18b9bf562"
+                "reference": "97d15c09a1a06d399246de01334436e68691c6ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/top-think/framework/833fcaf0f29f23bdceaae655f64d10c18b9bf562.zip",
-                "reference": "833fcaf0f29f23bdceaae655f64d10c18b9bf562",
+                "url": "https://files.phpcomposer.com/files/top-think/framework/97d15c09a1a06d399246de01334436e68691c6ea.zip",
+                "reference": "97d15c09a1a06d399246de01334436e68691c6ea",
                 "shasum": ""
             },
             "require": {
@@ -947,7 +947,7 @@
                 "orm",
                 "thinkphp"
             ],
-            "time": "2018-07-02T05:29:17+00:00"
+            "time": "2018-06-29T14:48:15+00:00"
         },
         {
             "name": "topthink/think-captcha",

@@ -20,10 +20,10 @@ Route::get("api/:version/test/index","api/auth.:version.Test/index");
  */
 
 // 网关 http://openapi.tinywan.com/v1/gateway.do
-Route::get(":version/gateway.do","api/:version.Gateway/payDo");
+Route::post(":version/gateway.do","api/:version.Gateway/payDo");
 
 // 回调 http://openapi.tinywan.com/api/v1/return
-Route::rule("api/:version/return","api/:version.Gateway/returnUrl");
+Route::get("api/:version/return","api/:version.Gateway/returnUrl");
 
 // 这里配置路由一定是post呀，坑啊
 Route::rule("api/:version/notify","api/:version.Gateway/notifyUrl");

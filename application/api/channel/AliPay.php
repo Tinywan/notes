@@ -20,19 +20,7 @@ class AliPay extends BaseChannel
     public function gateWay()
     {
         // 参数验证
-        $alipay = Pay::alipay(config('pay.alipay'));
-        try {
-            // 第四步 使用RSA的验签方法，通过签名字符串、签名参数（经过base64解码）及支付宝公钥验证签名
-            $res = $alipay->verify($postData);
-            Log::debug(' Alipay notify', $res->all());
-        } catch (Exception $e) {
-            return json([
-              'code' => 500,
-              'msg' => $e->getMessage()
-            ]);
-        }
-        // 加入队列
-        return $alipay->success()->send();
+        return __METHOD__;
     }
 
     /**
@@ -55,9 +43,15 @@ class AliPay extends BaseChannel
     }
 
     /**
-     * 异步通知处理
+     *
      * @param $data
      * @return $this|mixed
+     */
+
+    /**
+     * @param $data
+     * @return $this|mixed
+     * @throws \Yansongda\Pay\Exceptions\InvalidSignException
      */
     public function notify($data)
     {
@@ -71,11 +65,30 @@ class AliPay extends BaseChannel
             return $this->setReturnMsg(false, '[3] 支付签名验证异常 ' . $e->getMessage());
         }
 
+        $result = [
+            'total_fee' => $data['total_amount'],
+            'channel_order_no' => $data['trade_no'],
+            'order_no' => $data['out_trade_no']
+        ];
         // 交易状态 trade_status 成功，具体的业务信息在这里处理
         if ($data['trade_status'] == "TRADE_SUCCESS") {
-            Log::debug(get_current_date() . ' [3] 订单业务逻辑处理完成 ' . json_encode($data));
-            return $alipay->success()->send();
+            Log::debug(get_current_date() . ' [4] 交易支付成功 ' . json_encode($data));
+            $result['status'] = 'success';
+            return $result;
+        } elseif ($data['trade_status'] == "TRADE_CLOSED") {
+            Log::debug(get_current_date() . ' [4] 未付款交易超时关闭，或支付完成后全额退款 ' . json_encode($data));
+            $result['status'] = 'fail';
+            return $result;
+        } elseif ($data['trade_status'] == "WAIT_BUYER_PAY") {
+            Log::debug(get_current_date() . ' [4] 交易创建，等待买家付款 ' . json_encode($data));
+            $result['status'] = 'wait';
+            return $result;
         }
         return $this->setReturnMsg(false, '[3] 未能识别的订单类型或状态 ' . json_encode($data));
+    }
+
+    public function notifySuccess()
+    {
+        return "SUCCESS";
     }
 }

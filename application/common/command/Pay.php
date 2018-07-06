@@ -15,6 +15,7 @@
 
 namespace app\common\command;
 
+use app\index\controller\DemoController;
 use app\index\controller\NsqController;
 use app\pay\controller\OrderController;
 use app\pay\service\AccountsService;
@@ -68,6 +69,9 @@ class Pay extends Command
                 break;
             case static::NSQ_SUB_MESSAGE: // 订单延迟消息
                 $this->nsqSubMessage();
+                break;
+            case 'fastCgi': // fastCgi
+                $this->fastCgi();
                 break;
             default:
                 Log::error('未知的执行指令' . $type);
@@ -124,4 +128,13 @@ class Pay extends Command
         $nsq = new NsqController();
         $nsq->nsqSubMessage();
     }
+
+    // 测试
+    public function fastCgi()
+    {
+        $obj = new DemoController();
+        $obj->fastCgi();
+    }
+
+
 }
