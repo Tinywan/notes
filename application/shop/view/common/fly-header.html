@@ -1,0 +1,64 @@
+<div class="fly-header layui-bg-black">
+    <div class="layui-container">
+        <a class="fly-logo" href="/">
+            <img src="__RES__/images/logo9.png" width="50%" height="50%"  alt="layui">
+        </a>
+        <ul class="layui-nav fly-nav layui-hide-xs">
+            <li class="layui-nav-item">
+                <a href="/"><i class="layui-icon" style="font-size: 30px; color: #f39571;">&#xe756;</i> 火焰图</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/"><i class="layui-icon" style="font-size: 30px; color: #eadc77;">&#xe705;</i> 文档</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/"><i class="layui-icon" style="font-size: 30px; color: #f8f8f8;">&#xe6ed;</i> 视频</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="{:url('business/module_case/index')}"><i class="layui-icon" style="font-size: 30px; color: #2decc0;">&#xe735;</i> 案例</a>
+            </li>
+
+        </ul>
+
+        <ul class="layui-nav fly-nav-user">
+            {if condition="$Think.session.open_user_username"}
+            <!-- 登入后的状态 -->
+            <li class="layui-nav-item">
+                <a class="fly-nav-avatar" href="javascript:;">
+                    <cite class="layui-hide-xs">{$userInfo.account}</cite>
+                    <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：{$userInfo.account}"></i>
+                    <i class="layui-badge fly-badge-vip layui-hide-xs">VIP18</i>
+                    <img src="{$userInfo.avatar}">
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="{:url('business/user/setting')}"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+                    <dd><a href="message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+                    <dd><a href="{:url('business/user/home',['id'=>$userInfo.id])}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
+                    </dd>
+                    <hr style="margin: 5px 0;">
+                    <dd><a href="{:url('business/user/logout')}" style="text-align: center;">退出</a></dd>
+                </dl>
+            </li>
+            {else /}
+            <!-- 未登入的状态 -->
+            <li class="layui-nav-item">
+                <a class="iconfont icon-touxiang layui-hide-xs" href="{:url('business/user/login')}"></a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="{:url('business/user/login')}">登入</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="user/reg.html">注册</a>
+            </li>
+            <li class="layui-nav-item layui-hide-xs">
+                <a href="{:url('frontend/open_auth/github')}"
+                   onclick="layer.msg('正在通过Github登入', {icon:16, shade: 0.1, time:0})" title="Github登入"
+                   class="iconfont icon-github"></a>
+            </li>
+            <li class="layui-nav-item layui-hide-xs">
+                <a href="/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入"
+                   class="iconfont icon-weibo"></a>
+            </li>
+            {/if}
+        </ul>
+    </div>
+</div>

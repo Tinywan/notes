@@ -13,12 +13,12 @@ namespace app\pay\controller;
 use app\api\channel\AliPay;
 use app\api\facade\WeChat;
 use app\api\service\PayService;
-use app\common\controller\BasePayController;
+use app\common\controller\PayController;
 use think\facade\App;
 use think\facade\Log;
 use Yansongda\Pay\Pay;
 
-class IndexController extends BasePayController
+class IndexController extends PayController
 {
     public function index()
     {

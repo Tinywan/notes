@@ -18,27 +18,27 @@ abstract class AbstractService
      * @var array 错误信息
      */
     public $error = [
-        'success' => false,
-        'msg' => '未知错误',
-        'errorCode' => 0,
-        'data' => []
+      'success' => false,
+      'msg' => '未知错误',
+      'errorCode' => 0,
+      'data' => []
     ];
 
     /**
      * 设置错误信息
      * @param $success
      * @param $msg
-     * @param int $code
+     * @param int $errorCode
      * @param $data
      * @return mixed
      */
     public function setError($success, $msg, $errorCode = 0, array $data = [])
     {
         $this->error = [
-            'success' => $success,
-            'msg' => $msg,
-            'errorCode' => $errorCode,
-            'data' => $data
+          'success' => $success,
+          'msg' => $msg,
+          'errorCode' => $errorCode,
+          'data' => $data
         ];
         return $success;
     }
@@ -52,16 +52,21 @@ abstract class AbstractService
         return $this->error;
     }
 
-    protected function returnData($success, $code, $message = '', $data = [])
+    /**
+     * 返回数据
+     * @param $success
+     * @param string $msg
+     * @param int $errorCode
+     * @param array $data
+     * @return array
+     */
+    protected function returnData($success, $msg = '', $errorCode = 0, array $data = [])
     {
-        if (!empty($data['channel_order_no'])) {
-            unset($data['channel_order_no']);
-        }
         return [
-            'success' => $success,
-            'code' => $code,
-            'message' => $message,
-            'data' => $data
+          'success' => $success,
+          'msg' => $msg,
+          'errorCode' => $errorCode,
+          'data' => $data
         ];
     }
 }

@@ -11,157 +11,29 @@
 
 namespace app\api\service;
 
-use think\Db;
-use think\Exception;
-use think\facade\App;
-use think\facade\Log;
-use think\facade\Request;
-use Yansongda\Pay\Pay;
+use app\api\repositories\PayRepository;
 
 class PayService extends AbstractService
 {
-    protected $payService;
+    // 支付渠道实例
+    protected $payChannelRepository;
 
-    public function __construct(PayService $payService)
+    public function __construct(PayRepository $payChannelRepository)
     {
-        $this->payService = $payService;
-    }
-
-    public function gateWay($params, $version)
-    {
-        Log::debug(get_current_date() . ' [2] 支付渠道 ' . json_encode($params));
-        // 2、支付渠道路由
-        $channelName = 'alipay';
-        if ($params['trade_status']) {
-            $channelName = 'alipay';
-        } elseif ($params['trade_wechat']) {
-            $channelName = 'wechat';
-        }
-
-        // 3、实例化渠道类
-        $channelObj = App::invokeClass(config('payment_channel_route')[$channelName]);
-        // 4、渠道类通知是否成功，有返回数据，否则返回 false 设置错误
-
-        // 5、发起支付请求
-        $result = $channelObj->gateWay($params);
-        return $result;
+        $this->payChannelRepository = $payChannelRepository;
     }
 
     /**
-     * 同步回调
-     * @return string
+     * web支付
      */
-    public function returnUrl()
+    public function web($params)
     {
-        $getData = Request::param();
-        Log::debug(get_current_date() . ' [1] 支付同步结果 ' . json_encode($getData));
-        // 1、支付渠道判断
-        return true;
-    }
-
-    /**
-     * 异步回调
-     * @return bool|mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function notifyUrl()
-    {
-        // 1、公共的数据处理
-        $postStr = Request::getInput();
-        Log::debug(get_current_date() . ' [1] 支付异步消息 ' . json_encode($postStr));
-        $tmpArr = explode('&', $postStr);
-        $postData = [];
-        foreach ($tmpArr as $value) {
-            $tmp = explode('=', $value);
-            $postData[$tmp[0]] = $tmp[1];
-        }
-
-        // 2、支付渠道路由
-        $channelName = 'alipay';
-        if ($postData['trade_status']) {
-            $channelName = 'alipay';
-        } elseif ($postData['trade_wechat']) {
-            $channelName = 'wechat';
-        }
-
-        Log::debug(get_current_date() . ' [2] 支付渠道 ' . $channelName);
-
-        // 3、实例化渠道类
-        $channelObj = App::invokeClass(config('payment_channel_route')[$channelName]);
-
-        // 4、渠道类通知是否成功，有返回数据，否则返回 false 设置错误
-        $result = $channelObj->notify($postData);
-        if (!$result) {
-            $channelError = $channelObj->getReturnMsg();
-            return $this->setError(false, $channelError['msg'], $channelError['code']);
-        }
-
-        // 5、订单处理
-        $orderNo = $result['order_no'];
-        $handleRes = $this->payNotifyHandle($channelName, $result);
-        if (!$handleRes) {
-            return false;
-        }
-        // 返回对应第三方渠道的内容，如：success
-        return $channelObj->notifySuccess();
-    }
-
-    /**
-     * 支付异步处理
-     * @param $channelName
-     * @param $result
-     * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function payNotifyHandle($channelName, $result)
-    {
-        // 1、订单验证
-        $order_no = $result['order_no'];
-        Log::debug(get_current_date() . ' 开始订单处理 ' . $order_no);
-        Db::startTrans();
-        $orderInfo = Db::name('order')->where(['order_no' => $order_no])->lock(true)->find();
-        if (empty($orderInfo)) {
-            Db::rollback();
-            return $this->setError(false, $order_no . '订单未找到');
-        }
-        Db::commit();
-
-        // 2、支付金额验证
-        if ($orderInfo['total_fee'] != $result['total_fee']) {
-            return $this->setError(false, '订单金额与发起支付金额不一致');
-        }
-
-        // 3、未支付
-        if ($orderInfo['status'] == 0) {
-            // 4、根据支付渠道结果更新订单
-            $orderUpdate = [];
-            if ($result['status'] == 'success') {
-                $orderUpdate['status'] = 1;
-                $orderUpdate['pay_time'] = time();
-            } elseif ($result['status'] == 'fail') {
-                $orderUpdate['status'] = -1;
-                $orderUpdate['pay_time'] = time();
-            } elseif ($result['status'] == 'wait') {
-                return $this->setError(false, '等待支付中');
-            } else {
-                return $this->setError(false, '支付渠道未知状态');
-            }
-
-            // 5、修改用户账户
-            try {
-                // 6、更新订单状态
-                Db::name('order')->where(['id' => $orderInfo['id']])->update($orderUpdate);
-            } catch (Exception $e) {
-                Db::rollback();
-                Log::error('系统异常=》' . $e->getMessage() . '|' . $e->getTraceAsString());
-                return $this->setError(false, '数据库修改系统异常');
-            }
-            Db::commit();
-            return $this->setError(true, '处理成功');
+        $result = $this->payChannelRepository->pay(__FUNCTION__,$params);
+        if ($result) {
+            return $this->returnData(true, '订单创建成功！', 0, $result);
+        } else {
+            $error = $this->payChannelRepository->getError();
+            return $this->returnData(false, $error['errorCode'], $error['msg'], $error['data']);
         }
     }
 

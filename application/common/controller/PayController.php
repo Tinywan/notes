@@ -1,5 +1,4 @@
 <?php
-
 /**.-------------------------------------------------------------------------------------------------------------------
  * |  Github: https://github.com/Tinywan
  * |  Blog: http://www.cnblogs.com/Tinywan
@@ -7,30 +6,24 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2018/6/3 21:11
  * |  Mail: Overcome.wan@Gmail.com
- * |  Desc: 描述信息
+ * |  Desc: 支付基类控制器
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\api\controller\v1;
+namespace app\common\controller;
 
-use app\api\service\UserService;
-use app\common\controller\BaseApiController;
+use think\App;
+use think\Controller;
 
-class TokenController extends BaseApiController
+class PayController extends Controller
 {
-  /**
-   * 获取接口令牌
-   * origin:  http://tp51.env/api/v1.token/getToken
-   * route: http://tp51.env/api/v1/token/user
-   * @param string $code
-   * @return string
-   */
-    public function getToken($code = '123456')
-    {
-       return $code;
-    }
+    // 订单延迟key
+    const ORDER_DELAY_KEY = 'QUEUES:DELAY:ORDER';
 
-    public function getUser($code = '123456')
+    // 支付异步key
+    const PAY_NOTICE_KEY = 'QUEUES:PAY:NOTICE';
+
+    public function __construct(App $app = null)
     {
-        var_dump(UserService::getUserInfo());
+        parent::__construct($app);
     }
 }

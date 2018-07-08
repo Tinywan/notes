@@ -11,9 +11,8 @@
 
 namespace app\common\controller;
 
-use think\Controller;
 
-class BaseApiController extends Controller
+class ApiController extends BaseController
 {
     // 订单延迟key
     const ORDER_DELAY_KEY = 'QUEUES:DELAY:ORDER';

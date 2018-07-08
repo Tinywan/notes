@@ -4,37 +4,38 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/7/5 21:02
+ * |  DateTime: 2018/7/8 12:12
  * |  Mail: Overcome.wan@Gmail.com
  * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\api\channel;
+namespace app\common\library\repositories\channel;
 
 
-class WeChat
+use app\common\library\repositories\eloquent\ChannelAbstractRepository;
+
+class HeePay extends ChannelAbstractRepository
 {
-    public function gateWay()
+    public function aliSm($option)
     {
-        return '网关支付 ' . __METHOD__;
+        // TODO: Implement aliSm() method.
     }
 
     /**
-     * 扫码支付
      * @return string
      */
-    public function scanCode()
+    public function wxH5($option)
     {
-        return '扫码支付 ' . __METHOD__;
+        // TODO: Implement aliSm() method.
     }
 
-    public function h5()
+    public function notifySuccess()
     {
-        return 'h5支付' . __METHOD__;
+        // TODO: Implement notifySuccess() method.
     }
 
-    public function wap()
+    public function notifyUrl($data)
     {
-        return '支付宝wap ' . __METHOD__;
+        // TODO: Implement notifyUrl() method.
     }
 }

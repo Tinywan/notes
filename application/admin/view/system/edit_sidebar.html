@@ -57,7 +57,7 @@
     $(function(){
         $('#tt').click(function(){
             var data = $('#add').serialize();
-            $.post("{:url('backend/system/editsidebar', array('id'=>$id))}", data, function(data){
+            $.post("{:url('admin/system/editsidebar', array('id'=>$id))}", data, function(data){
                 if (data.success == true){
                     layer.msg('保存成功', {icon:6, time:500}, function(){
                         parent.window.location.reload();

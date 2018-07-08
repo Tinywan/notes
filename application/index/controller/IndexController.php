@@ -182,6 +182,8 @@ class IndexController extends Controller
 
     public function bankCity()
     {
+        echo __FUNCTION__;
+        die;
         $sql = "INSERT INTO tinywan_admin (username,password,status) VALUES ('tinywan11','121111','1')";
         $res = Db::query($sql);
         halt($res);

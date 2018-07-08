@@ -155,7 +155,7 @@
         var index = layer.load(1);
         $.ajax({
             type: "POST",
-            url: "{:url('/backend/login')}",
+            url: "{:url('/admin/login')}",
             data: data,
             //返回数据的格式
             datatype: "json",
@@ -163,7 +163,7 @@
             success: function (data) {
                 layer.close(index);
                 if (data.success == true) {
-                    window.location.href = "{:url('backend/index/index')}";
+                    window.location.href = "{:url('admin/index/index')}";
                 } else {
                     $('#captcha_img').click();
                     $('#error').html(data.message)
@@ -172,7 +172,7 @@
             //调用出错执行的函数
             error: function () {
                 layer.close(index);
-                layer.alert('系统异常')
+                layer.alert('Ajax系统异常')
                 //请求出错处理
             }
         });

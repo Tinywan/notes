@@ -262,7 +262,7 @@
 <script src="__JS__/plugins/pace/pace.min.js"></script>
 <script>
     $('#clean-cache').click(function () {
-        $.post("{:url('backend/system/cleanCache')}", {}, function (data) {
+        $.post("{:url('admin/system/cleanCache')}", {}, function (data) {
             if (data.success == true){
                 layer.msg('缓存清除成功！', {icon: 6, time: 800}, function () {
                     window.location.reload();

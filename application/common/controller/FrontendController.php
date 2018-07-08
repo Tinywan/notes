@@ -5,7 +5,7 @@ namespace app\common\controller;
 use think\Controller;
 use think\Request;
 
-class BaseFrontendController extends Controller
+class FrontendController extends Controller
 {
     /**
      * 显示资源列表

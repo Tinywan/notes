@@ -26,11 +26,6 @@ class AuthController extends Controller
 {
     /**
      * 管理员后台登陆
-     * @return array|\think\response\View
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      */
     public function adminLogin()
     {

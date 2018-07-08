@@ -57,6 +57,11 @@ class PayController extends Controller
         halt($res);
     }
 
+    public function tt(){
+        $res = curl_request('http://openapi.tinywan.com/v1/gateway.do',['age'=>123]);
+        halt($res);
+    }
+
     public function testRedis()
     {
         var_dump(config('redis.message'));

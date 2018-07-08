@@ -11,10 +11,10 @@
 
 namespace app\admin\controller;
 
-use app\common\controller\BaseAdminController;
+use app\common\controller\AdminController;
 use think\Db;
 
-class AgentsProfitSum extends BaseAdminController
+class AgentsProfitSum extends AdminController
 {
     public function index()
     {

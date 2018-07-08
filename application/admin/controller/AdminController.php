@@ -3,7 +3,7 @@
 namespace app\admin\controller;
 
 use app\common\controller\BaseBackendController;
-use app\common\model\Admin;
+use app\common\model\Admin as AdminModel;
 use app\common\model\AuthAdminGroupAccess;
 use app\common\traits\controller\Curd;
 use think\facade\Validate;
@@ -18,7 +18,7 @@ class AdminController extends BaseBackendController
      */
     function model()
     {
-        return Admin::class;
+        return AdminModel::class;
     }
 
     /**
@@ -113,7 +113,7 @@ class AdminController extends BaseBackendController
             return responseJson(false, -1, '预留超级管理员禁止删除!');
         }
 
-        $res = $this->model->destroy($id_array);
+        $res = AdminModel::destroy($id_array);
         if ($res) {
             // 删除权限组关联
             AuthAdminGroupAccess::destroy($id_array);

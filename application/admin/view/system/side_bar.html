@@ -45,13 +45,13 @@
                             <td>{$x.sort}</td>
                             <td class="td-manage">
                                 {if $function_rule.edit}
-                                <a title="编辑侧边栏" href="javascript:;" onclick="layeropen('{:url("backend/system/editsidebar", array('id'=>$x['id']))}', '编辑侧边栏', '450px', '390px')" class="btn btn-xs btn-success" style="text-decoration:none">编辑</a> &nbsp;
+                                <a title="编辑侧边栏" href="javascript:;" onclick="layeropen('{:url("admin/system/editsidebar", array('id'=>$x['id']))}', '编辑侧边栏', '450px', '390px')" class="btn btn-xs btn-success" style="text-decoration:none">编辑</a> &nbsp;
                                 {/if}
                                 {if $function_rule.delete}
                                 <a title="删除" href="javascript:;" onclick="del({$x.id})" class="btn btn-xs btn-danger" style="text-decoration:none">删除</a>
                                 {/if}
                                 &nbsp;{if $function_rule.rule}
-                                <a title="权限节点" href="javascript:;" class="btn btn-info btn-xs" style="text-decoration:none" onclick="layeropen('{:url('backend/auth/rule', array('id'=>$x['id']))}', '权限节点({$x.name})', '600px', '500px');" >权限节点</a>
+                                <a title="权限节点" href="javascript:;" class="btn btn-info btn-xs" style="text-decoration:none" onclick="layeropen('{:url('admin/auth/rule', array('id'=>$x['id']))}', '权限节点({$x.name})', '600px', '500px');" >权限节点</a>
                                 {/if}
                             </td>
                         </tr>
@@ -67,7 +67,7 @@
         layer.confirm('你确认删除吗？', {
             btn: ['确认','取消']
         }, function(){
-            $.post("{:url('backend/system/delSidebar')}", {id: id}, function(data){
+            $.post("{:url('admin/system/delSidebar')}", {id: id}, function(data){
                 if (data.success == true){
                     layer.msg('删除成功', {icon:1, time:800}, function(){
                         window.location.reload();

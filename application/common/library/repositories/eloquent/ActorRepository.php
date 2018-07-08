@@ -4,26 +4,21 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/6/3 21:11
+ * |  DateTime: 2018/7/8 10:56
  * |  Mail: Overcome.wan@Gmail.com
- * |  Desc: 支付基类控制器
+ * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\controller;
+namespace app\common\library\repositories\eloquent;
 
-use think\App;
-use think\Controller;
 
-class BasePayController extends Controller
+use app\common\library\repositories\eloquent\Repository;
+use app\common\model\Admin;
+
+class ActorRepository extends PayAbstractRepository
 {
-    // 订单延迟key
-    const ORDER_DELAY_KEY = 'QUEUES:DELAY:ORDER';
-
-    // 支付异步key
-    const PAY_NOTICE_KEY = 'QUEUES:PAY:NOTICE';
-
-    public function __construct(App $app = null)
+    public function model()
     {
-        parent::__construct($app);
+        return Admin::class;
     }
 }

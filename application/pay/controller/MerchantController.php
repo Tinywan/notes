@@ -10,10 +10,10 @@
 
 namespace app\pay\controller;
 
-use app\common\controller\BasePayController;
+use app\common\controller\PayController;
 use app\common\model\Merchant;
 
-class MerchantController extends BasePayController
+class MerchantController extends PayController
 {
     public function index()
     {

@@ -1,0 +1,184 @@
+{include file="common/column"/}
+<style type="text/css">
+    .fly-list li {
+        height: 160px !important;
+        padding: 15px 15px 15px 320px;
+        border-bottom: 5px solid #F2F2F2;
+    }
+    .fly-avatar img {
+        display: block;
+        width: 20em;
+        height: 11.5em;
+        margin: 0;
+        text-shadow: 5px 5px 5px #FF0000;
+    }
+
+    .fly-list-info {
+         white-space: normal;
+    }
+
+    .fly-case-desc {
+        height: 60px;
+        line-height: 26px;
+        color: #666;
+        overflow: hidden;
+        font-size: 15px;
+        padding-bottom: 46px;
+        text-indent: 24px;
+        padding-top: 10px;
+    }
+
+    .fly-list li h2 a {
+        font-size: 18px;
+    }
+
+    @media screen and (max-width: 750px) {
+
+        .fly-list li {
+            height: 340px !important;
+            border-bottom: 5px solid #F2F2F2;
+            position: relative;
+            height: 45px;
+            line-height: 22px;
+            padding: 15px 30px 15px 30px;
+        }
+        .fly-avatar {
+            position: relative;
+            top:0;
+            left:0;
+            height: 200px;
+            width: 100%;
+        }
+        .fly-avatar img {
+            display: block;
+            /*width: 23.4em;*/
+            /*height: 13em;*/
+            margin: auto;
+            text-shadow: 5px 5px 5px #FF0000;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            line-height: 1.42857;
+            padding: 4px;
+            transition: border 0.2s ease-in-out 0s;
+        }
+
+        .fly-list li h2 {
+            height: 30px;
+            font-size: 0;
+            line-height: 30px;
+        }
+
+        .fly-case-desc {
+            height: 90px;
+            line-height: 30px;
+            color: #666;
+            overflow: hidden;
+            font-size: 15px;
+            padding-bottom: 46px;
+            text-indent: 24px;
+            padding-top: 10px;
+            verflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            padding: 0;
+        }
+
+        .fly-list li h2 .layui-badge {
+            top: -10px;
+            height: 16px;
+            line-height: 16px;
+            padding: 0 5px;
+            margin-right: 10px;
+            font-size: 12px;
+            border: 1px solid #5FB878;
+            background: none;
+            color: #5FB878;
+        }
+        .fly-list li h2 a {
+            line-height: 40px;
+        }
+
+
+    }
+
+</style>
+<div class="layui-container">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md9">
+            <div class="fly-panel">
+                <ul class="fly-list">
+                    {if empty($notice)}
+                        nont
+                    {else /}
+                    {volist name="articles" id="vo"}
+                    <li>
+                        <a href="{:url('business/Index/detail',['id'=>$vo['id']])}" class="fly-avatar">
+                            <img src="{$Think.config.aliyun_oss.DOMAIN}{$vo.image_thumb}" onerror=this.src="__RES__/images/avatar/6.jpg" alt="{$vo.username}">
+                        </a>
+                        <h2>
+                            <a class="layui-badge">{$vo['c_name']}</a>
+                            <a href="{:url('business/Index/detail',['id'=>$vo['id']])}">{$vo.title}</a>
+                        </h2>
+                        <div class="fly-list-info">
+                            <p class="fly-case-desc">
+                                {$vo["desc"]|mb_substr=0,120}...
+                            </p>
+
+                            <a href="javascript:vod(0);" link>
+                                <cite>{$vo.username}</cite>
+                                <i class="iconfont icon-renzheng" title="认证信息：Github"></i>
+                                <i class="layui-badge fly-badge-vip">管理员</i>
+                            </a>
+                            <span>{$vo['create_time']|format_date_to_time}</span>
+
+                            <!--<span class="fly-list-kiss layui-hide-xs" title="悬赏金币"><i class="iconfont icon-kiss"></i> {$vo['views']}</span>-->
+                            <span class="layui-badge fly-badge-accept layui-hide-xs">已审核</span>
+                        </div>
+                    </li>
+                    {/volist}
+                    {/if}
+                </ul>
+            </div>
+            <div style="text-align: center">
+                <div class="laypage-main">
+                    <a href="/" class="laypage-next">更多文章</a>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md3">
+
+            <div class="fly-panel">
+                <h3 class="fly-panel-title">温馨通道</h3>
+                <ul class="fly-panel-main fly-list-static">
+
+                </ul>
+            </div>
+
+            <dl class="fly-panel fly-list-one">
+                <dt class="fly-panel-title">本周热议</dt>
+            </dl>
+
+            <div class="fly-panel">
+                <div class="fly-panel-title">
+                    广告区域
+                </div>
+                <div class="fly-panel-main" style="text-align: center;">
+                    暂无广告
+                </div>
+            </div>
+
+            <div class="fly-panel fly-link">
+                <h3 class="fly-panel-title">友情链接</h3>
+                <dl class="fly-panel-main">
+                    <dd>
+                        <a href="756684177@qq.com"
+                           class="fly-link">申请友链</a>
+                    <dd>
+                </dl>
+            </div>
+
+        </div>
+    </div>
+</div>

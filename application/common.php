@@ -223,8 +223,7 @@ function add_operateLogs($remark, $type = 'admin')
     } else {
         $data['from'] = 'shop';
     }
-
-    //AdminOperateLogs::create($data);
+    \app\common\model\AdminOperateLogs::create($data);
 }
 
 
@@ -239,7 +238,7 @@ function check_role($role = '')
     if ($admin_info['id'] == 1) {
         return true;
     }
-    $auth = new Auth();
+    $auth = new \app\common\library\Auth();
     return $auth->check($role, $admin_info['id']);
 }
 

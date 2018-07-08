@@ -13,7 +13,6 @@ namespace app\common\library\exception;
 
 
 use think\Exception;
-use Throwable;
 
 /**
  * Class BaseException

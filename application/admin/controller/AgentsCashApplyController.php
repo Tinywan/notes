@@ -11,7 +11,7 @@
 
 namespace app\admin\controller;
 
-use app\common\controller\BaseAdminController;
+use app\common\controller\AdminController;
 use app\common\library\traits\controller\Curd;
 use app\common\model\AgentsAccount;
 use app\common\model\AgentsBalanceRecord;
@@ -19,7 +19,7 @@ use app\common\model\AgentsWithdrawCash;
 use app\common\model\Agents as AgentsModel;
 use think\Log;
 
-class AgentsCashApplyController extends BaseAdminController
+class AgentsCashApplyController extends AdminController
 {
     use Curd;
 

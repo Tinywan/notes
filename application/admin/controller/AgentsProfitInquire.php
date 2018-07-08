@@ -13,9 +13,9 @@ namespace app\admin\controller;
 
 
 use think\Db;
-use app\common\controller\BaseAdminController;
+use app\common\controller\AdminController;
 
-class AgentsProfitInquire extends BaseAdminController
+class AgentsProfitInquire extends AdminController
 {
     public function index()
     {

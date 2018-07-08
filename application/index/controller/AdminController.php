@@ -52,7 +52,7 @@ class AdminController extends Controller
             'email.email'=>'邮箱格式错误',
             'status.require'=>'状态是必须的',
         ]);
-        $result = $this->validate($data,'BaseAdminController');
+        $result = $this->validate($data,'AdminController');
         if(true !== $result){
             // 验证失败 输出错误信息
             dump($result);

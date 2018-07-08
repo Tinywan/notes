@@ -11,7 +11,7 @@
 
 namespace app\admin\controller;
 
-use app\common\controller\BaseAdminController;
+use app\common\controller\AdminController;
 use app\common\model\Agents as AgentsModel;
 use app\common\model\AgentsAccount;
 use app\common\model\AgentsChannelConfig;
@@ -24,7 +24,7 @@ use app\common\traits\controller\Curd;
 use think\Db;
 use think\Log;
 
-class AgentsController extends BaseAdminController
+class AgentsController extends AdminController
 {
     use Curd;
 

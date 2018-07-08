@@ -12,12 +12,12 @@
 namespace app\pay\controller;
 
 
-use app\common\controller\BasePayController;
+use app\common\controller\PayController;
 use app\common\validate\Base;
 use redis\BaseRedis;
 use think\facade\Log;
 
-class OrderController extends BasePayController
+class OrderController extends PayController
 {
     /**
      * 支付同步通知消息
