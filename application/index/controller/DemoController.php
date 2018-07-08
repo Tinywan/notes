@@ -10,6 +10,7 @@
 
 namespace app\index\controller;
 
+use app\common\model\Order;
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
 use Medz\IdentityCard\China\Identity;
@@ -19,6 +20,7 @@ use think\facade\Env;
 use think\facade\Log;
 use think\helper\Time;
 use think\Queue;
+use Yansongda\Pay\Pay;
 
 class DemoController
 {
@@ -30,11 +32,11 @@ class DemoController
     {
         $taskType = MultiTask::EMAIL;
         $data = [
-            'email' => '756684177@qq.com',
-            'title' => "把保存在内存中的日志信息",
-            'content' => "把保存在内存中的日志信息（用指定的记录方式）写入，并清空内存中的日志" . rand(11111, 999999)
+          'email' => '756684177@qq.com',
+          'title' => "把保存在内存中的日志信息",
+          'content' => "把保存在内存中的日志信息（用指定的记录方式）写入，并清空内存中的日志" . rand(11111, 999999)
         ];
-        halt(send_email_qq($data['email'],$data['title'],$data['content']));
+        halt(send_email_qq($data['email'], $data['title'], $data['content']));
         //$res = send_email_qq($data['email'], $data['title'], $data['content']);
         $res = multi_task_Queue($taskType, $data);
         if ($res !== false) {
@@ -50,7 +52,7 @@ class DemoController
     public function orderExpireNotice()
     {
         $redis = BaseRedis::location();
-        $res = $redis->setex('S120012018033016125053041',3,time());
+        $res = $redis->setex('S120012018033016125053041', 3, time());
         halt($res);
     }
 
@@ -64,20 +66,37 @@ class DemoController
     {
         echo "program start...\r\n";
         $file = Env::get('ROOT_PATH') . '/logs/aliPay.log';
-        file_put_contents($file,'start-time:'.get_current_date()."\r\n",FILE_APPEND);
+        file_put_contents($file, 'start-time:' . get_current_date() . "\r\n", FILE_APPEND);
         fastcgi_finish_request();
 
         sleep(1);
-        echo 'debug...'."\r\n";
-        file_put_contents($file, 'start-proceed:'.date('Y-m-d H:i:s')."\r\n", FILE_APPEND);
+        echo 'debug...' . "\r\n";
+        file_put_contents($file, 'start-proceed:' . date('Y-m-d H:i:s') . "\r\n", FILE_APPEND);
 
         sleep(10);
-        file_put_contents($file, 'end-time:'.date('Y-m-d H:i:s')."\r\n", FILE_APPEND);
+        file_put_contents($file, 'end-time:' . date('Y-m-d H:i:s') . "\r\n", FILE_APPEND);
     }
 
-    public function timeTest()
+    public function aliPay()
     {
-        halt(Time::yesterday());
+        $order_no = 'S' . date('ymdHis', time()) . rand(1000, 9999);
+        $insertData = [
+          'mch_id' => '2025801203065130',
+          'order_no' => $order_no,
+          'total_fee' => rand(11, 99),
+          'goods' => '商品测试00' . rand(1111, 9999),
+        ];
+        $res = Order::create($insertData);
+        if ($res) {
+            $payOrder = [
+              'out_trade_no' => $insertData['order_no'],
+              'total_amount' => $insertData['total_fee'],
+              'subject' => $insertData['goods'],
+            ];
+            $alipay = Pay::alipay(config('pay.alipay'))->web($payOrder);
+            return $alipay->send();
+        }
+        halt($res);
     }
 
 }

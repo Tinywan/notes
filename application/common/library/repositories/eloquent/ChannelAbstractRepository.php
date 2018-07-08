@@ -16,6 +16,7 @@ use app\common\library\repositories\contracts\RepositoryInterface;
 use app\common\library\repositories\exceptions\RepositoryException;
 use think\Exception;
 use think\facade\App;
+use think\facade\Validate;
 use think\Model;
 
 abstract class ChannelAbstractRepository implements RepositoryInterface
@@ -102,4 +103,13 @@ abstract class ChannelAbstractRepository implements RepositoryInterface
      * @return mixed
      */
     abstract public function notifyUrl($data);
+
+    protected function vaildate($data, $rule, $field)
+    {
+        $vaildate = new Validate($rule, [], $field);
+        if (!$vaildate->check($data)) {
+            return $this->setError(false, $vaildate->getError());
+        }
+        return true;
+    }
 }

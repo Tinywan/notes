@@ -36,4 +36,10 @@ class ActorsController extends PayController
         ];
         return json($this->actor->delete(10));
     }
+
+    public function postre(){
+        $url = "http://openapi.tinywan.com/v1/gateway.do";
+        $res = curl_request($url,[]);
+        halt($res);
+    }
 }

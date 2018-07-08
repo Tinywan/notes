@@ -39,14 +39,14 @@ class AliPay extends ChannelAbstractRepository
      */
     public function web($option)
     {
-        Log::error('Web网页支付===' . json_encode($option));
+        Log::debug('Web网页支付===' . json_encode($option));
         $payOrder = [
           'out_trade_no' => $option['order_no'],
           'total_amount' => $option['total_fee'],
           'subject' => $option['goods'],
         ];
-        $alipay = Pay::alipay(config('pay.alipay'))->web($payOrder);
-        return $alipay->send();
+        $alipay = Pay::alipay(config('pay.alipay'));
+        return $alipay->web($payOrder)->send();
     }
 
     /**

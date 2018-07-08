@@ -11,16 +11,21 @@
 
 namespace app\api\service;
 
-use app\api\repositories\PayRepository;
 
-class PayService extends AbstractService
+use app\common\library\repositories\eloquent\PayRepository;
+
+class PayService extends BaseService
 {
-    // 支付渠道实例
-    protected $payChannelRepository;
+    // 支付仓库实例
+    protected $payRepository;
 
-    public function __construct(PayRepository $payChannelRepository)
+    /**
+     * PayService constructor.
+     * @param PayRepository $payRepository
+     */
+    public function __construct(PayRepository $payRepository)
     {
-        $this->payChannelRepository = $payChannelRepository;
+        $this->payRepository = $payRepository;
     }
 
     /**
@@ -28,11 +33,11 @@ class PayService extends AbstractService
      */
     public function web($params)
     {
-        $result = $this->payChannelRepository->pay(__FUNCTION__,$params);
+        $result = $this->payRepository->pay(__FUNCTION__, $params);
         if ($result) {
             return $this->returnData(true, '订单创建成功！', 0, $result);
         } else {
-            $error = $this->payChannelRepository->getError();
+            $error = $this->payRepository->getError();
             return $this->returnData(false, $error['errorCode'], $error['msg'], $error['data']);
         }
     }

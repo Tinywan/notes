@@ -12,46 +12,8 @@
 namespace app\api\service;
 
 
-abstract class AbstractService
+class BaseService
 {
-    /**
-     * @var array 错误信息
-     */
-    public $error = [
-      'success' => false,
-      'msg' => '未知错误',
-      'errorCode' => 0,
-      'data' => []
-    ];
-
-    /**
-     * 设置错误信息
-     * @param $success
-     * @param $msg
-     * @param int $errorCode
-     * @param $data
-     * @return mixed
-     */
-    public function setError($success, $msg, $errorCode = 0, array $data = [])
-    {
-        $this->error = [
-          'success' => $success,
-          'msg' => $msg,
-          'errorCode' => $errorCode,
-          'data' => $data
-        ];
-        return $success;
-    }
-
-    /**
-     * 获取错误
-     * @return array
-     */
-    public function getError()
-    {
-        return $this->error;
-    }
-
     /**
      * 返回数据
      * @param $success

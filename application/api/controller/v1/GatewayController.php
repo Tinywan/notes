@@ -30,6 +30,7 @@ class GatewayController extends ApiController
 
     /**
      * 支付网关 根据支付方式和渠道去找对应的渠道支付
+     * 支付网关 只适用于第三方通道支付，不支持支付宝直接
      * @return string
      */
     public function payDo()
@@ -41,19 +42,19 @@ class GatewayController extends ApiController
           'mch_id' => 11111111111,
           'method' => 'pay.trade.web',
         ];
-        Log::error('公共参数验证22------------' . static::API_LIST[$data['method']][0]);
+        Log::debug('公共参数验证22------------' . static::API_LIST[$data['method']][0]);
         // 2、支付路由
         $routeControl = App::invokeClass(static::API_LIST[$data['method']][0]);
         $routeAction = static::API_LIST[$data['method']][1];
-        Log::error('支付路由------------' . json_encode($routeControl));
+        Log::debug('支付方式------------' . json_encode($routeAction));
         $result = $routeControl->$routeAction($data);
-        Log::error('支付结果------------' . json_encode($result));
+        Log::debug('支付结果------------' . json_encode($result));
         if (!$result) {
             $error = $result->getError();
             Log::error(get_current_date() . ' 网关接口异步通知处理失败，错误原因: ' . json_encode($error));
             return json($error);
         }
-        return $result;
+        halt($result);
     }
 
     /**

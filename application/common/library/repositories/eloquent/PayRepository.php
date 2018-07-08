@@ -96,7 +96,8 @@ class PayRepository extends PayAbstractRepository
         $order = Order::create($insertData);
         if ($order) {
             $res = [
-              'order_no' => $options['order_no'],
+              'status' => 1,
+              'order_no' => $insertData['order_no'],
             ];
             return $res;
         }
