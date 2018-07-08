@@ -21,6 +21,7 @@
     var roomId = 'L06777';
     var userId = 4840043;
     var userName = 'Tinywan';
+    var $connectToken = "";
 
     // 把当新链接的客户端加入到当前直播间,消息类型：{"type":"join","roomId":"1002","userId":"88","userName":"userName"}
     var joinContent = {
@@ -63,12 +64,15 @@
         switch (type) {
             case 'init':
                 // 把当新链接的客户端加入到当前直播间
-                console.log('init=======>' + data);
+                console.log('init=======>' + data.token);
+                $connectToken = data.token;
+                joinContent.token = $connectToken;
                 websocket.send(JSON.stringify(joinContent));
                 //writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
                 break;
             case 'join': // 加入直播间
                 console.log('join=======>' + data.commentList);
+
                 writeToScreen(
                     '<span style="color: #0000cc;"> 【' + ' 进入 ' + '】</span>' +
                     '<span style="color: green;"> [' + data.userName + ']</span>' +
@@ -76,7 +80,7 @@
                     '<span style="color: green;"> ' + data.message + '</span>'
                 );
                 var listData = data.commentList;
-                $.each(listData, function(idx, obj) {
+                $.each(listData, function (idx, obj) {
                     console.log(obj);
                     var jj = JSON.parse(obj);
                     writeToScreen(
@@ -122,7 +126,7 @@
     }
 
     function onClose(evt) {
-        console.log("DISCONNECTED"+ evt.data);
+        console.log("DISCONNECTED" + evt.data);
     }
 
     function writeToScreen(message) {
@@ -140,8 +144,10 @@
             "roomId": roomId,
             "userId": userId,
             "userName": userName,
+            "token": $connectToken,
             "content": text
         };
+        console.log(sayContent);
         websocket.send(JSON.stringify(sayContent));
     }
     window.addEventListener("load", init, false);

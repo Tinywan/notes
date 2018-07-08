@@ -28,6 +28,7 @@ class ChatRoomController extends Controller
     //
     public function index()
     {
+        setcookie('username',md5('Tinywan'),36000);
         return $this->fetch();
     }
 
