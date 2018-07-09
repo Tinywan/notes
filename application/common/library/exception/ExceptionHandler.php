@@ -11,11 +11,11 @@
 
 namespace app\common\library\exception;
 
-
 use Exception;
 use think\exception\Handle;
-use think\Log;
-use think\Request;
+use think\facade\Env;
+use think\facade\Log;
+use think\facade\Request;
 
 class ExceptionHandler extends Handle
 {
@@ -67,11 +67,10 @@ class ExceptionHandler extends Handle
     {
         Log::init([
             'type'  =>  'File',
-            'path'  =>  LOG_PATH,
+            'path'  =>  Env::get('ROOT_PATH') . '/logs',
             'level' => ['error'],
             'apart_level' => ['error', 'sql']
         ]);
-//        Log::record($e->getTraceAsString());
-        Log::record($e->getMessage(),'error');
+        Log::record($e->getMessage().'|'.$e->getTraceAsString(),'error');
     }
 }

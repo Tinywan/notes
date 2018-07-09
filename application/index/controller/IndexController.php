@@ -10,6 +10,7 @@
 
 namespace app\index\controller;
 
+use app\common\library\exception\UserException;
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
 use app\common\traits\LogRecord;
@@ -29,6 +30,13 @@ class IndexController extends Controller
     public function last_insert_id()
     {
         var_dump(get_next_id());
+    }
+
+    public function lastError($id = 1)
+    {
+        if ($id = 1) {
+            throw new UserException();
+        }
     }
 
     public function log()
@@ -106,8 +114,8 @@ class IndexController extends Controller
     {
         //当前任务所需的业务数据 . 不能为 resource 类型，其他类型最终将转化为json形式的字符串
         $data = [
-          'email' => '28456049@qq.com',
-          'username' => 'Tinywan' . rand(1111, 9999)
+            'email' => '28456049@qq.com',
+            'username' => 'Tinywan' . rand(1111, 9999)
         ];
         // 当前任务归属的队列名称，如果为新队列，会自动创建
         $queueName = 'workerQueue';
@@ -129,9 +137,9 @@ class IndexController extends Controller
     {
         $taskType = MultiTask::EMAIL;
         $data = [
-          'email' => '756684177@qq.com',
-          'title' => "把保存在内存中的日志信息",
-          'content' => "把保存在内存中的日志信息（用指定的记录方式）写入，并清空内存中的日志" . rand(11111, 999999)
+            'email' => '756684177@qq.com',
+            'title' => "把保存在内存中的日志信息",
+            'content' => "把保存在内存中的日志信息（用指定的记录方式）写入，并清空内存中的日志" . rand(11111, 999999)
         ];
         //$res = send_email_qq($data['email'], $data['title'], $data['content']);
         $res = multi_task_Queue($taskType, $data);
