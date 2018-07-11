@@ -6,7 +6,7 @@ use app\common\model\ChannelMerchant;
 use app\common\model\ChannelMerchantAccount;
 use app\common\model\PayChannelConfig;
 use think\Cache;
-use think\Session;
+use think\facade\Session;
 
 class AdminController extends BaseController {
 

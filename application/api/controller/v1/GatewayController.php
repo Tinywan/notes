@@ -25,7 +25,6 @@ class GatewayController extends ApiController
       'pay.trade.gateWay' => [PayService::class, 'gateWay'],
       'pay.trade.unPayWap' => [PayService::class, 'unPayWap'],
       'pay.trade.unQuickpay' => [PayService::class, 'unQuickpay'],
-      'pay.trade.unQuickpay' => [PayService::class, 'unQuickpay'],
     ];
 
     /**

@@ -2,13 +2,13 @@
 
 namespace app\admin\controller;
 
-use app\common\controller\BaseBackendController;
+use app\common\controller\AdminController;
 use app\common\model\AdminSidebar;
 use app\common\model\Admin;
 use app\common\model\BackendSidebar;
 use think\facade\Session;
 
-class IndexController extends BaseBackendController
+class IndexController extends AdminController
 {
     /**
      * 显示资源列表

@@ -14,8 +14,9 @@ namespace app\admin\controller;
 
 use app\common\model\SystemConfig;
 use app\common\traits\controller\Curd;
+use app\common\controller\AdminController;
 
-class SystemConfigController
+class SystemConfigController extends AdminController
 {
     use Curd;
 
