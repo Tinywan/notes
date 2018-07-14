@@ -17,7 +17,6 @@ use app\common\traits\LogRecord;
 use think\Controller;
 use think\Db;
 use think\facade\Cache;
-use think\facade\Config;
 use think\facade\Env;
 use think\facade\Log;
 use think\facade\Session;
@@ -27,10 +26,18 @@ class IndexController extends Controller
 {
     use LogRecord;
 
+    public function sendSms()
+    {
+        $option['code'] = rand(111,444);
+        $response = \app\common\library\DySms::sendSms('13669361192', ['code'=>123456]);
+        halt($response);
+    }
+
     public function last_insert_id()
     {
         var_dump(get_next_id());
     }
+
 
     public function lastError($id = 1)
     {

@@ -44,8 +44,8 @@ class OrderController extends PayController
         while (true) {
             $items = $redis->zRange(self::ORDER_DELAY_KEY, 0, -1);
             if (empty($items)) {
-                Log::debug('no waiting tasks');
-                //echo "no waiting tasks\r\n";
+                //Log::debug('no waiting tasks');
+                echo "no waiting tasks\r\n";
                 sleep(1);
                 continue;
             }
@@ -58,8 +58,8 @@ class OrderController extends PayController
                 $num = $redis->zrem(self::ORDER_DELAY_KEY, $member);
                 // 高并发条件下，多消费者会取到同一个订单号,对ZREM的返回值进行判断，只有大于0的时候，才消费数据
                 if (!empty($num) && $num > 0) {
-                    //echo "Consumed OrderId is " . $memberData['order_no'] . "\r\n";
-                    Log::debug("Consumed OrderId is " . json_encode($memberData));
+                    echo "Consumed OrderId is " . $memberData['order_no'] . "\r\n";
+//                    Log::debug("Consumed OrderId is " . json_encode($memberData));
                 }
             }
         }
@@ -80,12 +80,13 @@ class OrderController extends PayController
     private function productionDelayMessage()
     {
         $redis = BaseRedis::location();
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 50000; $i++) {
             //延迟3秒
             list($msec, $sec) = explode(' ', microtime());
             $millisecond = (float)sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000);
+            $rand = rand(111111,999999);
             $data = [
-              'order_no' => "OID0000001" . $i,
+              'order_no' => $rand."-S000000" . $i,
               'data' => [
                 'id' => $i,
                 'time' => $millisecond
@@ -93,7 +94,7 @@ class OrderController extends PayController
               'sign' => '77IasdasadIasdadadadKL8t' . $i
             ];
             $redis->zAdd(self::ORDER_DELAY_KEY, $millisecond, json_encode($data));
-            echo "create OrderNo OID0000001" . $i . "\r\n";
+            echo "create OrderNo ".$rand."-S0000001" . $i . "\r\n";
         }
     }
 

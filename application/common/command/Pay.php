@@ -121,7 +121,7 @@ class Pay extends Command
     }
 
     /**
-     * Nsq
+     * Nsq golang
      */
     public function nsqSubMessage()
     {
@@ -132,8 +132,11 @@ class Pay extends Command
     // 测试
     public function fastCgi()
     {
-        $obj = new DemoController();
-        $obj->fastCgi();
+//        $obj = new DemoController();
+//        $obj->fastCgi();
+
+        $nsq = new OrderController();
+        $nsq->test33();
     }
 
 
