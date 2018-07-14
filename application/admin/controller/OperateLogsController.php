@@ -14,8 +14,10 @@ namespace app\admin\controller;
 
 use app\common\model\AdminOperateLogs;
 use app\common\traits\controller\Curd;
+use app\common\controller\AdminController;
 
-class OperateLogsController
+
+class OperateLogsController extends AdminController
 {
     use Curd;
 

@@ -2,13 +2,13 @@
 
 namespace app\admin\controller;
 
-use app\common\controller\BaseBackendController;
+use app\common\controller\AdminController as BaseController;
 use app\common\model\Admin as AdminModel;
 use app\common\model\AuthAdminGroupAccess;
 use app\common\traits\controller\Curd;
 use think\facade\Validate;
 
-class AdminController extends BaseBackendController
+class AdminController extends BaseController
 {
     use Curd;
 

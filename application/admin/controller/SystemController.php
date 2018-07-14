@@ -2,12 +2,12 @@
 
 namespace app\admin\controller;
 
-use app\common\controller\BaseBackendController;
+use app\common\controller\AdminController;
 use app\common\model\AdminSidebar;
 use app\common\model\SystemConfig;
 use think\facade\Cache;
 
-class SystemController extends BaseBackendController
+class SystemController extends AdminController
 {
     public function sideBar()
     {

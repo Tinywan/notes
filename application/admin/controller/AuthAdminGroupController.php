@@ -2,14 +2,14 @@
 
 namespace app\admin\controller;
 
-use app\common\controller\BaseBackendController;
+use app\common\controller\AdminController;
 use app\common\model\AdminSidebar;
 use app\common\model\AuthAdminGroup;
 use app\common\model\AuthRule;
 use app\common\traits\controller\Curd;
 use think\facade\View;
 
-class AuthAdminGroupController extends BaseBackendController
+class AuthAdminGroupController extends AdminController
 {
     use Curd;
 
