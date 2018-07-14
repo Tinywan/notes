@@ -55,6 +55,7 @@
     * [thinkphp-queue 笔记](https://github.com/coolseven/notes/blob/master/thinkphp-queue/README.md)  
 * 视图输出`html`标签， `{$html}`必须为`{$html|raw}`  
 * 模板渲染规则 `小写+下划线`，如：`addSidebar`则试图为`add_sidebar.html`   
+* 自增`setInc()`方法必须有默认值才可以自增，如果新增子弹`NULL`是不可以的   
 
 ## 路由  
 
