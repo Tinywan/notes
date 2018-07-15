@@ -11,6 +11,7 @@
 namespace app\index\controller;
 
 use app\common\library\exception\UserException;
+use app\common\library\Oss;
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
 use app\common\traits\LogRecord;
@@ -26,10 +27,25 @@ class IndexController extends Controller
 {
     use LogRecord;
 
+    public function ossUploadFile()
+    {
+        $bucket = 'tinywan-live0104';
+        $filePath = env('ROOT_PATH') . 'public' . DIRECTORY_SEPARATOR . 'uploads/qq.png';
+        $fileName = time().'.png';
+        $oss = Oss::uploadFile($bucket,$filePath,$fileName);
+        if ($oss['success']){
+            echo $oss['msg'];
+        }else{
+            echo $oss['msg'];
+        }
+    }
+
     public function sendSms()
     {
-        $option['code'] = rand(111,444);
-        $response = \app\common\library\DySms::sendSms('13669361192', ['code'=>123456]);
+//        $option['code'] = rand(111,444);
+        $option['status'] = '已发货';
+        $option['remark'] = '短信通知';
+        $response = \app\common\library\DySms::sendSms('13669361192', $option,'SMS_139785103');
         halt($response);
     }
 

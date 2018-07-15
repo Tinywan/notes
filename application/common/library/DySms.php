@@ -1,5 +1,15 @@
 <?php
 
+/** .-----------------------------------------------------------------------------------------------------------------
+ * |  Github: https://github.com/Tinywan
+ * |  Blog: http://www.cnblogs.com/Tinywan
+ * |-------------------------------------------------------------------------------------------------------------------
+ * |  Author: Tinywan(ShaoBo Wan)
+ * |  DateTime: 2018/3/20 10:47
+ * |  Mail: Overcome.wan@Gmail.com
+ * |  Fun:  阿里云短信
+ * '------------------------------------------------------------------------------------------------------------------*/
+
 namespace app\common\library;
 
 require_once '../extend/aliyun/dysms/vendor/autoload.php';
@@ -30,9 +40,9 @@ class DySms
         //产品域名,开发者无需替换
         $domain = "dysmsapi.aliyuncs.com";
 
-        $accessKeyId = \think\facade\Config::get('aliyun.dysms.accessKeyId'); // AccessKeyId
+        $accessKeyId = config('aliyun.accessKeyId'); // AccessKeyId
 
-        $accessKeySecret = \think\facade\Config::get('aliyun.dysms.accessKeySecret'); // AccessKeySecret
+        $accessKeySecret = config('aliyun.accessKeySecret'); // AccessKeySecret
 
         // 暂时不支持多Region
         $region = "cn-hangzhou";
@@ -64,7 +74,7 @@ class DySms
     public static function sendSms($mobile, $option = [], $template = '')
     {
 
-        $template_id = empty($template) ? \think\facade\Config::get('aliyun.dysms.template') : $template;
+        $template_id = empty($template) ? config('aliyun.dysms.template') : $template;
 
         // 初始化SendSmsRequest实例用于设置发送短信的参数
         $request = new SendSmsRequest();
@@ -76,7 +86,7 @@ class DySms
         $request->setPhoneNumbers($mobile);
 
         // 必填，设置签名名称，应严格按"签名名称"填写，请参考: https://dysms.console.aliyun.com/dysms.htm#/develop/sign
-        $request->setSignName(\think\facade\Config::get('aliyun.dysms.sign'));
+        $request->setSignName(config('aliyun.dysms.sign'));
 
         // 必填，设置模板CODE，应严格按"模板CODE"填写, 请参考: https://dysms.console.aliyun.com/dysms.htm#/develop/template
         $request->setTemplateCode($template_id);

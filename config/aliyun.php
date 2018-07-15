@@ -10,25 +10,24 @@
  * '------------------------------------------------------------------------------------------------------------------*/
 
 return [
+      // 公共配置
+      'accessKeyId' => 'LTAIQkWsqzzxvOjB',
+      'accessKeySecret' => 'oIlscoaMtJ6HMxt9VnL0JYLABY0YTC',
       // 短信配置
       'dysms' => [
-        'accessKeyId' => '',
-        'accessKeySecret' => '',
         'sign' => 'Tinywan工作室',
         'template' => 'SMS_130917543'
       ],
+     // OSS配置
       'oss' => [
-        'ACCESSKEYID' => '', // 阿里云oss key_id
-        'ACCESSKEYSECRET' => '', // 阿里云oss key_secret
-        'ENDPOINT_INTERNAL' => 'oss-cn-shanghai-internal.aliyuncs.com', // 阿里云oss endpoint
-        'ENDPOINT' => 'oss-cn-shanghai.aliyuncs.com', // 阿里云oss endpoint
-        'BUCKET' => 'tinywan-oss',  // bucket 名称
-        'DOMAIN' => 'http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/',  // 访问域名
-        'CDN_SERVER_ADDRESS' => 'https://cdn.aliyuncs.com',
-        'ALI_AUTH_DOMAIN' => 'https://cdn.aliyuncs.com',
-        'ALI_AUTH_PRIVATEKEY' => 'https://cdn.aliyuncs.com',
-        'CENTER_STREAM_ADDRESS' => 'stream.tinywan.com', //stream.tinywan.com CNAME 到 video-center.alivecdn.com
+        'endpoint_internal' => 'oss-cn-shanghai-internal.aliyuncs.com', // 阿里云oss endpoint
+        'endpoint' => 'oss-cn-shanghai.aliyuncs.com', // 阿里云oss endpoint
+        'bucket' => 'tinywan-oss',  // bucket 名称
+        'domain' => 'http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/',  // 访问域名
+        'cdn_server_address' => 'https://cdn.aliyuncs.com',
+        'center_stream_address' => 'stream.tinywan.com', //stream.tinywan.com CNAME 到 video-center.alivecdn.com
       ],
+      // 支付配置
       'pay' => [
         'app_id' => '2016082000295641',
         'notify_url' => 'http://openapi.tinywan.com/api/v1/notify',
@@ -42,9 +41,8 @@ return [
         ],
         'mode' => 'dev', // optional,设置此参数，将进入沙箱模式
       ],
+      // 消息配置
       'msg' => [
-        'accessKeyId' => '',
-        'accessKeySecret' => '',
         'sign' => '',
         'template' => ''
       ],
