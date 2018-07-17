@@ -239,7 +239,7 @@ class PayRepository extends PayAbstractRepository
                 Db::name('merchant_balance_record')->insert([
                     'mch_id' => $orderInfo['mch_id'],
                     'channel' => $channelName,
-                    'record_type1' => 2,
+                    'record_type' => 2,
                     'type' => 2,
                     'money' => $orderInfo['total_amount'],
                     'after_money' => $orderInfo['total_amount'],
