@@ -200,7 +200,7 @@ class PayRepository extends PayAbstractRepository
     {
         // 1、订单验证
         $order_no = $result['order_no'];
-        Log::debug(get_current_date() . ' 开始订单处理 ' . $order_no);
+        Log::debug(' 开始订单处理 ' . $order_no);
         $orderInfo = Db::name('order')->where(['order_no' => $order_no])->lock(true)->find();
         if (empty($orderInfo)) {
             return $this->setError(false, $order_no . '订单未找到');
@@ -213,7 +213,7 @@ class PayRepository extends PayAbstractRepository
 
         // 3、未支付
         if ($orderInfo['status'] == 0) {
-            Log::debug(get_current_date() . ' 订单未支付 ' . json_encode($orderInfo));
+            Log::debug(' 订单未支付 ');
             // 4、根据支付渠道结果更新订单
             $orderUpdate = [];
             if ($result['status'] == 'success') {
@@ -239,7 +239,7 @@ class PayRepository extends PayAbstractRepository
                 Db::name('merchant_balance_record')->insert([
                     'mch_id' => $orderInfo['mch_id'],
                     'channel' => $channelName,
-                    'record_type' => 2,
+                    'record_type1' => 2,
                     'type' => 2,
                     'money' => $orderInfo['total_amount'],
                     'after_money' => $orderInfo['total_amount'],
