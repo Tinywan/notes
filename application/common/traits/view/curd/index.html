@@ -25,7 +25,7 @@
                 </div>
                 {/if}
                 <div class="page-2 text-center">
-                    {$list->render()} <div class="">(当前页码 {$list_array.current_page}, 共计 {$list_array.last_page} 页, 合 {$list_array.total} 条记录)</div>
+                    {$list->render()|raw} <div class="">(当前页码 {$list_array.current_page}, 共计 {$list_array.last_page} 页, 合 {$list_array.total} 条记录)</div>
                 </div>
             </div>
         </div>

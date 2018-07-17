@@ -2,12 +2,12 @@
 
 namespace app\admin\controller;
 
-use app\common\controller\BaseBackendController;
+use app\common\controller\AdminController;
 use app\common\model\AdminSidebar;
 use app\common\model\AuthRule;
 use think\Request;
 
-class AuthController extends BaseBackendController
+class AuthController extends AdminController
 {
     /**
      * 权限节点

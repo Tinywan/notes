@@ -8,7 +8,7 @@
                         <i class="glyphicon glyphicon-repeat"></i>
                     </a>
                     {if $function_rule.create}
-                        <a href="javascript:;" class="btn btn-info radius" onclick="layeropen('{:url("backend/system/addsidebar")}', '添加侧栏', '450px', '390px')"><i class="glyphicon glyphicon-plus"></i> 添加</a>
+                        <a href="javascript:;" class="btn btn-info radius" onclick="layeropen('{:url("admin/system/addsidebar")}', '添加侧栏', '450px', '390px')"><i class="glyphicon glyphicon-plus"></i> 添加</a>
                     {/if}
                 </div>
             </div>
@@ -30,7 +30,7 @@
                         <td><b>{$v.sort}</b></td>
                         <td>
                             {if $function_rule.edit}
-                            <a title="编辑侧边栏" href="javascript:;" onclick="layeropen('{:url('backend/system/editsidebar', array('id'=>$v['id']))}', '编辑侧边栏', '450px', '390px')" class="btn btn-xs btn-success" style="text-decoration:none">编辑</a> &nbsp;
+                            <a title="编辑侧边栏" href="javascript:;" onclick="layeropen('{:url('admin/system/editsidebar', array('id'=>$v['id']))}', '编辑侧边栏', '450px', '390px')" class="btn btn-xs btn-success" style="text-decoration:none">编辑</a> &nbsp;
                             {/if}
                             {if $function_rule.delete}
                             <a title="删除" href="javascript:;" onclick="del({$v.id})" class="btn btn-xs btn-danger" style="text-decoration:none">删除</a>
@@ -51,7 +51,7 @@
                                 <a title="删除" href="javascript:;" onclick="del({$x.id})" class="btn btn-xs btn-danger" style="text-decoration:none">删除</a>
                                 {/if}
                                 &nbsp;{if $function_rule.rule}
-                                <a title="权限节点" href="javascript:;" class="btn btn-info btn-xs" style="text-decoration:none" onclick="layeropen('{:url('admin/auth/rule', array('id'=>$x['id']))}', '权限节点({$x.name})', '600px', '500px');" >权限节点</a>
+                                <a title="权限节点" href="javascript:;" class="btn btn-info btn-xs" style="text-decoration:none" onclick="layeropen('{:url("admin/auth/rule", array('id'=>$x['id']))}', '权限节点({$x.name})', '600px', '500px');" >权限节点</a>
                                 {/if}
                             </td>
                         </tr>

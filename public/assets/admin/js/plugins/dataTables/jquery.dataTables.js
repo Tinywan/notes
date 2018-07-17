@@ -4917,7 +4917,7 @@
 		 *  @param {object} [oOpts] Optional parameters for modifying the rows to be included
 		 *  @param {string} [oOpts.filter=none] Select TR elements that meet the current filter
 		 *    criterion ("applied") or all TR elements (i.e. no filter).
-		 *  @param {string} [oOpts.order=current] Order of the TR elements in the processed array.
+		 *  @param {string} [oOpts.order=current] OrderController of the TR elements in the processed array.
 		 *    Can be either 'current', whereby the current sorting of the table is used, or
 		 *    'original' whereby the original order the data was read into the table is used.
 		 *  @param {string} [oOpts.page=all] Limit the selection to the currently displayed page
@@ -4965,7 +4965,7 @@
 		 *  @param {object} [oOpts] Optional parameters for modifying the rows to be included
 		 *  @param {string} [oOpts.filter=none] Select elements that meet the current filter
 		 *    criterion ("applied") or all elements (i.e. no filter).
-		 *  @param {string} [oOpts.order=current] Order of the data in the processed array.
+		 *  @param {string} [oOpts.order=current] OrderController of the data in the processed array.
 		 *    Can be either 'current', whereby the current sorting of the table is used, or
 		 *    'original' whereby the original order the data was read into the table is used.
 		 *  @param {string} [oOpts.page=all] Limit the selection to the currently displayed page
@@ -8262,7 +8262,7 @@
 	} );
 
 
-	// Order by the selected column(s)
+	// OrderController by the selected column(s)
 	_api_register( [
 		'columns().order()',
 		'column().order()'
@@ -13876,7 +13876,7 @@
 	 */
 
 	/**
-	 * Order event, fired when the ordering applied to the table is altered.
+	 * OrderController event, fired when the ordering applied to the table is altered.
 	 *  @name DataTable#order.dt
 	 *  @event
 	 *  @param {event} e jQuery event object

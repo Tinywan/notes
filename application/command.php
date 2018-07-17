@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 
 return [
+    \app\common\command\Curd::class,
     \app\common\command\CreateUser::class,
     \app\common\command\Crontab::class,
     \app\common\command\Pay::class
