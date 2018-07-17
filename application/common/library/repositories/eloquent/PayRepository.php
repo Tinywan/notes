@@ -181,7 +181,7 @@ class PayRepository extends PayAbstractRepository
         $orderNo = $result['order_no'];
         $handleRes = $this->payNotifyHandle($channelName, $result);
         if (!$handleRes) {
-            return false;
+            return $this->setError(false, $handleRes['msg']);
         }
         // 返回对应第三方渠道的内容，如：success
         return $channelObj->notifySuccess();
@@ -200,22 +200,20 @@ class PayRepository extends PayAbstractRepository
     {
         // 1、订单验证
         $order_no = $result['order_no'];
-        Log::debug(get_current_date() . ' [5] 开始订单处理 ' . $order_no);
-        Db::startTrans();
+        Log::debug(get_current_date() . ' 开始订单处理 ' . $order_no);
         $orderInfo = Db::name('order')->where(['order_no' => $order_no])->lock(true)->find();
         if (empty($orderInfo)) {
-            Db::rollback();
             return $this->setError(false, $order_no . '订单未找到');
         }
-        Db::commit();
 
         // 2、支付金额验证
-        if ($orderInfo['total_fee'] != $result['total_fee']) {
+        if ($orderInfo['total_amount'] != $result['total_amount']) {
             return $this->setError(false, '订单金额与发起支付金额不一致');
         }
 
         // 3、未支付
         if ($orderInfo['status'] == 0) {
+            Log::debug(get_current_date() . ' 订单未支付 ' . json_encode($orderInfo));
             // 4、根据支付渠道结果更新订单
             $orderUpdate = [];
             if ($result['status'] == 'success') {
@@ -229,18 +227,36 @@ class PayRepository extends PayAbstractRepository
             } else {
                 return $this->setError(false, '支付渠道未知状态');
             }
-
+            $orderUpdate['channel'] = $channelName;
+            $orderUpdate['channel_order_no'] = $result['channel_order_no'];
+            $orderUpdate['channel_return_data'] = json_encode($result);
             // 5、修改用户账户
             try {
+                Db::startTrans();
                 // 6、更新订单状态
                 Db::name('order')->where(['id' => $orderInfo['id']])->update($orderUpdate);
+                //写入余额记录日志
+                Db::name('merchant_balance_record')->insert([
+                    'mch_id' => $orderInfo['mch_id'],
+                    'channel' => $channelName,
+                    'record_type' => 2,
+                    'type' => 2,
+                    'money' => $orderInfo['total_amount'],
+                    'after_money' => $orderInfo['total_amount'],
+                    'before_money' => $orderInfo['total_amount'],
+                    'remark' => '订单['.$orderInfo['order_no'].']支付'.$orderInfo['total_amount'].'元',
+                    'created_at' => time()
+                ]);
+                Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
                 Log::error('系统异常=》' . $e->getMessage() . '|' . $e->getTraceAsString());
-                return $this->setError(false, '数据库修改系统异常');
+                return $this->setError(false, '数据库事务系统异常');
             }
-            Db::commit();
+            return $this->setError(true, '处理成功');
+        }elseif ($orderInfo['status'] == 1){
             return $this->setError(true, '处理成功');
         }
+        return $this->setError(false, '未知的订单状态');
     }
 }

@@ -83,14 +83,14 @@ class DemoController
         $insertData = [
           'mch_id' => '2025801203065130',
           'order_no' => $order_no,
-          'total_fee' => rand(11, 99),
+          'total_amount' => rand(11, 99),
           'goods' => '商品测试00' . rand(1111, 9999),
         ];
         $res = Order::create($insertData);
         if ($res) {
             $payOrder = [
               'out_trade_no' => $insertData['order_no'],
-              'total_amount' => $insertData['total_fee'],
+              'total_amount' => $insertData['total_amount'],
               'subject' => $insertData['goods'],
             ];
             $alipay = Pay::alipay(config('pay.alipay'))->web($payOrder);

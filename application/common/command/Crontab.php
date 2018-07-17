@@ -11,7 +11,6 @@
 
 namespace app\common\command;
 
-
 use think\console\Command;
 use think\console\Input;
 use think\console\input\Argument;
@@ -36,6 +35,9 @@ class Crontab extends Command
         $name = $input->getArgument('name');
         if ($name == "mysqldump") {
             $this->mysqlDump();
+        }elseif ($name == 'order-query'){
+            // 订单查询
+            $this->orderQuery();
         }
     }
 
@@ -49,5 +51,20 @@ class Crontab extends Command
         }else{
             Log::debug('[' . get_current_date() . ']:' . ' mysqlDump is success ,return code : ' . $status);
         }
+    }
+
+    /**
+     * 订单查询
+     */
+    private function orderQuery()
+    {
+        $order = [
+            'out_trade_no' => '242381531814325',
+            'bill_type' => 'trade'
+        ];
+        $pay = \Yansongda\Pay\Pay::alipay(config('pay.alipay'));
+        $result = $pay->find($order);
+        Log::error('订单查询'.\GuzzleHttp\json_encode($result));
+        echo 11111111111;
     }
 }

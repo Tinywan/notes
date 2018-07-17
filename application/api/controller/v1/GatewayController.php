@@ -78,7 +78,11 @@ class GatewayController extends ApiController
 
     /**
      * 异步通知
-     * @return string
+     * @param PayRepository $payRepository
+     * @return bool|mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function notifyUrl(PayRepository $payRepository)
     {
@@ -86,6 +90,7 @@ class GatewayController extends ApiController
         if (!$result) {
             $error = $payRepository->getError();
             Log::error(get_current_date() . ' 网关接口异步通知处理失败，错误原因: ' . json_encode($error));
+            return $error['success'];
         }
         Log::debug(get_current_date() . ' [5] 网关接口异步通知处理成功 ');
         return $result;

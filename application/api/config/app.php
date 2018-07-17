@@ -15,7 +15,7 @@ return [
     // 应用地址
     'app_host' => 'openapi.tinywan.com',
     // 应用调试模式
-    'app_debug' => false,
+    'app_debug' => true,
     //渠道路由
     'channel_class' => [
         'alipay' => \app\common\library\repositories\channel\AliPay::class,

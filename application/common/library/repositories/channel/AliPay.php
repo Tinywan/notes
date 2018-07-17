@@ -50,7 +50,7 @@ class AliPay extends ChannelAbstractRepository
     }
 
     /**
-     * 异步回调
+     * 同步
      * @param $data
      * @return array|mixed
      */
@@ -68,7 +68,7 @@ class AliPay extends ChannelAbstractRepository
         // 接口返回数据
         $result = [
           'status' => 1,
-          'total_fee' => $data['total_amount'],
+          'total_amount' => $data['total_amount'],
           'channel_order_no' => $data['trade_no'],
           'order_no' => $data['out_trade_no']
         ];
@@ -94,7 +94,7 @@ class AliPay extends ChannelAbstractRepository
         }
 
         $result = [
-          'total_fee' => $data['total_amount'],
+          'total_amount' => $data['total_amount'],
           'channel_order_no' => $data['trade_no'],
           'order_no' => $data['out_trade_no']
         ];
