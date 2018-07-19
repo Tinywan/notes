@@ -104,7 +104,7 @@ class OrderController extends PayController
     public function messageTest()
     {
         echo "Starting ...\r\n";
-        //$this->productionDelayMessage();
+//        $this->productionDelayMessage();
         $this->consumerDelayMessage();
     }
 
