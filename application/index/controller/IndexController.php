@@ -52,7 +52,6 @@ class IndexController extends Controller
     public function last_insert_id()
     {
         var_dump(get_next_id());
-        var_dump(get_next_id());
     }
 
 

@@ -29,7 +29,7 @@
         "phpoffice/phpspreadsheet": "^1.2",
         "phpoffice/phpexcel": "^1.8",
         "erusev/parsedown": "^1.7",
-        "nesbot/carbon": "^1.29",
+        "nesbot/carbon": "^1.32",
         "topthink/think-captcha": "^2.0",
         "yansongda/pay": "^2.3",
         "topthink/think-helper": "^1.0",

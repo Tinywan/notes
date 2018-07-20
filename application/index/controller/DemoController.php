@@ -11,6 +11,8 @@
 namespace app\index\controller;
 
 use app\common\model\Order;
+use app\common\presenter\DateFormatPresenter_tw;
+use app\common\presenter\DateFormatPresenter_uk;
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
 use Medz\IdentityCard\China\Identity;
@@ -97,6 +99,20 @@ class DemoController
             return $alipay->send();
         }
         halt($res);
+    }
+
+
+    public function presenterDate()
+    {
+        $locale = 'uk';
+        if ($locale === 'uk') {
+            $presenter = new DateFormatPresenter_uk();
+        } elseif ($locale === 'tw') {
+            $presenter = new DateFormatPresenter_tw();
+        } else {
+            $presenter = new DateFormatPresenter_tw();
+        }
+        return view('users.index', compact('users'));
     }
 
 }
