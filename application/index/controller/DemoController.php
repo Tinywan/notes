@@ -120,6 +120,7 @@ class DemoController
         echo __FUNCTION__;
         echo __FUNCTION__;
         echo __FUNCTION__;
+        echo __FUNCTION__;
     }
 
 }
