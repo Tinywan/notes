@@ -115,4 +115,9 @@ class DemoController
         return view('users.index', compact('users'));
     }
 
+    public function hooks()
+    {
+        echo __FUNCTION__;
+    }
+
 }
