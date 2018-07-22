@@ -118,6 +118,7 @@ class DemoController
     public function hooks()
     {
         echo __FUNCTION__;
+        echo __FUNCTION__;
     }
 
 }
