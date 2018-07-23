@@ -119,6 +119,8 @@ class DemoController
     {
         echo __FUNCTION__;
         echo "描述信息";
+        echo "描述信息";
+        echo "描述信息";
     }
 
 }
