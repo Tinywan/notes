@@ -121,6 +121,18 @@ class DemoController
         echo "描述信息";
         echo "描述信息";
         echo "描述信息";
+
+        //$_SERVER['HTTP_USER_AGENT'] = 'Coding.net Hook';
+        //$_SERVER['HTTP_USER_AGENT'] = 'GitHub-Hookshot/f559f7f';
+        $userAgent = 'GitHub-Hookshot/f559f7f';
+        $userAgent = 'Coding.net Hook';
+        $sing = '';
+        if(substr_count($userAgent,'GitHub') >= 1){
+            $sing = 'GitHub';
+        }elseif (substr_count($userAgent,'Coding')){
+            $sing = 'Coding';
+        }
+        var_dump($sing);
     }
 
 }
