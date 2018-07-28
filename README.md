@@ -43,7 +43,9 @@
 - [x] [Repository 模式实现业务逻辑和数据访问的分离](http://laravelacademy.org/post/3063.html)   
 - [x] 自定义异常类（针对接口）   
 - [x] 阿里云短信服务接入：`\app\common\library\DySms::sendSms('13669361192', ['code'=>123456])`   
+- [x] UUID这个PHP扩展可以生成唯一识别码，可以个=能生成唯一的完全数字签名
 - [ ] `支付异步`和`提现异步`以及`转账异步`回调如何通过分布式队列去完成   
+- [ ] Swoole 接入  
 - [ ] Swoole 接入  
 
 ## 5.1 版本注意点  
