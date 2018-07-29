@@ -14,6 +14,129 @@ function get_next_id($model = 'order', $increase = 1)
     //return sprintf('L%05d', $id);
 }
 
+/**
+ * 获取指定月份的第一天开始和最后一天结束的时间戳
+ * @param int $y 年份 $m 月份
+ * @return array(本月开始时间，本月结束时间)
+ */
+function month_frist_to_last($y = "", $m = "")
+{
+    if ($y == "") $y = date("Y");
+    if ($m == "") $m = date("m");
+    $m = sprintf("%02d", intval($m));
+    $y = str_pad(intval($y), 4, "0", STR_PAD_RIGHT);
+
+    $m > 12 || $m < 1 ? $m = 1 : $m = $m;
+    $firstDay = strtotime($y . $m . "01000000");
+    $firstDayStr = date("Y-m-01", $firstDay);
+    $lastDay = strtotime(date('Y-m-d 23:59:59', strtotime("$firstDayStr +1 month -1 day")));
+
+    return array(
+      "firstday" => $firstDay,
+      "lastday" => $lastDay
+    );
+}
+
+/**
+ * 发送HTTP请求
+ *
+ * @param string $url 请求地址
+ * @param string $method 请求方式 GET/POST
+ * @param string $refererUrl 请求来源地址
+ * @param array $data 发送数据
+ * @param string $contentType
+ * @param string $timeout
+ * @param string $proxy
+ * @return boolean
+ */
+function send_request($url, $data, $refererUrl = '', $method = 'GET', $contentType = 'application/json', $timeout = 30, $proxy = false)
+{
+    $ch = null;
+    if ('POST' === strtoupper($method)) {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        if ($refererUrl) {
+            curl_setopt($ch, CURLOPT_REFERER, $refererUrl);
+        }
+        if ($contentType) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:' . $contentType));
+        }
+        if (is_string($data)) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        } else {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        }
+    } else if ('GET' === strtoupper($method)) {
+        if (is_string($data)) {
+            $real_url = $url . (strpos($url, '?') === false ? '?' : '') . $data;
+        } else {
+            $real_url = $url . (strpos($url, '?') === false ? '?' : '') . http_build_query($data);
+        }
+
+        $ch = curl_init($real_url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:' . $contentType));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        if ($refererUrl) {
+            curl_setopt($ch, CURLOPT_REFERER, $refererUrl);
+        }
+    } else {
+        $args = func_get_args();
+        return false;
+    }
+
+    if ($proxy) {
+        curl_setopt($ch, CURLOPT_PROXY, $proxy);
+    }
+    $ret = curl_exec($ch);
+    $info = curl_getinfo($ch);
+    $contents = array(
+      'httpInfo' => array(
+        'send' => $data,
+        'url' => $url,
+        'ret' => $ret,
+        'http' => $info,
+      )
+    );
+    curl_close($ch);
+    return $ret;
+}
+
+/**
+ * 格式化容量大小
+ * @auther Tinywan 756684177@qq.com
+ * @DateTime 2018/7/29 15:57
+ * @param $size 文件大小
+ * @return string
+ */
+function format_size($size)
+{
+    if ($size >= 1073741824)
+    {
+        $size = round($size / 1073741824 * 100) / 100 . ' GB';
+    }
+    elseif ($size >= 1048576)
+    {
+        $size = round($size / 1048576 * 100) / 100 . ' MB';
+    }
+    elseif ($size >= 1024)
+    {
+        $size = round($size / 1024 * 100) / 100 . ' KB';
+    }
+    else
+    {
+        $size = $size . ' Bytes';
+    }
+
+    return $size;
+}
+
 // 应用公共文件
 
 function curl_request($url, $post = '', $cookie = '', $returnCookie = 0)
