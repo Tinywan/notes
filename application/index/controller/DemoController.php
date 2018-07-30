@@ -155,4 +155,22 @@ class DemoController
         halt($user);
     }
 
+    public function testFun(int ...$ints)
+    {
+        return array_sum($ints);
+    }
+
+    public function arraysSum(array ...$arrays): array
+    {
+        return array_map(function (array $arr): int {
+            return array_sum($arr);
+        },$arrays);
+    }
+
+    public function php7()
+    {
+        var_dump($this->testFun(2,33,4.5));
+        var_dump($this->arraysSum([2,33,4.5]));
+    }
+
 }
