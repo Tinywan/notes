@@ -10,6 +10,7 @@
 
 namespace app\index\controller;
 
+use app\common\library\repositories\eloquent\PayRepository;
 use app\common\model\Order;
 use app\common\presenter\DateFormatPresenter_tw;
 use app\common\presenter\DateFormatPresenter_uk;
@@ -155,4 +156,22 @@ class DemoController
         halt($user);
     }
 
+    public function fanShe()
+    {
+        // 查询操作
+        $class = new \ReflectionClass('app\api\service\PayService'); // 建立 Person这个类的反射类
+        //$instance = $class->newInstanceArgs(['name']);// 相当于实例化Person 类
+        $PayRepository = new PayRepository();
+        $instance = $class->newInstance($PayRepository);
+        var_dump($instance);
+        $properties = $class->getProperties();
+        var_dump($properties);
+        $func = $class->getMethod('web');
+        halt($func);
+        foreach ($properties as $property) {
+            echo $property->getName() . "\n";
+        }
+        $private_properties = $class->getProperties(\ReflectionProperty::IS_PRIVATE);
+        var_dump($private_properties);
+    }
 }

@@ -19,6 +19,8 @@ class UserRepository
 {
     /** @var User 注入的User model */
     protected $user;
+    private $name;
+    protected $age;
 
     /**
      * UserRepository constructor.

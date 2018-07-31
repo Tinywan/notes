@@ -31,11 +31,11 @@ class IndexController extends Controller
     {
         $bucket = 'tinywan-live0104';
         $filePath = env('ROOT_PATH') . 'public' . DIRECTORY_SEPARATOR . 'uploads/qq.png';
-        $fileName = time().'.png';
-        $oss = Oss::uploadFile($bucket,$filePath,$fileName);
-        if ($oss['success']){
+        $fileName = time() . '.png';
+        $oss = Oss::uploadFile($bucket, $filePath, $fileName);
+        if ($oss['success']) {
             echo $oss['msg'];
-        }else{
+        } else {
             echo $oss['msg'];
         }
     }
@@ -45,7 +45,7 @@ class IndexController extends Controller
 //        $option['code'] = rand(111,444);
         $option['status'] = '已发货';
         $option['remark'] = '短信通知';
-        $response = \app\common\library\DySms::sendSms('13669361192', $option,'SMS_139785103');
+        $response = \app\common\library\DySms::sendSms('13669361192', $option, 'SMS_139785103');
         halt($response);
     }
 
@@ -258,6 +258,40 @@ class IndexController extends Controller
             }
         }
         return $tree;
+    }
+
+    /**
+     * 根据银行卡账号获取所属银行
+     * @param $card
+     * @return string|void
+     */
+    public function bankInfo($card)
+    {
+        $bankList = config('aliyun.bankList');
+        $card_8 = substr($card, 0, 8);
+        if (isset($bankList[$card_8])) {
+            return $bankList[$card_8];
+        }
+        $card_6 = substr($card, 0, 6);
+        if (isset($bankList[$card_6])) {
+            return $bankList[$card_6];
+        }
+        $card_5 = substr($card, 0, 5);
+        if (isset($bankList[$card_5])) {
+            return $bankList[$card_5];
+        }
+        $card_4 = substr($card, 0, 4);
+        if (isset($bankList[$card_4])) {
+            return $bankList[$card_4];
+        }
+        return '该卡号信息暂未录入';
+    }
+
+    public function test001()
+    {
+
+        $res = $this->bankInfo('5324582111575275');
+        halt($res);
     }
 
 }
