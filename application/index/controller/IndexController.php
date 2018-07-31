@@ -261,7 +261,7 @@ class IndexController extends Controller
     }
 
     /**
-     * 根据银行卡账号获取所属银行
+     * 根据银行卡账号获取所属银行信息
      * @param $card
      * @return string|void
      */
