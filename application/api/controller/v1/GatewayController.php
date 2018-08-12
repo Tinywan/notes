@@ -7,6 +7,8 @@
  * |  DateTime: 2018/6/12 10:19
  * |  Mail: Overcome.wan@Gmail.com
  * |  Desc: 选择业务订单跳转至支付网关
+ * |  1、API 路由：在聚合支付场景下，当有多个支付产品可以提供支持时，使用支付网关可以让接入方对接时无需考虑支付产品的部署问题
+ * |  2、接口安全：熔断、限流与隔离。这对支付服务来说尤为重要。这是微服务架构的基本功能，本文不做描述。
  * '------------------------------------------------------------------------------------------------------------------*/
 
 namespace app\api\controller\v1;
@@ -28,8 +30,7 @@ class GatewayController extends ApiController
     ];
 
     /**
-     * 支付网关 根据支付方式和渠道去找对应的渠道支付
-     * 支付网关 只适用于第三方通道支付，不支持支付宝直接
+     * 三方通道网关
      * @return string
      */
     public function payDo()
@@ -50,7 +51,7 @@ class GatewayController extends ApiController
         Log::debug('支付结果------------' . json_encode($result));
         if (!$result) {
             $error = $result->getError();
-            Log::error(get_current_date() . ' 网关接口异步通知处理失败，错误原因: ' . json_encode($error));
+            Log::error(' 网关接口异步通知处理失败，错误原因: ' . json_encode($error));
             return json($error);
         }
         halt($result);
@@ -71,7 +72,7 @@ class GatewayController extends ApiController
             }
         } else {
             $error = $payRepository->getError();
-            Log::error(get_current_date() . ' 网关接口异步通知处理失败，错误原因: ' . json_encode($error));
+            Log::error(' 网关接口异步通知处理失败，错误原因: ' . json_encode($error));
             return json($error);
         }
     }
@@ -89,11 +90,11 @@ class GatewayController extends ApiController
         $result = $payRepository->notifyUrl();
         if (!$result) {
             $error = $payRepository->getError();
-            Log::error(get_current_date() . ' 网关接口异步通知处理失败，错误原因: ' . json_encode($error));
-            return $error['success'];
+            Log::error(' 网关接口异步通知处理失败，错误原因: ' . json_encode($error));
+            exit("fail");
         }
-        Log::debug(get_current_date() . ' [5] 网关接口异步通知处理成功 ');
-        return $result;
+        Log::debug(' [5] 网关接口异步通知处理成功 ');
+        exit("success");
     }
 
 }

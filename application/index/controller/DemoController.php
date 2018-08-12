@@ -82,7 +82,42 @@ class DemoController
         file_put_contents($file, 'end-time:' . date('Y-m-d H:i:s') . "\r\n", FILE_APPEND);
     }
 
+    /**
+     * http://notes.frp.tinywan.top/index/demo/aliPay
+     *  网关支付demo
+     * @auther Tinywan 756684177@qq.com
+     * @DateTime 2018/8/12 15:10
+     * @return mixed
+     */
     public function aliPay()
+    {
+        $order_no = 'S' . date('ymdHis', time()) . rand(1000, 9999);
+        $insertData = [
+          'mch_id' => '2025801203065130',
+          'order_no' => $order_no,
+          'total_amount' => rand(11, 99),
+          'goods' => '商品测试00' . rand(1111, 9999),
+        ];
+        $res = Order::create($insertData);
+        if ($res) {
+            $payOrder = [
+              'out_trade_no' => $insertData['order_no'],
+              'total_amount' => $insertData['total_amount'],
+              'subject' => $insertData['goods'],
+            ];
+            $alipay = Pay::alipay(config('pay.alipay'))->web($payOrder);
+            return $alipay->send();
+        }
+        halt($res);
+    }
+
+    /**
+     * 渠道支付
+     * @auther Tinywan 756684177@qq.com
+     * @DateTime 2018/8/12 15:23
+     * @return mixed
+     */
+    public function channelPay()
     {
         $order_no = 'S' . date('ymdHis', time()) . rand(1000, 9999);
         $insertData = [

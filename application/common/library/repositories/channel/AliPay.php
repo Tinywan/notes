@@ -88,7 +88,7 @@ class AliPay extends ChannelAbstractRepository
         try {
             // 第四步 使用RSA的验签方法，通过签名字符串、签名参数（经过base64解码）及支付宝公钥验证签名
             $res = $alipay->verify($data);
-            Log::debug(get_current_date() . ' [3] 支付验证签名 ');
+            Log::debug(' [3] 支付验证签名 ');
         } catch (Exception $e) {
             return $this->setError(false, '[3] 支付签名验证异常 ' . $e->getMessage());
         }
@@ -100,15 +100,15 @@ class AliPay extends ChannelAbstractRepository
         ];
         // 交易状态 trade_status 成功，具体的业务信息在这里处理
         if ($data['trade_status'] == "TRADE_SUCCESS") {
-            Log::debug(get_current_date() . ' [4] 交易支付成功 ');
+            Log::debug( ' [4] 交易支付成功 ');
             $result['status'] = 'success';
             return $result;
         } elseif ($data['trade_status'] == "TRADE_CLOSED") {
-            Log::debug(get_current_date() . ' [4] 未付款交易超时关闭，或支付完成后全额退款 ' . json_encode($data));
+            Log::debug( ' [4] 未付款交易超时关闭，或支付完成后全额退款 ' . json_encode($data));
             $result['status'] = 'fail';
             return $result;
         } elseif ($data['trade_status'] == "WAIT_BUYER_PAY") {
-            Log::debug(get_current_date() . ' [4] 交易创建，等待买家付款 ' . json_encode($data));
+            Log::debug(' [4] 交易创建，等待买家付款 ' . json_encode($data));
             $result['status'] = 'wait';
             return $result;
         }

@@ -143,20 +143,32 @@ class PayRepository extends PayAbstractRepository
      */
     public function notifyUrl()
     {
-        // 1、公共的数据处理 这里应该考虑 xml处理的的
-        $postStr = Request::getInput();
-        Log::debug(get_current_date() . ' [1] 支付异步消息 ' . json_encode($postStr));
-        // 数据格式转换
-        $tmpArr = explode('&', $postStr);
-        $postData = [];
-        foreach ($tmpArr as $value) {
-            $tmp = explode('=', $value);
-            $postData[$tmp[0]] = $tmp[1];
+        // 1、IP地址白名单验证
+        if(!in_array(getenv('HTTP_X_REAL_IP'),config('security.ip.white_list'))){
+            return json(['msg'=>'ip is error']);
         }
+        // 2、请求方式验证
+        if(!Request::isPost()){
+            return json(['msg'=>'not is post']);
+        }
+        // 3、公共的数据处理 这里应该考虑 xml处理的,微信
+        $postStr = Request::getInput();
+        Log::debug('[异步通知] 请求参数 ' . json_encode($postStr));
+        // 2、是那个渠道
+        $channel_str = ''; //渠道标识
+        $mch_order_no = ''; //渠道订单号
+        $mch_id = ''; //商户号
 
-        // 2、支付渠道路由，这里判断的时候回跑出异常，应该是try
         $channelName = 'alipay';
         try {
+            // 3、数据格式转换
+            $tmpArr = explode('&', $postStr);
+            $postData = [];
+            foreach ($tmpArr as $value) {
+                $tmp = explode('=', $value);
+                $postData[$tmp[0]] = $tmp[1];
+            }
+            // 2、支付渠道路由，这里判断的时候回跑出异常，
             if ($postData['trade_status']) {
                 $channelName = 'alipay';
             } elseif ($postData['trade_wechat']) {
@@ -166,7 +178,7 @@ class PayRepository extends PayAbstractRepository
             return $this->setError(false, '接口参数不合法' . $e->getMessage());
         }
 
-        Log::debug(get_current_date() . ' [2] 支付渠道 ' . $channelName);
+        Log::debug('[异步通知] 支付渠道 ' . $channelName);
         // 3、实例化渠道类，具体是哪一个三方接口返回的异步
         $channelObj = App::invokeClass($this->channelClass[$channelName]);
 
@@ -200,7 +212,7 @@ class PayRepository extends PayAbstractRepository
     {
         // 1、订单验证
         $order_no = $result['order_no'];
-        Log::debug(' 开始订单处理 ' . $order_no);
+        Log::debug('[异步通知] 开始订单处理 ' . $order_no);
         $orderInfo = Db::name('order')->where(['order_no' => $order_no])->lock(true)->find();
         if (empty($orderInfo)) {
             return $this->setError(false, $order_no . '订单未找到');
