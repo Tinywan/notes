@@ -42,11 +42,11 @@
     * 网关本身并不执行任何支付相关的业务逻辑   
 - [x] [Repository 模式实现业务逻辑和数据访问的分离](http://laravelacademy.org/post/3063.html)   
 - [x] 自定义异常类（针对接口）   
+- [x] 如何自定义404和401页面`http_exception_template`     
 - [x] 阿里云短信服务接入：`\app\common\library\DySms::sendSms('13669361192', ['code'=>123456])`   
 - [x] UUID这个PHP扩展可以生成唯一识别码，可以个=能生成唯一的完全数字签名
 - [x] [根据银行卡账号获取所属银行](http://notes.env/index/index/test001)
 - [ ] `支付异步`和`提现异步`以及`转账异步`回调如何通过分布式队列去完成   
-- [ ] Swoole 接入  
 - [ ] Swoole 接入  
 
 ## 5.1 版本注意点  

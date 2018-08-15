@@ -19,7 +19,7 @@ return [
     // 应用地址
     'app_host'               => 'www.tinywan.com',
     // 应用调试模式
-    'app_debug'              => true,
+    'app_debug'              => false,
     // 应用Trace
     'app_trace'              => false,
     // 是否支持多模块
@@ -135,6 +135,14 @@ return [
 
     // 异常页面的模板文件
     'exception_tmpl'         => Env::get('think_path') . 'tpl/think_exception.tpl',
+
+    // 自定义异常页面模板，只要debug = false 模式才生效
+    'http_exception_template' => [
+        // 定义404错误的模板文件地址
+        404 => Env::get('APP_PATH') .'common'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'tpl'.DIRECTORY_SEPARATOR.'404.html',
+        // 还可以定义其它的HTTP status
+        401 => Env::get('APP_PATH') .'common'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'tpl'.DIRECTORY_SEPARATOR.'401.html',
+    ],
 
     // 错误显示信息,非调试模式有效
     'error_message'          => '页面错误！请稍后再试～',

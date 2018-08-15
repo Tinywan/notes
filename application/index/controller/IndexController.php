@@ -10,6 +10,7 @@
 
 namespace app\index\controller;
 
+use app\common\controller\FrontendController;
 use app\common\library\exception\UserException;
 use app\common\library\Oss;
 use app\common\queue\MultiTask;
@@ -23,7 +24,7 @@ use think\facade\Log;
 use think\facade\Session;
 use think\Queue;
 
-class IndexController extends Controller
+class IndexController extends FrontendController
 {
     use LogRecord;
 
@@ -51,6 +52,8 @@ class IndexController extends Controller
 
     public function last_insert_id()
     {
+        var_dump(Env::get('APP_PATH') .'common'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'tpl'.DIRECTORY_SEPARATOR.'404.html');
+        halt(Env::get('APP_PATH'));
         var_dump(get_next_id());
     }
 
