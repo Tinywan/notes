@@ -46,6 +46,8 @@
 - [x] 阿里云短信服务接入：`\app\common\library\DySms::sendSms('13669361192', ['code'=>123456])`   
 - [x] UUID这个PHP扩展可以生成唯一识别码，可以个=能生成唯一的完全数字签名
 - [x] [根据银行卡账号获取所属银行](http://notes.env/index/index/test001)
+- [x] [依赖注入详解](https://www.kancloud.cn/tinywan/tinywan_001/737001)
+- [x] [如何使用依赖注入解决多个缓存切换的依赖](https://www.kancloud.cn/tinywan/tinywan_001/737001)
 - [ ] `支付异步`和`提现异步`以及`转账异步`回调如何通过分布式队列去完成   
 - [ ] Swoole 接入  
 

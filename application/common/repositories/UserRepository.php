@@ -19,8 +19,6 @@ class UserRepository
 {
     /** @var User 注入的User model */
     protected $user;
-    private $name;
-    protected $age;
 
     /**
      * UserRepository constructor.
@@ -33,9 +31,11 @@ class UserRepository
     }
 
     /**
-     * 回傳大於?年紀的資料
-     * @param integer $score
-     * @return Collection
+     * @param $score
+     * @return array|\PDOStatement|string|Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getScoreLargerThan($score)
     {
