@@ -1212,16 +1212,16 @@
         },
         {
             "name": "topthink/framework",
-            "version": "v5.1.18",
+            "version": "v5.1.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/framework.git",
-                "reference": "833fcaf0f29f23bdceaae655f64d10c18b9bf562"
+                "reference": "3a0fea90ed2a99b181ce503090e08be1171ed091"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/framework/zipball/833fcaf0f29f23bdceaae655f64d10c18b9bf562",
-                "reference": "833fcaf0f29f23bdceaae655f64d10c18b9bf562",
+                "url": "https://api.github.com/repos/top-think/framework/zipball/3a0fea90ed2a99b181ce503090e08be1171ed091",
+                "reference": "3a0fea90ed2a99b181ce503090e08be1171ed091",
                 "shasum": ""
             },
             "require": {
@@ -1259,7 +1259,7 @@
                 "orm",
                 "thinkphp"
             ],
-            "time": "2018-07-02T05:29:17+00:00"
+            "time": "2018-07-13T14:10:28+00:00"
         },
         {
             "name": "topthink/think-captcha",
@@ -1560,16 +1560,16 @@
         },
         {
             "name": "workerman/workerman",
-            "version": "v3.5.11",
+            "version": "v3.5.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/walkor/Workerman.git",
-                "reference": "c83e189b5855d91f99a7d01ac58f5bbc7161b5e5"
+                "reference": "cf2538169af989fbba4d55be1bfc8c8d80fa71e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/walkor/Workerman/zipball/c83e189b5855d91f99a7d01ac58f5bbc7161b5e5",
-                "reference": "c83e189b5855d91f99a7d01ac58f5bbc7161b5e5",
+                "url": "https://api.github.com/repos/walkor/Workerman/zipball/cf2538169af989fbba4d55be1bfc8c8d80fa71e9",
+                "reference": "cf2538169af989fbba4d55be1bfc8c8d80fa71e9",
                 "shasum": ""
             },
             "require": {
@@ -1602,7 +1602,7 @@
                 "asynchronous",
                 "event-loop"
             ],
-            "time": "2018-06-07T09:36:14+00:00"
+            "time": "2018-07-16T02:11:10+00:00"
         },
         {
             "name": "workerman/workerman-for-win",
@@ -1649,16 +1649,16 @@
         },
         {
             "name": "yansongda/pay",
-            "version": "v2.3.2",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yansongda/pay.git",
-                "reference": "4596f55a20ef0cdcf4bd1c51194e8daecc8488e2"
+                "reference": "8445cad29b1bea17d64408e819dfa9a7be30655c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yansongda/pay/zipball/4596f55a20ef0cdcf4bd1c51194e8daecc8488e2",
-                "reference": "4596f55a20ef0cdcf4bd1c51194e8daecc8488e2",
+                "url": "https://api.github.com/repos/yansongda/pay/zipball/8445cad29b1bea17d64408e819dfa9a7be30655c",
+                "reference": "8445cad29b1bea17d64408e819dfa9a7be30655c",
                 "shasum": ""
             },
             "require": {
@@ -1695,20 +1695,20 @@
                 "pay",
                 "wechat"
             ],
-            "time": "2018-06-04T07:00:59+00:00"
+            "time": "2018-06-26T14:32:35+00:00"
         },
         {
             "name": "yansongda/supports",
-            "version": "v1.5.1",
+            "version": "v1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yansongda/supports.git",
-                "reference": "86a198c581a53b634145d63d02b89803aad31dd9"
+                "reference": "caad088305db124bc9ef9c46b5f6b19e0d7c5b5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yansongda/supports/zipball/86a198c581a53b634145d63d02b89803aad31dd9",
-                "reference": "86a198c581a53b634145d63d02b89803aad31dd9",
+                "url": "https://api.github.com/repos/yansongda/supports/zipball/caad088305db124bc9ef9c46b5f6b19e0d7c5b5a",
+                "reference": "caad088305db124bc9ef9c46b5f6b19e0d7c5b5a",
                 "shasum": ""
             },
             "require": {
@@ -1740,7 +1740,7 @@
                 "http",
                 "support"
             ],
-            "time": "2018-06-28T12:47:29+00:00"
+            "time": "2018-07-09T01:25:27+00:00"
         }
     ],
     "packages-dev": [],
