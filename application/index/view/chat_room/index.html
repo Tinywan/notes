@@ -19,7 +19,7 @@
     var wsUri = "ws://127.0.0.1:7272/";
     var outputContent;
     var roomId = 'L06777';
-    var userId = 4840043;
+    var userId = Math.floor(Math.random()*(10000000-999999)+999999);
     var userName = 'Tinywan';
     var $connectToken = "";
 
@@ -55,6 +55,16 @@
 
     function onOpen(evt) {
         console.log("CONNECTED");
+        // 心跳检测
+        // setInterval(function(){
+        //     if(websocket.readyState === 1) {
+        //         var sayContent = {
+        //             "type": "pong",
+        //             "msg": "heart",
+        //         };
+        //         websocket.send(JSON.stringify(sayContent));
+        //     }
+        // },5000)
     }
 
     // 接收数据
@@ -72,24 +82,26 @@
                 break;
             case 'join': // 加入直播间
                 console.log('join=======>' + data.commentList);
-
+                // 如果当前userUid 等于加入userId 则加载历史最新评论
+                if(data.userId == userId) {
+                    var listData = data.commentList;
+                    $.each(listData, function (idx, obj) {
+                        console.log(obj);
+                        var jj = JSON.parse(obj);
+                        writeToScreen(
+                            '<span style="color: green;"> 【' + ' 聊天 ' + '】</span>' +
+                            '<span style="color: green;"> [' + jj.userName + ']</span>' +
+                            '<span style="color: #0000cc;"> (' + jj.commentTime + ')</span>' +
+                            '<span style="color: black;"> ' + jj.content + '</span>'
+                        );
+                    });
+                }
                 writeToScreen(
                     '<span style="color: #0000cc;"> 【' + ' 进入 ' + '】</span>' +
                     '<span style="color: green;"> [' + data.userName + ']</span>' +
                     '<span style="color: green;"> (' + data.joinTime + ')</span>' +
                     '<span style="color: green;"> ' + data.message + '</span>'
                 );
-                var listData = data.commentList;
-                $.each(listData, function (idx, obj) {
-                    console.log(obj);
-                    var jj = JSON.parse(obj);
-                    writeToScreen(
-                        '<span style="color: green;"> 【' + ' 聊天 ' + '】</span>' +
-                        '<span style="color: green;"> [' + jj.userName + ']</span>' +
-                        '<span style="color: #0000cc;"> (' + jj.commentTime + ')</span>' +
-                        '<span style="color: black;"> ' + jj.content + '</span>'
-                    );
-                });
                 break;
             case 'say': // 发表评论
                 console.log('say========>' + data);
@@ -116,9 +128,10 @@
                 );
                 break;
             default :
+                // 心跳
                 console.log(data);
                 break;
-        }
+        };
     }
 
     function onError(evt) {

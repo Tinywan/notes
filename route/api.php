@@ -21,6 +21,7 @@ Route::get("api/:version/test/index","api/auth.:version.Test/index");
 
 // 网关 http://openapi.tinywan.com/v1/gateway.do
 Route::post(":version/gateway.do","api/:version.Gateway/payDo");
+Route::post(":version/gateway","api/:version.Gateway/payDoNew");
 
 // 回调 http://openapi.tinywan.com/api/v1/return
 Route::get("api/:version/return","api/:version.Gateway/returnUrl");
