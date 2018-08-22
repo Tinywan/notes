@@ -12,6 +12,7 @@
 namespace app\common\services\payment;
 
 use app\common\model\Merchant;
+use app\common\repositories\contracts\ChannelRepositoryInterface;
 use app\common\services\contracts\PaymentServiceAbstract;
 use think\facade\Log;
 
@@ -22,6 +23,32 @@ use think\facade\Log;
  */
 class PaymentService extends PaymentServiceAbstract
 {
+    /**
+     * 渠道仓库接口
+     * @var ChannelRepositoryInterface
+     */
+    protected $channelRepository;
+
+    /**
+     * 网关接口列表
+     * @var
+     */
+    protected $methodList;
+
+    /**
+     * 网关支付方式
+     * @var
+     */
+    protected $paymentMethod;
+    /**
+     * Repository 注入到service
+     */
+    public function __construct(ChannelRepositoryInterface $channelRepository)
+    {
+        $this->channelRepository = $channelRepository;
+        $this->methodList = config("api_method_list");
+        $this->paymentMethod = config("payment_method");
+    }
     /**
      * 渠道支付
      * @param $data
@@ -59,32 +86,32 @@ class PaymentService extends PaymentServiceAbstract
             'method'=>$method,
             'channel'=>'sandPay',
         ];
-        $result = $this->channelRepository->pay($channelData);
-        if ($result){
-            return $this->returnData(true, '订单创建成功！', 200,$result);
-        }else{
-            // 渠道错误信息
-            $error = $this->channelRepository->getError();
-            return $this->returnData(false,$error['msg'], $error['errorCode'],  $error['data']);
-        }
+        //$result = $this->channelRepository->gateWay($channelData);
+//        if ($result){
+//            return $this->returnData(true, '订单创建成功！', 200,$result);
+//        }else{
+//            // 渠道错误信息
+//            $error = $this->channelRepository->getError();
+//            return $this->returnData(false,$error['msg'], $error['errorCode'],  $error['data']);
+//        }
     }
 
-    /**
-     * 支付宝支付
-     * @param $params
-     */
-    public function aliPay($params)
+    // 网关
+    public function gateWay($params)
     {
         $this->channelRepository->gateWay($params);
     }
 
-    /**
-     * 非渠道支付
-     * @param $params
-     */
-    public function noChannelPay($params)
+    public function unQuickPay($params)
     {
-        $this->channelRepository->gateWay($params);
+        $this->channelRepository->unQuickPay($params);
     }
+
+    public function unPayWap($params)
+    {
+        $this->channelRepository->unPayWap($params);
+    }
+
+
 
 }

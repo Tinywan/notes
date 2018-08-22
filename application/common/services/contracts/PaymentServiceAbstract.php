@@ -11,7 +11,6 @@
 
 namespace app\common\services\contracts;
 
-use app\common\repositories\channel\ChannelRepository;
 use app\common\repositories\contracts\ChannelRepositoryInterface;
 
 abstract class PaymentServiceAbstract implements PaymentServiceInterface
@@ -36,10 +35,8 @@ abstract class PaymentServiceAbstract implements PaymentServiceInterface
 
     /**
      * Repository 注入到service
-     * PaymentServiceAbstract constructor.
-     * @param ChannelRepository $channelRepository
      */
-    public function __construct(ChannelRepository $channelRepository)
+    public function __construct(ChannelRepositoryInterface $channelRepository)
     {
         $this->channelRepository = $channelRepository;
         $this->methodList = config("api_method_list");

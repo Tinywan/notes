@@ -16,6 +16,7 @@ namespace app\api\controller\v1;
 use app\api\service\PayService;
 use app\common\controller\ApiController;
 use app\common\library\repositories\eloquent\PayRepository;
+use app\common\repositories\channel\SandPay;
 use app\common\services\payment\PaymentService;
 use think\facade\App;
 use think\facade\Log;
@@ -78,21 +79,23 @@ class GatewayController extends ApiController
     public function payDoNew()
     {
         // 1、公共参数验证
-        $post = $this->request->param();
+        $post = $this->request->post();
         Log::debug("[新支付网关]".json_encode($post));
         $data = [
             'mch_id' => 12001,
             'method' => 'pay.trade.gateWay',
         ];
         // 2、网关服务
-        $result = $this->paymentService->channelPay($data);
-        if (!$result['success']) {
-            Log::error("[网关接口调用失败]".json_encode($result));
-            return json($result);
-        }else{
-            Log::debug("[网关接口访问成功]");
-            return json($result);
-        }
+        $pay = new PaymentService(new SandPay());
+        $res = $pay->unQuickPay($data); // GmailSender\
+        halt($res);
+//        if (!$result['success']) {
+//            Log::error("[网关接口调用失败]".json_encode($result));
+//            return json($result);
+//        }else{
+//            Log::debug("[网关接口访问成功]");
+//            return json($result);
+//        }
     }
 
     /**

@@ -15,6 +15,8 @@ use app\common\library\exception\UserException;
 use app\common\library\Oss;
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
+use app\common\repositories\channel\SandPay;
+use app\common\services\payment\PaymentService;
 use app\common\traits\LogRecord;
 use patterns\di\Comment;
 use patterns\di\FileCache;
@@ -311,6 +313,20 @@ class IndexController extends FrontendController
         $data = [
             'name'=>'Tinywan',
             'age'=>24
+        ];
+        $cache = new FileCache();
+        var_dump($cache->cacheData("index_demo"));
+    }
+
+    public function Payment()
+    {
+        $pay = new PaymentService(new SandPay());
+        $res = $pay->gateWay(['11111111']); // GmailSender\
+        halt($res);
+        die;
+        $data = [
+          'name'=>'Tinywan',
+          'age'=>24
         ];
         $cache = new FileCache();
         var_dump($cache->cacheData("index_demo"));
