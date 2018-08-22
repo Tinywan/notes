@@ -16,18 +16,31 @@ namespace app\api\controller\v1;
 use app\api\service\PayService;
 use app\common\controller\ApiController;
 use app\common\library\repositories\eloquent\PayRepository;
+use app\common\services\payment\PaymentService;
 use think\facade\App;
 use think\facade\Log;
 
 class GatewayController extends ApiController
 {
-    // 接口列表
+    protected $paymentService;
+
+    // 接口名称
     const API_LIST = [
-      'pay.trade.web' => [PayService::class, 'web'], // 电脑支付
-      'pay.trade.gateWay' => [PayService::class, 'gateWay'],
-      'pay.trade.unPayWap' => [PayService::class, 'unPayWap'],
-      'pay.trade.unQuickpay' => [PayService::class, 'unQuickpay'],
+        'pay.trade.web' => [PayService::class, 'web'], // 电脑支付
+        'pay.trade.gateWay' => [PayService::class, 'gateWay'],
+        'pay.trade.unPayWap' => [PayService::class, 'unPayWap'],
+        'pay.trade.unQuickpay' => [PayService::class, 'unQuickpay'],
     ];
+    /**
+     * 注入service
+     * GatewayController constructor.
+     * @param PaymentService $paymentService
+     */
+    public function __construct(PaymentService $paymentService)
+    {
+        parent::__construct();
+        $this->paymentService = $paymentService;
+    }
 
     /**
      * 三方通道网关
@@ -39,8 +52,8 @@ class GatewayController extends ApiController
         $post = $this->request->post();
         Log::error('公共参数验证------------' . json_encode($post));
         $data = [
-          'mch_id' => 11111111111,
-          'method' => 'pay.trade.web',
+            'mch_id' => 11111111111,
+            'method' => 'pay.trade.web',
         ];
         Log::debug('公共参数验证22------------' . static::API_LIST[$data['method']][0]);
         // 2、支付路由
@@ -54,7 +67,32 @@ class GatewayController extends ApiController
             Log::error(' 网关接口异步通知处理失败，错误原因: ' . json_encode($error));
             return json($error);
         }
-        halt($result);
+        return json($result);
+    }
+
+    /**
+     * 新支付网关
+     * @return \think\response\Json
+     * @throws \think\Exception\DbException
+     */
+    public function payDoNew()
+    {
+        // 1、公共参数验证
+        $post = $this->request->param();
+        Log::debug("[新支付网关]".json_encode($post));
+        $data = [
+            'mch_id' => 12001,
+            'method' => 'pay.trade.gateWay',
+        ];
+        // 2、网关服务
+        $result = $this->paymentService->channelPay($data);
+        if (!$result['success']) {
+            Log::error("[网关接口调用失败]".json_encode($result));
+            return json($result);
+        }else{
+            Log::debug("[网关接口访问成功]");
+            return json($result);
+        }
     }
 
     /**

@@ -16,6 +16,13 @@ use app\common\library\Oss;
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
 use app\common\traits\LogRecord;
+use patterns\di\Comment;
+use patterns\di\FileCache;
+use patterns\di\GmailSender;
+use patterns\di\SendEmail163;
+use patterns\di\SendEmailQq;
+use patterns\di\TencentSender;
+use patterns\di\UserDi;
 use think\Controller;
 use think\Db;
 use think\facade\Cache;
@@ -243,7 +250,7 @@ class IndexController extends FrontendController
     * @ $pid 父级 id
     * @ $child定义下级开始 的K
     * @ 下级开始坐标
-    * */
+    **/
     public function make_tree($list, $pk = 'id', $pid = 'sjdl', $child = '_child', $root = 0)
     {
         $tree = array();
@@ -263,10 +270,10 @@ class IndexController extends FrontendController
         return $tree;
     }
 
-    /**
+    /*
      * 根据银行卡账号获取所属银行信息
-     * @param $card
-     * @return string|void
+     * @ param $card
+     * @ return string|void
      */
     public function bankInfo($card)
     {
@@ -290,11 +297,23 @@ class IndexController extends FrontendController
         return '该卡号信息暂未录入';
     }
 
-    public function test001()
+    /**
+     * 测试依赖注入
+     */
+    public function testDi()
     {
+        $comment1 = new Comment(new GmailSender());
+        $comment1->save(); // GmailSender
 
-        $res = $this->bankInfo('5324582111575275');
-        halt($res);
+        $comment2 = new Comment(new TencentSender());
+        $comment2->save(); // TencentSender
+        die;
+        $data = [
+            'name'=>'Tinywan',
+            'age'=>24
+        ];
+        $cache = new FileCache();
+        var_dump($cache->cacheData("index_demo"));
     }
 
 }
