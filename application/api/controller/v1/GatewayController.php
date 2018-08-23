@@ -13,6 +13,7 @@
 
 namespace app\api\controller\v1;
 
+use app\api\exception\GatewayException;
 use app\api\service\AgentService;
 use app\api\service\PayService;
 use app\common\controller\ApiController;
@@ -23,6 +24,7 @@ use app\common\repositories\channel\SandPay;
 use app\common\repositories\contracts\ChannelRepositoryInterface;
 use app\common\services\payment\PaymentService;
 use think\Container;
+use think\Exception;
 use think\facade\App;
 use think\facade\Log;
 use think\facade\Response;
@@ -48,6 +50,7 @@ class GatewayController extends ApiController
         'pay.trade.unQuickpay' => [\app\api\service\PaymentService::class, 'unQuickpay'],
         'agents.trade.pay' => [\app\api\service\AgentService::class, 'pay'],
         'agents.trade.cash' => [\app\api\service\AgentService::class, 'cash'],
+        'alipay.trade.web' => [\app\api\service\AliPayService::class, 'web'],
     ];
 
     /**
@@ -89,22 +92,21 @@ class GatewayController extends ApiController
         Log::debug("[新支付网关]" . json_encode($post));
         $data = [
             'mch_id' => 12001,
-            'method' => 'pay.trade.gateWay',
+            'method' => 'agents.trade.pay',
         ];
-        Log::debug("[新支付网关] Class " . static::API_SERVICE_LIST[$data['method']][0]);
-        Log::debug("[新支付网关] Action " . static::API_SERVICE_LIST[$data['method']][1]);
+        Log::debug("[新支付网关] 服务类 " . static::API_SERVICE_LIST[$data['method']][0]);
+        Log::debug("[新支付网关] 支付方式 " . static::API_SERVICE_LIST[$data['method']][1]);
         // 2、支付服务路由
         $routeControl = App::invokeClass(static::API_SERVICE_LIST[$data['method']][0]);
         $routeAction = static::API_SERVICE_LIST[$data['method']][1];
         $data['payment'] = $routeAction;
         $result = $routeControl->$routeAction($data);
-        if ($result['success']) {
-            $msg = $result['msg'] ?? '成功1111';
-            return self::responseJson(true, $msg, $result['errorCode'], $result['data']);
-        } else {
-            Log::error(' 网关接口异步通知处理失败，错误原因: ' . json_encode($result));
-            return self::responseJson(false, $result['msg'], $result['errorCode']);
+        if (!$result['success']) {
+            Log::error('网关接口异步通知处理失败，错误原因: ' . json_encode($result));
+            throw new GatewayException(['msg'=>$result['msg']]);
         }
+        $msg = $result['msg'] ?? '成功1111';
+        return self::responseJson(true, $msg, $result['errorCode'], $result['data']);
     }
 
     /**

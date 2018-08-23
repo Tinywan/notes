@@ -20,13 +20,13 @@ use think\Exception;
  */
 class BaseException extends Exception
 {
-    // http 状态码
+    // http 状态码 200、404
     public $code = 400;
 
-    // 错误信息
+    // 错误具体信息
     public $msg = 'invalid parameters';
 
-    // 错误代码
+    // 自定义的错误代码
     public $errorCode = 999;
 
     public $shouldToClient = true;

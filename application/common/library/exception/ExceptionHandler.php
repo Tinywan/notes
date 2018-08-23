@@ -19,15 +19,22 @@ use think\facade\Request;
 
 class ExceptionHandler extends Handle
 {
-    // http 状态码
+    // http 状态码 200、404
     private $code;
 
-    // 错误信息
+    // 错误具体信息
     private $msg;
 
-    // 错误代码
+    // 自定义的错误代码
     private $errorCode;
 
+    /**
+     * 重写reader方法
+     * @auther Tinywan 756684177@qq.com
+     * @DateTime 2018/8/23 22:10
+     * @param Exception $e
+     * @return \think\Response|\think\response\Json
+     */
     public function render(Exception $e)
     {
         if ($e instanceof BaseException)
@@ -46,7 +53,7 @@ class ExceptionHandler extends Handle
             }
 
             $this->code = 404;
-            $this->msg = 'sorry，we make a mistake. (^o^)Y';
+            $this->msg = 'sorry，we make a mistake. ( ^_^ )';
             $this->errorCode = 999;
             $this->recordErrorLog($e);
         }
@@ -60,8 +67,11 @@ class ExceptionHandler extends Handle
         return json($result, $this->code);
     }
 
-    /*
+    /**
      * 异常写入日志
+     * @auther Tinywan 756684177@qq.com
+     * @DateTime 2018/8/23 22:10
+     * @param Exception $e
      */
     private function recordErrorLog(Exception $e)
     {
