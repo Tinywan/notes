@@ -17,7 +17,6 @@ class GmailSender implements EmailSenderInterface
     // 实现发送邮件的类方法
     public function send()
     {
-        // TODO: Implement send() method.
-        echo __CLASS__;
+        return "谷歌邮箱";
     }
 }

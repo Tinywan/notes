@@ -32,13 +32,13 @@ class Comment
     // 保存评论
     public function save()
     {
-        $this->afterInsert();
+        return $this->afterInsert();
     }
 
     // 当有新的评价，即 save() 方法被调用之后中，会触发以下方法
     protected function afterInsert()
     {
         // 发送邮件
-        $this->_eMailSender->send();
+        return $this->_eMailSender->send();
     }
 }

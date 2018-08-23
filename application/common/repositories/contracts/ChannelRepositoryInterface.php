@@ -34,12 +34,12 @@ interface ChannelRepositoryInterface
 //     */
 //    public function unQuickpay($option);
 //
-//    /**
-//     * 银联wap
-//     * @param $option
-//     * @return mixed
-//     */
-//    public function unPayWap($option);
+    /**
+     * 银联wap
+     * @param $option
+     * @return mixed
+     */
+    public function unPayWap($option);
 //
 //    /**
 //     * qq扫码

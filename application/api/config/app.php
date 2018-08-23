@@ -17,6 +17,16 @@ return [
     // 应用调试模式
     'app_debug' => true,
 
+    // 接口服务列表
+    'api_service_class' => [
+        'pay.trade.web' =>        [\app\common\services\payment\PaymentService::class, 'web'],
+        'pay.trade.gateWay' =>    [\app\common\services\payment\PaymentService::class, 'gateWay'],
+        'pay.trade.unPayWap' =>   [\app\common\services\payment\PaymentService::class, 'unPayWap'],
+        'pay.trade.unQuickpay' => [\app\common\services\payment\PaymentService::class, 'unQuickpay'],
+        'agents.trade.pay' =>     [\app\api\service\AgentService::class, 'pay'],
+        'agents.trade.cash' =>    [\app\api\service\AgentService::class, 'cash'],
+    ],
+
     // 渠道路由列表
     'channel_class' => [
         'heepay' => \app\common\repositories\channel\HeePay::class,

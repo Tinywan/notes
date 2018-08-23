@@ -4,19 +4,11 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/8/21 15:51
- * |  Mail: Overcome.wan@Gmail.com
- * |  Desc: 依赖注入
+ * |  DateTime: 2018/8/23 11:41
+ * |  Mail: 756684177@qq.com
+ * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace patterns\di;
-
-
-class TencentSender implements EmailSenderInterface
-{
-    // 实现发送邮件的类方法
-    public function send()
-    {
-        return "QQ邮箱";
-    }
-}
+return [
+    'PaymentServiceRepository'      => \app\api\service\PaymentServiceRepository::class
+];

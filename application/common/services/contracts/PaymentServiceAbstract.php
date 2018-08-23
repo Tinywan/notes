@@ -11,43 +11,8 @@
 
 namespace app\common\services\contracts;
 
-use app\common\repositories\contracts\ChannelRepositoryInterface;
-
 abstract class PaymentServiceAbstract implements PaymentServiceInterface
 {
-    /**
-     * 渠道仓库接口
-     * @var ChannelRepositoryInterface
-     */
-    protected $channelRepository;
-
-    /**
-     * 网关接口列表
-     * @var
-     */
-    protected $methodList;
-
-    /**
-     * 网关支付方式
-     * @var
-     */
-    protected $paymentMethod;
-
-    /**
-     * Repository 注入到service
-     */
-    public function __construct(ChannelRepositoryInterface $channelRepository)
-    {
-        $this->channelRepository = $channelRepository;
-        $this->methodList = config("api_method_list");
-        $this->paymentMethod = config("payment_method");
-    }
-
-    public function gateWay($params)
-    {
-        // TODO: Implement gateWay() method.
-    }
-
     public function unPayWap($params)
     {
         // TODO: Implement unPayWap() method.

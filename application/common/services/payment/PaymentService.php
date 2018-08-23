@@ -23,25 +23,19 @@ use think\facade\Log;
  */
 class PaymentService extends PaymentServiceAbstract
 {
-    /**
-     * 渠道仓库接口
-     * @var ChannelRepositoryInterface
-     */
+    // 渠道仓库接口
     protected $channelRepository;
 
-    /**
-     * 网关接口列表
-     * @var
-     */
+    // 网关接口列表
     protected $methodList;
 
-    /**
-     * 网关支付方式
-     * @var
-     */
+    // 网关支付方式
     protected $paymentMethod;
+
     /**
-     * Repository 注入到service
+     * Repository 接口，注入到service
+     * PaymentService constructor.
+     * @param ChannelRepositoryInterface $channelRepository
      */
     public function __construct(ChannelRepositoryInterface $channelRepository)
     {
@@ -49,6 +43,7 @@ class PaymentService extends PaymentServiceAbstract
         $this->methodList = config("api_method_list");
         $this->paymentMethod = config("payment_method");
     }
+
     /**
      * 渠道支付
      * @param $data
@@ -86,14 +81,14 @@ class PaymentService extends PaymentServiceAbstract
             'method'=>$method,
             'channel'=>'sandPay',
         ];
-        //$result = $this->channelRepository->gateWay($channelData);
-//        if ($result){
-//            return $this->returnData(true, '订单创建成功！', 200,$result);
-//        }else{
-//            // 渠道错误信息
-//            $error = $this->channelRepository->getError();
-//            return $this->returnData(false,$error['msg'], $error['errorCode'],  $error['data']);
-//        }
+        $result = $this->channelRepository->gateWay($channelData);
+        if ($result){
+            return $this->returnData(true, '订单创建成功！', 200,$result);
+        }else{
+            // 渠道错误信息
+            $error = $this->channelRepository->getError();
+            return $this->returnData(false,$error['msg'], $error['errorCode'],  $error['data']);
+        }
     }
 
     // 网关

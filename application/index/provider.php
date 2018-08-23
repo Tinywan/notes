@@ -6,17 +6,10 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2018/8/21 15:51
  * |  Mail: Overcome.wan@Gmail.com
- * |  Desc: 依赖注入
+ * |  Desc: 容器批量绑定
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace patterns\di;
-
-
-class TencentSender implements EmailSenderInterface
-{
-    // 实现发送邮件的类方法
-    public function send()
-    {
-        return "QQ邮箱";
-    }
-}
+return [
+    'car'      => \demo\Car::class,
+    'comment'      => \patterns\di\Comment::class,
+];
