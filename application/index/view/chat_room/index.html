@@ -9,8 +9,9 @@
 <div class="row">
     WSS send content：<input type="text" style="height: 50px; width: 100%;" name="data" id="data">
     <p></p>
-    <button id="submit" onclick="sub()">send info</button>
+    <button id="submit" onclick="sub()">发送</button>
     <p></p>
+    <div>在线人数：<span id="current-online-number"></span></div>
     <div id="output"></div>
 </div>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
@@ -82,6 +83,11 @@
                 break;
             case 'join': // 加入直播间
                 console.log('join=======>' + data.commentList);
+                console.log('currentNum=======>' + data.currentNum);
+                console.log('userId=======>' + userId);
+                console.log('data.userId=======>' + data.userId);
+                // 当前在线人数
+                $("#current-online-number").html(data.currentNum);
                 // 如果当前userUid 等于加入userId 则加载历史最新评论
                 if(data.userId == userId) {
                     var listData = data.commentList;
@@ -89,40 +95,41 @@
                         console.log(obj);
                         var jj = JSON.parse(obj);
                         writeToScreen(
-                            '<span style="color: green;"> 【' + ' 聊天 ' + '】</span>' +
-                            '<span style="color: green;"> [' + jj.userName + ']</span>' +
-                            '<span style="color: #0000cc;"> (' + jj.commentTime + ')</span>' +
+                            '<span style="color: green;"> [' + '聊天' + ']</span>' +
+                            '<span style="color: green;"> ' + jj.userName + '</span>:' +
+//                            '<span style="color: #0000cc;"> (' + jj.commentTime + ')</span>' +
                             '<span style="color: black;"> ' + jj.content + '</span>'
                         );
                     });
                 }
                 writeToScreen(
-                    '<span style="color: #0000cc;"> 【' + ' 进入 ' + '】</span>' +
-                    '<span style="color: green;"> [' + data.userName + ']</span>' +
-                    '<span style="color: green;"> (' + data.joinTime + ')</span>' +
+                    '<span style="color: #0000cc;"> [' + '进入' + ']</span>' +
+//                    '<span style="color: green;"> (' + data.joinTime + ')</span>' +
+                    '<span style="color: green;"> ' + data.userName + '</span>' +
                     '<span style="color: green;"> ' + data.message + '</span>'
                 );
                 break;
             case 'say': // 发表评论
                 console.log('say========>' + data);
                 writeToScreen(
-                    '<span style="color: #770088;"> 【' + ' 聊天 ' + '】</span>' +
-                    '<span style="color: red;"> [' + data.userName + ']</span>' +
-                    '<span style="color: #0000cc;"> (' + data.commentTime + ')</span>' +
+                    '<span style="color: #770088;"> [' + '聊天' + ']</span>' +
+                    '<span style="color: red;"> ' + data.userName + '</span>:' +
+//                    '<span style="color: #0000cc;"> (' + data.commentTime + ')</span>' +
                     '<span style="color: black;"> ' + data.content + '</span>'
                 );
                 break;
             case 'notice': // 系统通知
                 console.log('notice========>' + data);
                 writeToScreen(
-                    '<span style="color: red; font-weight: bold;"> 【' + ' 系统 ' + '】</span>' +
+                    '<span style="color: red; font-weight: bold;"> [' + '系统' + ']</span>' +
                     '<span style="color: red; font-weight: bold;"> ' + data.msg + '</span>'
                 );
                 break;
             case 'logout': // 用户退出
-                console.log('logout=======>' + data);
+                console.log('logout=======>' + data.currentNum);
+                $("#current-online-number").html(data.currentNum);
                 writeToScreen(
-                    '<span style="color: red;"> 【' + ' 退出 ' + '】</span>' +
+                    '<span style="color: red;"> [' + '离开' + ']</span>' +
                     '<span style="color: red;"> (' + data.outTime + ')</span>' +
                     '<span style="color: red;"> ' + data.msg + '</span>'
                 );
