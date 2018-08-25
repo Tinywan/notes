@@ -48,6 +48,7 @@
 - [x] [根据银行卡账号获取所属银行](http://notes.env/index/index/test001)
 - [x] [依赖注入详解](https://www.kancloud.cn/tinywan/tinywan_001/737001)
 - [x] [如何使用依赖注入解决多个缓存切换的依赖](https://www.kancloud.cn/tinywan/tinywan_001/737001)
+- [x] 增加[yaconf](https://github.com/laruence/yaconf)配置文件  
 - [ ] `支付异步`和`提现异步`以及`转账异步`回调如何通过分布式队列去完成   
 - [ ] Swoole 接入  
 
