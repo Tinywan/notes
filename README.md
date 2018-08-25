@@ -47,8 +47,8 @@
 - [x] UUID这个PHP扩展可以生成唯一识别码，可以个=能生成唯一的完全数字签名
 - [x] [根据银行卡账号获取所属银行](http://notes.env/index/index/test001)
 - [x] [依赖注入详解](https://www.kancloud.cn/tinywan/tinywan_001/737001)
-- [x] [如何使用依赖注入解决多个缓存切换的依赖](https://www.kancloud.cn/tinywan/tinywan_001/737001)
-- [x] 增加[yaconf](https://github.com/laruence/yaconf)配置文件  
+- [x] [如何使用依赖注入解决多个缓存切换的依赖]  (https://www.kancloud.cn/tinywan/tinywan_001/737001)  
+- [x] [增加 yaconf 配置文件](https://www.cnblogs.com/tinywan/p/9528200.html)  
 - [ ] `支付异步`和`提现异步`以及`转账异步`回调如何通过分布式队列去完成   
 - [ ] Swoole 接入  
 
@@ -70,7 +70,7 @@
 ```php
 Route::get("api/:version/token/user","api/:version.Token/getToken");
 // 或者 \think\facade\Route::get("api/:version/token/user","api/:version.Token/getToken");
-```  
+```
 >定义路由前访问地址：`http://tp51.env/api/v1.token/getToken`  
 >定义路由后访问地址：`http://tp51.env/api/v1/token/user`  
 
@@ -137,7 +137,7 @@ class CreateUser extends Command
 return [
     \app\common\console\CreateUser::class
 ];
-```  
+```
 #### 执行命令  
 
 在终端（terminal）中执行  
@@ -165,7 +165,7 @@ return [
      Hello,systemUser!
      
      createapp\common\components\test\SystemUser::create
-    ```  
+    ```
 
 * 方式四：  
     ```php
