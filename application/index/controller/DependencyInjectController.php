@@ -15,13 +15,20 @@ namespace app\index\controller;
 use demo\Car;
 use demo\DriverInterface;
 use demo\MyDrive;
+use patterns\decorator\Canvas;
+use patterns\decorator\ColorDrawDecorator;
+use patterns\decorator\SizeDrawDecorator;
 use patterns\di\Comment;
 use patterns\di\EmailSenderInterface;
 use patterns\di\GmailSender;
 use patterns\di\TencentSender;
+use patterns\strategy\FemaleUserStrategy;
+use patterns\strategy\MaleUserStrategy;
+use patterns\strategy\ShowPage;
 use think\Container;
+use think\Controller;
 
-class DependencyInjectController
+class DependencyInjectController extends Controller
 {
     /**
      * 使用容器
@@ -84,5 +91,33 @@ class DependencyInjectController
     {
         $movie = \Yaconf::get('movie');
         print_r($movie);
+    }
+
+    /**
+     * 策略模式
+     * http://notes.env/index/dependency_inject/strategyDemo
+     */
+    public function strategyDemo()
+    {
+        $show = new ShowPage();
+        if(isset($_GET['female'])){
+            $show->setStrategy(new FemaleUserStrategy());
+        }else{
+            $show->setStrategy(new MaleUserStrategy());
+        }
+        $show->show();
+    }
+
+    /**
+     * http://notes.env/index/dependency_inject/CanvasDemo
+     */
+    public function CanvasDemo()
+    {
+        $canvas = new Canvas();
+        $canvas->init();
+        $canvas->rect(3,6,4,12);
+        $canvas->addDecorator(new ColorDrawDecorator('green'));
+        $canvas->addDecorator(new SizeDrawDecorator('40px'));
+        $canvas->draw();
     }
 }
