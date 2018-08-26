@@ -120,4 +120,11 @@ class DependencyInjectController extends Controller
         $canvas->addDecorator(new SizeDrawDecorator('40px'));
         $canvas->draw();
     }
+
+    public function containerDemo01()
+    {
+        var_dump(get_class(Container::getInstance()));
+        echo '---------------';
+        var_dump(get_class(Container::getInstance()));
+    }
 }
