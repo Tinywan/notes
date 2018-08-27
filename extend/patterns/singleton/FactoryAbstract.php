@@ -11,9 +11,13 @@
 
 namespace patterns\singleton;
 
-abstract class FactoryAbstract {
-
+abstract class FactoryAbstract
+{
     protected static $instances = array();
+
+    protected function __construct()
+    {
+    }
 
     public static function getInstance()
     {
@@ -24,7 +28,8 @@ abstract class FactoryAbstract {
         return self::$instances[$className];
     }
 
-    public static function removeInstance() {
+    public static function removeInstance()
+    {
         $className = self::getClassName();
         if (array_key_exists($className, self::$instances)) {
             unset(self::$instances[$className]);
@@ -32,11 +37,12 @@ abstract class FactoryAbstract {
     }
 
     // 获取静态方法调用的类名
-    final protected static function getClassName() {
+    final protected static function getClassName()
+    {
         return get_called_class();
     }
 
-    protected function __construct() { }
-
-    final protected function __clone() { }
+    final protected function __clone()
+    {
+    }
 }

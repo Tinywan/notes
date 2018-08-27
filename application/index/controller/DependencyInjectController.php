@@ -17,11 +17,16 @@ use demo\DriverInterface;
 use demo\MyDrive;
 use patterns\decorator\Canvas;
 use patterns\decorator\ColorDrawDecorator;
+use patterns\decorator\ConcreteComponent;
+use patterns\decorator\ConcreteDecoratorA;
+use patterns\decorator\ConcreteDecoratorB;
 use patterns\decorator\SizeDrawDecorator;
 use patterns\di\Comment;
 use patterns\di\EmailSenderInterface;
 use patterns\di\GmailSender;
 use patterns\di\TencentSender;
+use patterns\factory\MySystemFactory;
+use patterns\factory\SystemFactory;
 use patterns\singleton\FirstProduct;
 use patterns\singleton\RedisTest;
 use patterns\singleton\SecondProduct;
@@ -36,8 +41,9 @@ class DependencyInjectController extends Controller
     /**
      * 使用容器
      */
-    public function index(){
-        Container::getInstance()->bindTo('car',Car::class);
+    public function index()
+    {
+        Container::getInstance()->bindTo('car', Car::class);
         $car = Container::get('car');
         $res = $car->test();
         halt($res);
@@ -46,15 +52,17 @@ class DependencyInjectController extends Controller
     /**
      * 使用非静态方法实例化一个容器
      */
-    public function index1(){
+    public function index1()
+    {
         $container = new Container();
-        $res = $container->instance('car',new Car());
+        $res = $container->instance('car', new Car());
         $car = $container->get();
         halt($res);
     }
 
-    public function index2(){
-        bind('car',Car::class); // Cannot instantiate interface demo\Driver
+    public function index2()
+    {
+        bind('car', Car::class); // Cannot instantiate interface demo\Driver
         // 1 $driver = new ManDriver
         // 2 $car = new Car($driver)
         $car = app('car');
@@ -62,9 +70,10 @@ class DependencyInjectController extends Controller
         halt($res);
     }
 
-    public function index3(){
-        Container::getInstance()->bindTo('car',Car::class);
-        Container::set(DriverInterface::class,MyDrive::class);
+    public function index3()
+    {
+        Container::getInstance()->bindTo('car', Car::class);
+        Container::set(DriverInterface::class, MyDrive::class);
         $car = app('car');
         $res = $car->run();
         halt($res);
@@ -74,9 +83,10 @@ class DependencyInjectController extends Controller
      * 注册依赖关系
      * 如果注入一个接口的话，如果实例化一个具体的类，需要注册依赖关系
      */
-    public function index4(){
-        Container::getInstance()->bindTo('comment',Comment::class);
-        Container::set(EmailSenderInterface::class,GmailSender::class);
+    public function index4()
+    {
+        Container::getInstance()->bindTo('comment', Comment::class);
+        Container::set(EmailSenderInterface::class, GmailSender::class);
         $car = app('comment');
         $res = $car->save();
         halt($res);
@@ -84,7 +94,7 @@ class DependencyInjectController extends Controller
 
     public function index5()
     {
-        Container::set(EmailSenderInterface::class,TencentSender::class);
+        Container::set(EmailSenderInterface::class, TencentSender::class);
         $comment = Container::get('comment');
         $res = $comment->save();
         halt($res);
@@ -103,9 +113,9 @@ class DependencyInjectController extends Controller
     public function strategyDemo()
     {
         $show = new ShowPage();
-        if(isset($_GET['female'])){
+        if (isset($_GET['female'])) {
             $show->setStrategy(new FemaleUserStrategy());
-        }else{
+        } else {
             $show->setStrategy(new MaleUserStrategy());
         }
         $show->show();
@@ -118,7 +128,7 @@ class DependencyInjectController extends Controller
     {
         $canvas = new Canvas();
         $canvas->init();
-        $canvas->rect(3,6,4,12);
+        $canvas->rect(3, 6, 4, 12);
         $canvas->addDecorator(new ColorDrawDecorator('green'));
         $canvas->addDecorator(new SizeDrawDecorator('40px'));
         $canvas->draw();
@@ -137,7 +147,7 @@ class DependencyInjectController extends Controller
         var_dump($redis1);
         $redis2 = RedisTest::getInstance();
         var_dump($redis2);
-        if($redis1 === $redis2){
+        if ($redis1 === $redis2) {
             echo '同一个对象实例';
         }
         $redis1->host = '127.0.0.1';
@@ -158,4 +168,32 @@ class DependencyInjectController extends Controller
         print_r(SecondProduct::getInstance()->a);
         // Array ( [0] => 2 [1] => 22 )
     }
+
+    /**
+     * 工厂模式
+     */
+    public function MySystemFactory()
+    {
+        //创建我的系统工厂
+        $factory = new SystemFactory();
+        //用我的系统工厂分别创建不同系统对象
+        print_r($factory->createSystem('Linux')); // patterns\factory\LinuxSystem Object ( )
+        echo "<br>";
+        print_r($factory->createSystem('Win')); // patterns\factory\WinSystem Object ( )
+        echo "<br>";
+        print_r($factory->createSystem('Mac')); // patterns\factory\MacSystem Object ( )
+    }
+
+    public function ConcreteComponent()
+    {
+        $component = new ConcreteComponent(); // 具体组件类
+        $decoratorA = new ConcreteDecoratorA($component);
+        $decoratorB = new ConcreteDecoratorB($component);
+
+        $decoratorA->operation();//输出：A加点酱油;
+        echo '<br>--------<br>';
+        $decoratorB->operation();//输出：A加点酱油;B加点辣椒;
+    }
+
+
 }
