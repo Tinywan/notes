@@ -22,6 +22,9 @@ use patterns\di\Comment;
 use patterns\di\EmailSenderInterface;
 use patterns\di\GmailSender;
 use patterns\di\TencentSender;
+use patterns\singleton\FirstProduct;
+use patterns\singleton\RedisTest;
+use patterns\singleton\SecondProduct;
 use patterns\strategy\FemaleUserStrategy;
 use patterns\strategy\MaleUserStrategy;
 use patterns\strategy\ShowPage;
@@ -126,5 +129,33 @@ class DependencyInjectController extends Controller
         var_dump(get_class(Container::getInstance()));
         echo '---------------';
         var_dump(get_class(Container::getInstance()));
+    }
+
+    public function singletonDemo01()
+    {
+        $redis1 = RedisTest::getInstance();
+        var_dump($redis1);
+        $redis2 = RedisTest::getInstance();
+        var_dump($redis2);
+        if($redis1 === $redis2){
+            echo '同一个对象实例';
+        }
+        $redis1->host = '127.0.0.1';
+        $redis2->host = '192.168.1.12';
+        var_dump($redis1->host); //  192.168.1.12
+        var_dump($redis2->host); // 192.168.1.12
+    }
+
+    public function singletonDemo02()
+    {
+        FirstProduct::getInstance()->a[] = 1;
+        SecondProduct::getInstance()->a[] = 2;
+        FirstProduct::getInstance()->a[] = 11;
+        SecondProduct::getInstance()->a[] = 22;
+
+        print_r(FirstProduct::getInstance()->a);
+        // Array ( [0] => 1 [1] => 11 )
+        print_r(SecondProduct::getInstance()->a);
+        // Array ( [0] => 2 [1] => 22 )
     }
 }
