@@ -15,10 +15,11 @@ namespace app\index\controller;
 use demo\Car;
 use demo\DriverInterface;
 use demo\MyDrive;
+use patterns\decorator\AfterAdviceDecorator;
 use patterns\decorator\Canvas;
 use patterns\decorator\ColorDrawDecorator;
 use patterns\decorator\ConcreteComponent;
-use patterns\decorator\ConcreteDecoratorA;
+use patterns\decorator\BeforeAdviceDecorator;
 use patterns\decorator\ConcreteDecoratorB;
 use patterns\decorator\SizeDrawDecorator;
 use patterns\di\Comment;
@@ -98,6 +99,18 @@ class DependencyInjectController extends Controller
         $comment = Container::get('comment');
         $res = $comment->save();
         halt($res);
+    }
+
+    /**
+     * 容器闭包
+     */
+    public function index6()
+    {
+        Container::set('temp',function ($domain){
+            return 'hello,' . $domain;
+        });
+        $temp = Container::get('temp',['www.tinywan.com']);
+        halt($temp);
     }
 
     public function yafConf()
@@ -186,14 +199,19 @@ class DependencyInjectController extends Controller
 
     public function ConcreteComponent()
     {
-        $component = new ConcreteComponent(); // 具体组件类
-        $decoratorA = new ConcreteDecoratorA($component);
-        $decoratorB = new ConcreteDecoratorB($component);
+        $component = new ConcreteComponent(); // 具体构件角色,真实对象
+        $component->operator();
+        echo "<hr>";
 
-        $decoratorA->operation();//输出：A加点酱油;
-        echo '<br>--------<br>';
-        $decoratorB->operation();//输出：A加点酱油;B加点辣椒;
+        // 前置增强
+        $afterComponent = new AfterAdviceDecorator($component);
+        $afterComponent->operator();
+        echo "<hr>";
+
+        // + 后置增强
+        $beforeComponent = new BeforeAdviceDecorator($component);
+        $beforeComponent->operator();
+        echo "<hr>";
     }
-
 
 }

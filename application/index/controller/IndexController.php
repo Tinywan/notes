@@ -13,6 +13,7 @@ namespace app\index\controller;
 use app\common\controller\FrontendController;
 use app\common\library\exception\UserException;
 use app\common\library\Oss;
+use app\common\model\User;
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
 use app\common\repositories\channel\SandPay;
@@ -332,4 +333,9 @@ class IndexController extends FrontendController
         var_dump($cache->cacheData("index_demo"));
     }
 
+    public function userHello(User $user){
+        return 'Hello,'.$user->account;
+    }
+
 }
+

@@ -12,20 +12,16 @@
 namespace patterns\decorator;
 
 
-class ConcreteDecoratorA extends Decorator
+class BeforeAdviceDecorator extends Decorator
 {
-    function __construct(ComponentInterface $component)
+    public function __construct(Component $component)
     {
         parent::__construct($component);
     }
 
-    public function operation()
+    public function operator()
     {
-        parent::operation();    //  调用装饰类的操作
-        $this->addedOperationA();   //  新增加的操作
-    }
-
-    public function addedOperationA() {
-        echo 'A加点酱油;';
+        echo '-> 前置增强';
+        $this->_component->operator();
     }
 }

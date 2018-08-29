@@ -11,11 +11,11 @@
 
 namespace patterns\decorator;
 
-// 具体组件类
-class ConcreteComponent implements ComponentInterface
+// 具体构件角色,真实对象
+class ConcreteComponent implements Component
 {
-    public function operation()
+    public function operator()
     {
-        // TODO: Implement operation() method.
+       echo  "具体对象".__CLASS__."的操作";
     }
 }

@@ -4,7 +4,7 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/8/28 0:07
+ * |  DateTime: 2018/8/28 9:41
  * |  Mail: 756684177@qq.com
  * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
@@ -12,21 +12,18 @@
 namespace patterns\decorator;
 
 
-class ConcreteDecoratorB extends Decorator
+class Client
 {
-    function __construct(ComponentInterface $component)
-    {
-        parent::__construct($component);
-    }
+    public function client(){
+        $component = new ConcreteComponent(); // 具体构件角色,真实对象
+        $component->operator();
 
-    public function operation()
-    {
-        parent::operation();    //  调用装饰类的操作
-        $this->addedOperationB();   //  新增加的操作
-    }
+        // 前置增强
+        $afterComponent = new AfterAdviceDecorator($component);
+        $afterComponent->operator();
 
-    public function addedOperationB()
-    {
-        echo '"B加点辣椒;";';
+        // + 后置增强
+        $beforeComponent = new BeforeAdviceDecorator($component);
+        $beforeComponent->operator();
     }
 }

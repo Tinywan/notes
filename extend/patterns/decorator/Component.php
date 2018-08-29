@@ -12,7 +12,8 @@
 namespace patterns\decorator;
 
 
-interface ComponentInterface
+// 抽象构件角色, 真实对象和装饰对象的共有接口. 这样,客户端就能以调用真实对象的相同方式同装饰对象交互.
+interface Component
 {
-    public function operation();
+    public function operator();
 }
