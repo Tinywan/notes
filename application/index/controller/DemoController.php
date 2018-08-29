@@ -11,6 +11,7 @@
 namespace app\index\controller;
 
 use app\common\model\Order;
+use app\common\model\User;
 use app\common\presenter\DateFormatPresenter_tw;
 use app\common\presenter\DateFormatPresenter_uk;
 use app\common\queue\MultiTask;
@@ -20,6 +21,7 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Uuid;
 use redis\BaseRedis;
 use think\Db;
+use think\facade\Cache;
 use think\facade\Config;
 use think\facade\Env;
 use think\facade\Log;
@@ -208,4 +210,42 @@ class DemoController
         var_dump($this->arraysSum([2,33,4.5]));
     }
 
+    public function afterUpdate()
+    {
+        $data = [
+          'id'=>11,
+          'open_id'=>time(),
+          'realname'=>'Tinywan'.rand(1111,999),
+        ];
+        $res = User::update($data);
+        halt($res);
+    }
+
+    public function findData()
+    {
+        $id = 11;
+        $tableName = 'open_user';
+        $cacheKey = static::getCacheKey($tableName,$id);
+        echo $cacheKey;
+        $res = Db::name($tableName)->where($id)->cache($cacheKey,60)->find();
+        halt($res);
+    }
+
+    /**
+     * 获取缓存ID
+     * @param $tableName
+     * @param $id
+     * @return string
+     */
+    public static function getCacheKey($tableName,$id)
+    {
+        return Config::get('database.prefix').$tableName.PATH_SEPARATOR.$id;
+    }
+
+    public function rmData()
+    {
+        Cache::rm('OPEN_USER:11');
+        $res = Cache::get('OPEN_USER:11');
+        halt($res);
+    }
 }
