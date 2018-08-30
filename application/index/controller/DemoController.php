@@ -10,12 +10,14 @@
 
 namespace app\index\controller;
 
+use app\common\library\QrCodeComponent;
 use app\common\model\Order;
 use app\common\model\User;
 use app\common\presenter\DateFormatPresenter_tw;
 use app\common\presenter\DateFormatPresenter_uk;
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
+use Endroid\QrCode\QrCode;
 use Medz\IdentityCard\China\Identity;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Uuid;
@@ -247,5 +249,26 @@ class DemoController
         Cache::rm('OPEN_USER:11');
         $res = Cache::get('OPEN_USER:11');
         halt($res);
+    }
+
+    public function qrCode()
+    {
+        $qrCode = new QrCode('HTTPS://QR.ALIPAY.COM/FKX04086ZBHBWY1JVZ92BB');
+        header('Content-Type: '.$qrCode->getContentType());
+        echo $qrCode->writeString();
+        exit;
+    }
+
+    public function qrCode2()
+    {
+        $config = [
+          'generate' => 'writefile',
+        ];
+        $qr_url = 'HTTPS://QR.ALIPAY.COM/FKX04086ZBHBWY1JVZ92BB';
+        $fileName = Env::get('ROOT_PATH') . '/public/static';
+        $qr_code = new QrCodeComponent($config);
+        $qr_code->create($qr_url);
+        $rs  = $qr_code->generateImg($fileName);
+        print_r($rs);
     }
 }
