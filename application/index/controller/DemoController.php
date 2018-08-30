@@ -11,6 +11,7 @@
 namespace app\index\controller;
 
 use app\common\library\QrCodeComponent;
+use app\common\library\Rsa;
 use app\common\model\Order;
 use app\common\model\User;
 use app\common\presenter\DateFormatPresenter_tw;
@@ -270,5 +271,24 @@ class DemoController
         $qr_code->create($qr_url);
         $rs  = $qr_code->generateImg($fileName);
         print_r($rs);
+    }
+
+    public function rsaDemo()
+    {
+        $rsa = new Rsa();
+        $origin_data = '这是一条测试数据';
+        $encrypt_data = $rsa->privateEncrypt($origin_data);
+        $decrypt_data = $rsa->publicDecrypt($encrypt_data);
+
+        echo '私钥加密后的数据为：' . $encrypt_data;
+        echo "<hr>";
+        echo '公钥解密后的数据为: ' . $decrypt_data;
+    }
+
+    public function configDemo2()
+    {
+        if($rsa = config('security.rsa')){
+            var_dump($rsa);
+        }
     }
 }

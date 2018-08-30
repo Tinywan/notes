@@ -22,5 +22,9 @@ return [
   ],
   'wechat' => [
     'appid' => 'wxb3fxxxxxxxxxxx', // APP APPID
-  ]
+  ],
+//  'rsa' => [
+//    'private_key_path' => \think\facade\Env::get('ROOT_PATH') . '/public/rsa/rsa_private_key.pem', // 私钥路径
+//    'public_key_path' => \think\facade\Env::get('ROOT_PATH') . '/public/rsa/rsa_public_key.pem', // 公钥路径
+//  ]
 ];

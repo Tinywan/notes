@@ -413,3 +413,54 @@ function get_millisecond()
     $millisecond = (float)sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000);
     return $millisecond;
 }
+
+
+/**
+ *  RSA加密
+ * @param mixed $data
+ * @return string
+ */
+function rsa_encode($data)
+{
+    $rsa_public_key = '-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9FEUt1wc+HnTqYx6+sG0E0Szq
+ubnLFePfvlOHUXuMUr2sgsQITIE75iushfK9K4R0r/Kn8Gui6q76czqfF9aonCxf
+RBkDOgRmqecrbftNQ0OrhIH6OJzORXSU04kQaJgbViw/gqNmJloKKvPkMyzjiwt8
+iUogyQGO8hYwyotx/wIDAQAB
+-----END PUBLIC KEY-----';
+    // 从证书中解析公钥，以供使用
+    $public_key = openssl_pkey_get_public($rsa_public_key);
+    // 使用公钥加密数据
+    openssl_public_encrypt($data, $crypted, $public_key);
+    return base64_encode($crypted);
+}
+
+/**
+ * RSA解密
+ * @param $data
+ * @return mixed
+ */
+function rsa_decode($data)
+{
+    $rsa_private_key = '-----BEGIN PRIVATE KEY-----
+MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAL0URS3XBz4edOpj
+Hr6wbQTRLOq5ucsV49++U4dRe4xSvayCxAhMgTvmK6yF8r0rhHSv8qfwa6Lqrvpz
+Op8X1qicLF9EGQM6BGap5ytt+01DQ6uEgfo4nM5FdJTTiRBomBtWLD+Co2YmWgoq
+8+QzLOOLC3yJSiDJAY7yFjDKi3H/AgMBAAECgYEAgMCT1wIsoWU18gFrByi2I+iY
+cIHl/V+7mzlMQcH/om8ZT6Z//LKz8ejrZoCT6bL/cEH7t9YkRX0Ph+X9TiZ6eYod
+ET/gkiuN4S7bCmyKrC9D4umQXc1yppMVl9WtBuY86rq+kzU6/ULLtA14BKGNjoIh
+bACL9iRayZsAcS51llECQQD67c4OLguBHaxxxXGoSAq851+kINBnpWQlkaMTw5W3
+HRADUB1tSxSIq2ZLOHhJYBpl0BCF8j5GB52yqGpjvoqnAkEAwOZ7bf+PqxZwWkkD
+T1/KYCHr3+bduq78dPT3+6qVY577sxY+V5mHHvVwq2XvwxPyJULd97LTix9bC8zz
+8w7A6QJALwKaVgG+WgQrKG1rK7HDgTx/qIoVQTW1G2y7dppv1Ax30YcS3ETypeAm
+m/UKZATDLUvbrJyDmi8XFj+DHwi1hQJBAKDSx89ChRYfxBYRz1eqxj/1qADpKq1M
+3J/p6KICa0A+ORzrC5jfIB84g/HyL74VcAmOwR6VEfdocfDZs/1NrJkCQQC3nhdX
+IVwCfpdEUgWqlivl6LMzGOqwEe2gkn7bYJXB1L0ecrlfrRd3Oble7Okh0VVD5EnB
+PopB7i04RiwfcYdT
+-----END PRIVATE KEY-----';
+    //  从证书中解析私钥，以供使用
+    $private_key = openssl_pkey_get_private($rsa_private_key);
+    // 使用私钥解密数据
+    openssl_private_decrypt(base64_decode($data), $decrypted, $private_key);
+    return $decrypted;
+}
