@@ -1,9 +1,11 @@
 {include file='curd/header'}
+<script src="/static/js/layer/laydate/laydate.js"></script>
+<!--<script type="text/javascript" src="__ADMIN__/lib/My97DatePicker/WdatePicker.js"></script>-->
 <div class="col-sm-12">
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <div class="row text-center">
-                {$search_html|raw}
+                {:htmlspecialchars_decode($search_html)}
                 <br/>
             </div>
             <div class="row">
@@ -17,7 +19,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-                {$table|raw}
+                {:htmlspecialchars_decode($table)}
                 {if $function.delete eq 1}
                 <div style="padding-left: 20px;">
                     <label><input type="checkbox" class="all"> 全选 </label> &nbsp;
@@ -25,7 +27,7 @@
                 </div>
                 {/if}
                 <div class="page-2 text-center">
-                    {$list->render()|raw} <div class="">(当前页码 {$list_array.current_page}, 共计 {$list_array.last_page} 页, 合 {$list_array.total} 条记录)</div>
+                    {$list->render()} <div class="">(当前页码 {$list_array.current_page}, 共计 {$list_array.last_page} 页, 合 {$list_array.total} 条记录)</div>
                 </div>
             </div>
         </div>
@@ -70,6 +72,36 @@
         });
         return ids;
     }
+
+    function ajax(url) {
+        layer.confirm('你确认该操作吗？', {
+            btn: ['确认','取消']
+        }, function() {
+            var index = layer.load(1);
+            $.ajax({
+                type:"post",
+                url:url,
+                data:{},
+                datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                //成功返回之后调用的函数
+                success:function(data){
+                    layer.close(index);
+                    if (data.success == true){
+                        layer.msg(data.message, {icon:1, time:800}, function () {
+                            window.location.reload();
+                        })
+                    }else {
+                        layer.alert(data.message, {icon:2})
+                    }
+                },
+                //调用出错执行的函数
+                error: function(){
+                    layer.close(index);
+                    layer.alert('系统异常')
+                }
+            });
+        });
+    }
 </script>
 <script>
     $(function () {
@@ -80,6 +112,9 @@
             }else{
                 $("#list :checkbox").prop("checked", false);
             }
+        });
+        $('tr').click(function () {
+            $(this).css("background-color", "#e5e5e5").siblings().css("background-color", "");
         });
 
         $('#del-all').click(function () {
@@ -116,6 +151,18 @@
                     }
                 });
             })
+        });
+
+        $('#excelExportData').click(function () {
+            document.getElementById("form").action = "{:url('excelExportData')}";
+            $('#form').attr('target', '_bland');
+            document.getElementById("form").submit();
+        });
+
+        $('#search').click(function () {
+            document.getElementById("form").action = "";
+            $('#form').removeAttr('target');
+            document.getElementById("form").submit();
         })
     });
 </script>

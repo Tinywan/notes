@@ -18,8 +18,8 @@ return [
   'auto_rule'    => 1,
   // 全局替换
   'tpl_replace_string'  =>  [
+    '__STATIC__'=>'/static',
     '__COMMON__'=>'/assets',
-    '__STATIC__'=>'/assets/admin',
     '__JS__' => '/assets/admin/js',
     '__CSS__' => '/assets/admin/css',
     '__IMG__' => '/assets/admin/img',

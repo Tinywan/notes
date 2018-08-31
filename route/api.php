@@ -28,3 +28,6 @@ Route::get("api/:version/return","api/:version.Gateway/returnUrl");
 
 // 这里配置路由一定是post呀，坑啊
 Route::rule("api/:version/notify","api/:version.Gateway/notifyUrl");
+
+// App 登录 api/v1/login
+Route::post("api/:version/login","api/:version.Auth/login");

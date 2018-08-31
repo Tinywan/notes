@@ -414,6 +414,32 @@ function get_millisecond()
     return $millisecond;
 }
 
+/**
+ * 生成随机字符
+ * @param int $length
+ * @return string
+ */
+function rand_char($length = 6)
+{
+    // 密码字符集，可任意添加你需要的字符
+    $chars = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+      'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+      't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
+      'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+      'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+      '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!',
+      '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_',
+      '[', ']', '{', '}', '<', '>', '~', '`', '+', '=', ',',
+      '.', ';', ':', '/', '?', '|');
+    $keys = array_rand($chars, $length);
+    $password = '';
+    for ($i = 0; $i < $length; $i++) {
+        // 将 $length 个数组元素连接成字符串
+        $password .= $chars[$keys[$i]];
+    }
+    return $password;
+}
+
 
 /**
  *  RSA加密
@@ -463,4 +489,56 @@ PopB7i04RiwfcYdT
     // 使用私钥解密数据
     openssl_private_decrypt(base64_decode($data), $decrypted, $private_key);
     return $decrypted;
+}
+
+/**
+ * 返回json数据
+ * @param int $code
+ * @param string $msg
+ * @param array $data
+ * @param int $http_code
+ * @param bool $is_object
+ * @return \think\response\Json
+ */
+function jsonResponse($code = 0, $msg = '', $data = [], $http_code = 200, $is_object = true)
+{
+    if (empty($data) && $is_object){
+        $data = (object)$data;
+    }
+    $result = [
+      'code' => $code,
+      'msg' => $msg,
+      'data' => $data,
+    ];
+    \think\facade\Log::debug('Api Return：' . json_encode($result));
+    return json($result,$http_code);
+}
+
+/**
+ * 后台json输出
+ * @param $success
+ * @param $message
+ * @param array $data
+ * @param int $code
+ * @param int $http_code
+ * @return \think\response\Json
+ */
+function rJson($success, $message, $data = [], $code = 0, $http_code = 200){
+    if (empty($message)) {
+        $message = '未知信息';
+    }
+    if (empty($data)) {
+        $data = (object)[];
+    }
+
+    $result = [
+      'success' => $success,
+      'message' => $message,
+      'code' => $code,
+      'data' => $data,
+    ];
+
+    \think\facade\Log::debug('前台输出：' . json_encode($result));
+
+    return json($result, $http_code);
 }

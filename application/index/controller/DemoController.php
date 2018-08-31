@@ -161,7 +161,6 @@ class DemoController
     public function Uuid()
     {
         try {
-
             // Generate a version 1 (time-based) UUID object
             //$uuid1 = Uuid::uuid1();
             //echo $uuid1->toString() . "\n"; // i.e. e4eaaaf2-d142-11e1-b3e4-080027620cdd
@@ -276,9 +275,21 @@ class DemoController
     public function rsaDemo()
     {
         $rsa = new Rsa();
-        $origin_data = '这是一条测试数据';
+        $origin_data = '123456';
         $encrypt_data = $rsa->privateEncrypt($origin_data);
         $decrypt_data = $rsa->publicDecrypt($encrypt_data);
+
+        echo '私钥加密后的数据为：' . $encrypt_data;
+        echo "<hr>";
+        echo '公钥解密后的数据为: ' . $decrypt_data;
+    }
+
+    public function rsaDemo2()
+    {
+        $rsa = new Rsa();
+        $origin_data = '123456';
+        $encrypt_data = rsa_encode($origin_data);
+        $decrypt_data = rsa_decode($encrypt_data);
 
         echo '私钥加密后的数据为：' . $encrypt_data;
         echo "<hr>";

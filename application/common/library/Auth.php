@@ -14,9 +14,9 @@ namespace app\common\library;
  * 权限认证类
  * 功能特性：
  * 1，是对规则进行认证，不是对节点进行认证。用户可以把节点当作规则名称实现对节点进行认证。
- *      $auth=new Auth();  $auth->check('规则名称','用户id')
+ *      $auth=new AuthController();  $auth->check('规则名称','用户id')
  * 2，可以同时对多条规则进行认证，并设置多条规则的关系（or或者and）
- *      $auth=new Auth();  $auth->check('规则1,规则2','用户id','and')
+ *      $auth=new AuthController();  $auth->check('规则1,规则2','用户id','and')
  *      第三个参数为and时表示，用户需要同时具有规则1和规则2的权限。 当第三个参数为or时，表示用户值需要具备其中一个条件即可。默认为or
  * 3，一个用户可以属于多个用户组(think_auth_group_access表 定义了用户所属用户组)。我们需要设置每个用户组拥有哪些规则(think_auth_group 定义了用户组权限)
  *

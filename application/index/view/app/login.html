@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<input type="text" id="text" >
+<button type="button" id="send" onclick="send()" disabled>SEND</button>
+
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js" type="application/javascript"></script>
+<script>
+    websocket = null;
+    token = '';
+
+    $(document).ready(function(){
+        $("#send").attr("disabled", true);
+        //登录
+        login();
+    });
+
+    function wsConnect() {
+        var wsServer = 'wss://123123';
+        websocket = new WebSocket(wsServer);
+        time = null;
+
+        websocket.onopen = function (evt) {
+            $("#send").attr("disabled", false);
+            console.log("Connected to WebSocket server.");
+            //认证
+            send('{"type":"auth","token":"' + token + '"}');
+        };
+        websocket.onclose = function (evt) {
+            $("#send").attr("disabled", true);
+            if (time != null){
+                clearTimeout(time);
+            }
+            console.log("Disconnected");
+        };
+        websocket.onmessage = function (evt) {
+            var data = JSON.parse(evt.data);
+            switch (data.type) {
+                case 'auth':
+                    ping();
+                    break;
+                case 'error':
+                    alert(data.msg);
+                    break;
+            }
+            console.log('Retrieved data from server: ' + evt.data);
+        };
+        websocket.onerror = function (evt, e) {
+            $("#send").attr("disabled", true);
+            console.log('Error occured: ' + evt.data);
+        };
+    }
+
+    function ping() {
+        websocket.send('{"type":"ping"}');
+        time = setTimeout(function(){
+            ping()
+        }, 5000);
+    }
+
+    function send(str = '') {
+        var txt = $('#text').val();
+        if (txt == '' || txt == undefined){
+            if (str != ''){
+                txt = str;
+            } else {
+                alert('请输入内容！')
+                return false
+            }
+        }
+        websocket.send(txt)
+    }
+
+    function login() {
+        var app_id = 100004;
+        var app_key = 'flUx5jeEMBxuYLuCr2A22ZrUbhL2RnJ3tyycES24TRF7EeDjere+PPvcF4T6nSHeu0HGiwQ+nOjXq6s0E2S9zFgIjrGPKVdAXKhimW9/AcV6Z/nQvH/WbTw4WsSbbIb92Fqr5142Ua+lBH4uRO0g1KgUuSZH3m9m0sPElXz+szo=';
+
+        $.post("/api/v1/login", {app_id: app_id, app_key:app_key}, function (data) {
+            console.log(data);
+            if (data.code == 0){
+                console.log('登录成功');
+                token = data.data.token
+                wsConnect();
+            }else {
+                alert(data.msg)
+            }
+        })
+    }
+</script>
+</body>
+</html>

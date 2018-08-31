@@ -12,10 +12,8 @@
 namespace app\server\controller;
 
 
-use app\common\model\Order;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use think\Db;
 use think\facade\Env;

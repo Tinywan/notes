@@ -12,14 +12,13 @@
 namespace app\index\controller;
 
 use app\common\model\Admin;
-use app\common\model\AdminOperateLogs;
 use app\common\model\Merchant;
 use think\Controller;
 use think\facade\Session;
 
 /**
  * 登录模块
- * Class Auth
+ * Class AuthController
  * @package app\index\controller
  */
 class AuthController extends Controller
@@ -129,7 +128,6 @@ class AuthController extends Controller
             Session::set('merchant_info', $user->toArray());
             return responseJson(true, 0, '登录成功');
         }
-
         return view('merchant_login');
     }
 }
