@@ -55,7 +55,7 @@ class IndexController extends FrontendController
     {
 //        $option['code'] = rand(111,444);
         $option['status'] = '已发货';
-        $option['remark'] = '短信通知';
+        $option['remark'] = '甘肃省天水市麦积区';
         $response = \app\common\library\DySms::sendSms('13669361192', $option, 'SMS_139785103');
         halt($response);
     }

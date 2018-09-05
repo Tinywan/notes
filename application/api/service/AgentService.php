@@ -223,7 +223,7 @@ class AgentService extends BaseService
         if ($merchantInfo) {
             $option['name'] = $merchantInfo['username'];
             $option['amount'] = '10000';
-            $response = Dysms::sendSms($merchantInfo['phone'], $option, 'SMS_139233657');
+            $response = ::sendSms($merchantInfo['phone'], $option, 'SMS_139233657');
             if (strtolower($response->Code) == 'OK') {
                 return [
                   'err_code' => 0,

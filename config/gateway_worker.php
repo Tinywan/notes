@@ -17,7 +17,13 @@ return [
     'host'                  => '0.0.0.0', // 监听地址
     'port'                  => 2348, // 监听端口
     'socket'                => '', // 完整监听地址
-    'context'               => [], // socket 上下文选项
+    'context'               => [
+        'ssl' => [
+            'local_cert'                 => '/home/www/.acme.sh/tinywan.com/tinywan.com.cer',
+            'local_pk'                   => '/home/www/.acme.sh/tinywan.com/tinywan.com.key',
+            'verify_peer'               => false,
+        ]
+    ], // socket 上下文选项
     'register_deploy'       => true, // 是否需要部署register
     'businessWorker_deploy' => true, // 是否需要部署businessWorker
     'gateway_deploy'        => true, // 是否需要部署gateway
