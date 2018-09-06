@@ -302,4 +302,9 @@ class DemoController
             var_dump($rsa);
         }
     }
+
+    public function configDemo3()
+    {
+        var_dump(User::all());
+    }
 }

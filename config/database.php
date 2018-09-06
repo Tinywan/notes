@@ -13,13 +13,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => 'www.tinywan.com',
+    'hostname'        => '172.17.49.216',
     // 数据库名
     'database'        => 'pay',
     // 用户名
-    'username'        => 'pay',
+    'username'        => 'www',
     // 密码
-    'password'        => 'test_9E729C979044BB4FD821E2C9C05C78F06D9E23E5',
+    'password'        => 'Tinywan#d3d3X3N5cWxfMTIzNDU2',
     // 端口
     'hostport'        => '3306',
     // 连接dsn
