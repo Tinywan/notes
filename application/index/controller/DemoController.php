@@ -23,6 +23,7 @@ use Medz\IdentityCard\China\Identity;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Uuid;
 use redis\BaseRedis;
+use redis\lock\RedisLock;
 use think\Db;
 use think\facade\Cache;
 use think\facade\Config;
@@ -306,5 +307,14 @@ class DemoController
     public function configDemo3()
     {
         var_dump(User::all());
+    }
+
+    public function redisLockTest()
+    {
+        $id = 13669361192;
+        $res = RedisLock::acquire_lock($id); // 7f62708bb826c034850783efdba127b3
+        var_dump($res);
+        $res2 = RedisLock::release_lock($id,$res); // true
+        halt($res2);
     }
 }
