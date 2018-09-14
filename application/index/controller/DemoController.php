@@ -311,10 +311,35 @@ class DemoController
 
     public function redisLockTest()
     {
+        var_dump($_SERVER['REQUEST_TIME']);
+        var_dump($lock_timeout = intval(ceil(10)));
         $id = 13669361192;
-        $res = RedisLock::acquire_lock($id); // 7f62708bb826c034850783efdba127b3
+        $res = RedisLock::acquireLock($id); // 7f62708bb826c034850783efdba127b3
         var_dump($res);
-        $res2 = RedisLock::release_lock($id,$res); // true
+    }
+
+    public function redisLockTest2()
+    {
+        $id = 13669361192;
+//        $res2 = RedisLock::releaseLock($id,'5f7728e91d641eada73775faeb0c26c5'); // true
+        $res2 = RedisLock::test($id,'5f7728e91d641eada73775faeb0c26c5'); // true
         halt($res2);
+    }
+
+    public function redisLuaTest()
+    {
+        $script = <<<luascript
+                local result = redis.call('setnx',KEYS[1],ARGV[1]);
+                if result == 1 then
+                    redis.call('expire',KEYS[1],ARGV[2])
+                    return 1
+                elseif redis.call('ttl',KEYS[1]) == -1 then
+                    redis.call('expire',KEYS[1],ARGV[2])
+                    return 0
+                end
+                return 0
+luascript;
+        $res = location_redis()->evaluate($script,['name','Tinywan',360],1);
+        halt($res);
     }
 }

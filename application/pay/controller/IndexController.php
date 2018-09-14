@@ -49,7 +49,7 @@ class IndexController extends PayController
      * "send_pay_date": "2018-07-17 15:59:20",
      * "total_amount": "75.00",
      * "trade_no": "2018071721001004330200593832",
-     * "trade_status": "TRADE_SUCCESS"
+     * "trade_status": ""
      * }
      */
     public function orderQuery()
@@ -104,7 +104,7 @@ class IndexController extends PayController
         if ($orderInfo['status'] == 0) {
             // 4、根据支付渠道结果更新订单
             $orderUpdate = [];
-            if ($result['trade_status'] == 'TRADE_SUCCESS') {
+            if ($result['trade_status'] == '') {
                 $orderUpdate['status'] = 1;
                 $orderUpdate['pay_time'] = time();
             } elseif ($result['trade_status'] == 'WAIT_BUYER_PAY') {
