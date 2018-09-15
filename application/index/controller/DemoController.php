@@ -318,14 +318,6 @@ class DemoController
         var_dump($res);
     }
 
-    public function redisLockTest2()
-    {
-        $id = 13669361192;
-//        $res2 = RedisLock::releaseLock($id,'5f7728e91d641eada73775faeb0c26c5'); // true
-        $res2 = RedisLock::test($id,'5f7728e91d641eada73775faeb0c26c5'); // true
-        halt($res2);
-    }
-
     public function redisLuaTest()
     {
         $script = <<<luascript
@@ -341,5 +333,53 @@ class DemoController
 luascript;
         $res = location_redis()->evaluate($script,['name','Tinywan',360],1);
         halt($res);
+    }
+
+    public function redisLockHttp()
+    {
+        // 获取锁
+        $order_no = 'D183781809141217317557';
+        $orderLock = RedisLock::acquireLock($order_no); // 7f62708bb826c034850783efdba127b3
+        if(!$orderLock){
+            exit('获取锁失败');
+        }else{
+            echo "获取锁成功 ".$orderLock.PHP_EOL;
+        }
+        // 处理业务逻辑
+        // 处理业务逻辑
+        // ............
+        sleep(10);
+        // 释放锁
+        $orderUnLock = RedisLock::releaseLock($order_no,$orderLock); // 7f62708bb826c034850783efdba127b3
+        if(!$orderLock){
+            echo "释放锁失败 ";
+        }else{
+            echo "释放锁成功 ".$orderUnLock.PHP_EOL;
+        }
+        var_dump($orderUnLock);
+    }
+
+    public function redisLockCli()
+    {
+        // 获取锁
+        $order_no = 'D183781809141217317557';
+        $orderLock = RedisLock::acquireLock($order_no); // 7f62708bb826c034850783efdba127b3
+        if(!$orderLock){
+           exit('获取锁失败');
+        }else{
+            echo "获取锁成功 ".$orderLock.PHP_EOL;
+        }
+        // 处理业务逻辑
+        // 处理业务逻辑
+        // ............
+        sleep(5);
+        // 释放锁
+        $orderUnLock = RedisLock::releaseLock($order_no,$orderLock); // 7f62708bb826c034850783efdba127b3
+        if(!$orderLock){
+            echo "释放锁失败 ";
+        }else{
+            echo "释放锁成功 ".$orderUnLock.PHP_EOL;
+        }
+        var_dump($orderUnLock);
     }
 }

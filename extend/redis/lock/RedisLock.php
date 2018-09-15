@@ -21,7 +21,7 @@ class RedisLock
      * @param int $lock_timeout 请求超时时间
      * @return bool|string
      */
-    public static function acquireLock($lock_name, $acquire_time = 3, $lock_timeout = 120)
+    public static function acquireLock($lock_name, $acquire_time = 3, $lock_timeout = 20)
     {
         $identifier = md5($_SERVER['REQUEST_TIME'] . mt_rand(1, 10000000));
         $lock_name = 'LOCK:' . $lock_name;
