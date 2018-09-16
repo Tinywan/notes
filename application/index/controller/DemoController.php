@@ -189,9 +189,12 @@ class DemoController
     public function mongo()
     {
         // 查询操作
-        $user = Db::table('test')
-            ->where('_id','589461c0fc122812b4007411')
-            ->find();
+        $user = Db::name('order')
+          ->where('order_no','=', 'S1807081342018949')
+          ->lock(true)
+          ->fetchSql()
+          ->sequence()
+          ->find();
         halt($user);
     }
 
@@ -204,21 +207,21 @@ class DemoController
     {
         return array_map(function (array $arr): int {
             return array_sum($arr);
-        },$arrays);
+        }, $arrays);
     }
 
     public function php7()
     {
-        var_dump($this->testFun(2,33,4.5));
-        var_dump($this->arraysSum([2,33,4.5]));
+        var_dump($this->testFun(2, 33, 4.5));
+        var_dump($this->arraysSum([2, 33, 4.5]));
     }
 
     public function afterUpdate()
     {
         $data = [
-          'id'=>11,
-          'open_id'=>time(),
-          'realname'=>'Tinywan'.rand(1111,999),
+          'id' => 11,
+          'open_id' => time(),
+          'realname' => 'Tinywan' . rand(1111, 999),
         ];
         $res = User::update($data);
         halt($res);
@@ -228,9 +231,9 @@ class DemoController
     {
         $id = 11;
         $tableName = 'open_user';
-        $cacheKey = static::getCacheKey($tableName,$id);
+        $cacheKey = static::getCacheKey($tableName, $id);
         echo $cacheKey;
-        $res = Db::name($tableName)->where($id)->cache($cacheKey,60)->find();
+        $res = Db::name($tableName)->where($id)->cache($cacheKey, 60)->find();
         halt($res);
     }
 
@@ -240,9 +243,9 @@ class DemoController
      * @param $id
      * @return string
      */
-    public static function getCacheKey($tableName,$id)
+    public static function getCacheKey($tableName, $id)
     {
-        return Config::get('database.prefix').$tableName.PATH_SEPARATOR.$id;
+        return Config::get('database.prefix') . $tableName . PATH_SEPARATOR . $id;
     }
 
     public function rmData()
@@ -255,7 +258,7 @@ class DemoController
     public function qrCode()
     {
         $qrCode = new QrCode('HTTPS://QR.ALIPAY.COM/FKX04086ZBHBWY1JVZ92BB');
-        header('Content-Type: '.$qrCode->getContentType());
+        header('Content-Type: ' . $qrCode->getContentType());
         echo $qrCode->writeString();
         exit;
     }
@@ -269,7 +272,7 @@ class DemoController
         $fileName = Env::get('ROOT_PATH') . '/public/static';
         $qr_code = new QrCodeComponent($config);
         $qr_code->create($qr_url);
-        $rs  = $qr_code->generateImg($fileName);
+        $rs = $qr_code->generateImg($fileName);
         print_r($rs);
     }
 
@@ -299,7 +302,7 @@ class DemoController
 
     public function configDemo2()
     {
-        if($rsa = config('security.rsa')){
+        if ($rsa = config('security.rsa')) {
             var_dump($rsa);
         }
     }
@@ -331,7 +334,7 @@ class DemoController
                 end
                 return 0
 luascript;
-        $res = location_redis()->evaluate($script,['name','Tinywan',360],1);
+        $res = location_redis()->evaluate($script, ['name', 'Tinywan', 360], 1);
         halt($res);
     }
 
@@ -340,21 +343,21 @@ luascript;
         // 获取锁
         $order_no = 'D183781809141217317557';
         $orderLock = RedisLock::acquireLock($order_no); // 7f62708bb826c034850783efdba127b3
-        if(!$orderLock){
+        if (!$orderLock) {
             exit('获取锁失败');
-        }else{
-            echo "获取锁成功 ".$orderLock.PHP_EOL;
+        } else {
+            echo "获取锁成功 " . $orderLock . PHP_EOL;
         }
         // 处理业务逻辑
         // 处理业务逻辑
         // ............
         sleep(10);
         // 释放锁
-        $orderUnLock = RedisLock::releaseLock($order_no,$orderLock); // 7f62708bb826c034850783efdba127b3
-        if(!$orderLock){
+        $orderUnLock = RedisLock::releaseLock($order_no, $orderLock); // 7f62708bb826c034850783efdba127b3
+        if (!$orderLock) {
             echo "释放锁失败 ";
-        }else{
-            echo "释放锁成功 ".$orderUnLock.PHP_EOL;
+        } else {
+            echo "释放锁成功 " . $orderUnLock . PHP_EOL;
         }
         var_dump($orderUnLock);
     }
@@ -364,22 +367,77 @@ luascript;
         // 获取锁
         $order_no = 'D183781809141217317557';
         $orderLock = RedisLock::acquireLock($order_no); // 7f62708bb826c034850783efdba127b3
-        if(!$orderLock){
-           exit('获取锁失败');
-        }else{
-            echo "获取锁成功 ".$orderLock.PHP_EOL;
+        if (!$orderLock) {
+            exit('获取锁失败');
+        } else {
+            echo "获取锁成功 " . $orderLock . PHP_EOL;
         }
         // 处理业务逻辑
         // 处理业务逻辑
         // ............
         sleep(5);
         // 释放锁
-        $orderUnLock = RedisLock::releaseLock($order_no,$orderLock); // 7f62708bb826c034850783efdba127b3
-        if(!$orderLock){
+        $orderUnLock = RedisLock::releaseLock($order_no, $orderLock); // 7f62708bb826c034850783efdba127b3
+        if (!$orderLock) {
             echo "释放锁失败 ";
-        }else{
-            echo "释放锁成功 ".$orderUnLock.PHP_EOL;
+        } else {
+            echo "释放锁成功 " . $orderUnLock . PHP_EOL;
         }
         var_dump($orderUnLock);
+    }
+
+    public function dbLock01()
+    {
+        // 查询操作
+        $orderInfo = Db::name('order')
+          ->where('order_no','=', 'S1807081342018949')
+          ->lock(true)
+          ->find();
+//        Db::startTrans();
+        $status = 22;
+        $update = Db::name('order')->update([
+          'id'=>$orderInfo['id'],
+          'status' => $status
+        ]);
+        sleep(8);
+//        if($update){
+//            Db::commit();
+//        }else{
+//            Db::rollback();
+//        }
+        var_dump($status);
+        $orderInfo1 = Db::name('order')
+          ->where('order_no','=', 'S1807081342018949')
+          ->find();
+        halt($orderInfo1);
+    }
+
+    public function dbLock02()
+    {
+        // 查询操作
+        $orderInfo = Db::name('order')
+          ->where('order_no','=', 'S1807081342018949')
+          ->lock(true)
+          ->find();
+//        if($orderInfo['status'] == 22){
+//            exit('11111111');
+//        }
+//        Db::startTrans();
+        $status = 11;
+        $update = Db::name('order')->update([
+          'id'=>$orderInfo['id'],
+          'status' => $status
+        ]);
+//        sleep(3);
+//        if($update){
+//            Db::commit();
+//        }else{
+//            Db::rollback();
+//        }
+        var_dump($status);
+        $orderInfo1 = Db::name('order')
+          ->where('order_no','=', 'S1807081342018949')
+          ->find();
+        halt($orderInfo1);
     }
 }
