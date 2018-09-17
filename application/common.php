@@ -117,20 +117,13 @@ function send_request($url, $data, $refererUrl = '', $method = 'GET', $contentTy
  */
 function format_size($size)
 {
-    if ($size >= 1073741824)
-    {
+    if ($size >= 1073741824) {
         $size = round($size / 1073741824 * 100) / 100 . ' GB';
-    }
-    elseif ($size >= 1048576)
-    {
+    } elseif ($size >= 1048576) {
         $size = round($size / 1048576 * 100) / 100 . ' MB';
-    }
-    elseif ($size >= 1024)
-    {
+    } elseif ($size >= 1024) {
         $size = round($size / 1024 * 100) / 100 . ' KB';
-    }
-    else
-    {
+    } else {
         $size = $size . ' Bytes';
     }
 
@@ -180,10 +173,11 @@ function curl_request($url, $post = '', $cookie = '', $returnCookie = 0)
 
 /**
  * QQ服务器发送邮件
- * @param  array $address 需要发送的邮箱地址 发送给多个地址需要写成数组形式
- * @param  string $subject 标题
- * @param  string $content 内容
- * @return array  放回状态吗和提示信息
+ * @param array|string $address 需要发送的邮箱地址 发送给多个地址需要写成数组形式
+ * @param string $subject 标题
+ * @param string $content 内容
+ * @return array 返回状态吗和提示信息
+ * @throws \PHPMailer\PHPMailer\Exception
  */
 function send_email_qq($address, $subject, $content)
 {
@@ -502,7 +496,7 @@ PopB7i04RiwfcYdT
  */
 function jsonResponse($code = 0, $msg = '', $data = [], $http_code = 200, $is_object = true)
 {
-    if (empty($data) && $is_object){
+    if (empty($data) && $is_object) {
         $data = (object)$data;
     }
     $result = [
@@ -511,7 +505,7 @@ function jsonResponse($code = 0, $msg = '', $data = [], $http_code = 200, $is_ob
       'data' => $data,
     ];
     \think\facade\Log::debug('Api Return：' . json_encode($result));
-    return json($result,$http_code);
+    return json($result, $http_code);
 }
 
 /**
@@ -523,7 +517,8 @@ function jsonResponse($code = 0, $msg = '', $data = [], $http_code = 200, $is_ob
  * @param int $http_code
  * @return \think\response\Json
  */
-function rJson($success, $message, $data = [], $code = 0, $http_code = 200){
+function rJson($success, $message, $data = [], $code = 0, $http_code = 200)
+{
     if (empty($message)) {
         $message = '未知信息';
     }
