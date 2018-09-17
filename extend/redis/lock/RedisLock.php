@@ -93,6 +93,32 @@ luascript;
                 end
                 return 0
 luascript;
-        return location_redis()->evaluate($script, array($lock_name, $identifier,120), 1);
+        return location_redis()->evaluate($script, array($lock_name, $identifier, 120), 1);
+    }
+
+    /**
+     * 防重复提交策略 https://www.cnblogs.com/tinywan/p/9663432.html
+     * @param string $lock_name 锁名
+     * @param bool $delete 是否删除
+     * @return bool
+     */
+    public static function preventRepeatedSubmit($lock_name = 'S120012018040414374458006', $delete = false)
+    {
+        $redis = location_redis();
+        $key = 'PREVENT_REPEATED:' . $lock_name;
+        if ($delete) {
+            if ($redis->del($key) == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if ($redis->incr($key) > 1) {
+                // 不能获得锁,说明有操作在进行
+                return false;
+            }
+            // 获得锁,可以操作
+            return true;
+        }
     }
 }

@@ -440,4 +440,27 @@ luascript;
           ->find();
         halt($orderInfo1);
     }
+
+    /**
+     * 如果>1（不能获得锁）: 说明有操作在进行，删除。
+     * 如果=1（获得锁）: 可以操作。
+     */
+    public static function preventRepeatedSubmit()
+    {
+        $lock_name = 'LOCK:S120012018040414374458006';
+        if(!RedisLock::preventRepeatedSubmit($lock_name)){
+            exit('不能获得锁,说明有操作在进行');
+        }
+        return "（获得锁）: 可以操作";
+    }
+
+    public static function preventRepeatedSubmit2()
+    {
+        $lock_name = 'LOCK:S120012018040414374458006';
+        if(RedisLock::preventRepeatedSubmit($lock_name,true)){
+            exit('删除成功');
+        }
+        return "删除失败";
+
+    }
 }
