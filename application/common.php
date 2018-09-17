@@ -189,37 +189,37 @@ function send_email_qq($address, $subject, $content)
     if (empty($email_smtp_host) || empty($email_username) || empty($email_password) || empty($email_from_name)) {
         return ["errorCode" => 1, "msg" => '邮箱请求参数不全，请检测邮箱的合法性'];
     }
-    $phpmailer = new \PHPMailer\PHPMailer\PHPMailer();
-    $phpmailer->SMTPDebug = 0;
-    $phpmailer->IsSMTP();
-    $phpmailer->SMTPAuth = true;
-    $phpmailer->SMTPSecure = 'ssl';
-    $phpmailer->Host = $email_smtp_host;
-    $phpmailer->Port = 465;
-    $phpmailer->Hostname = $email_host;
-    $phpmailer->CharSet = 'UTF-8';
-    $phpmailer->FromName = $email_username;
-    $phpmailer->Username = $email_username;
-    $phpmailer->Password = $email_password;
-    $phpmailer->From = $email_username;
-    $phpmailer->IsHTML(true);
+    $phpMailer = new \PHPMailer\PHPMailer\PHPMailer();
+    $phpMailer->SMTPDebug = 0;
+    $phpMailer->IsSMTP();
+    $phpMailer->SMTPAuth = true;
+    $phpMailer->SMTPSecure = 'ssl';
+    $phpMailer->Host = $email_smtp_host;
+    $phpMailer->Port = 465;
+    $phpMailer->Hostname = $email_host;
+    $phpMailer->CharSet = 'UTF-8';
+    $phpMailer->FromName = $email_username;
+    $phpMailer->Username = $email_username;
+    $phpMailer->Password = $email_password;
+    $phpMailer->From = $email_username;
+    $phpMailer->IsHTML(true);
     if (is_array($address)) {
         foreach ($address as $addressv) {
             if (false === filter_var($address, FILTER_VALIDATE_EMAIL)) {
                 return ["errorCode" => 1, "msg" => '邮箱格式错误'];
             }
-            $phpmailer->AddAddress($addressv, $address . '的[' . $subject . ']');
+            $phpMailer->AddAddress($addressv, $address . '的[' . $subject . ']');
         }
     } else {
         if (false === filter_var($address, FILTER_VALIDATE_EMAIL)) {
             return ["errorCode" => 1, "msg" => '邮箱格式错误'];
         }
-        $phpmailer->AddAddress($address, $address . '的[' . $subject . ']');
+        $phpMailer->AddAddress($address, $address . '的[' . $subject . ']');
     }
-    $phpmailer->Subject = $subject;
-    $phpmailer->Body = $content;
-    if (!$phpmailer->Send()) {
-        return ["errorCode" => 1, "msg" => $phpmailer->ErrorInfo];
+    $phpMailer->Subject = $subject;
+    $phpMailer->Body = $content;
+    if (!$phpMailer->Send()) {
+        return ["errorCode" => 1, "msg" => $phpMailer->ErrorInfo];
     }
     return ["errorCode" => 0];
 }
