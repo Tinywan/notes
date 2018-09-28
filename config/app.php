@@ -54,11 +54,11 @@ return [
     // +----------------------------------------------------------------------
 
     // 默认模块名
-    'default_module'         => 'index',
+    'default_module'         => 'pay',
     // 禁止访问模块
     'deny_module_list'       => ['common'],
     // 默认控制器名
-    'default_controller'     => 'IndexController',
+    'default_controller'     => 'Index',
     // 默认操作名
     'default_action'         => 'index',
     // 默认验证器
