@@ -28,11 +28,13 @@ use patterns\di\TencentSender;
 use patterns\di\UserDi;
 use think\Controller;
 use think\Db;
+use think\Exception;
 use think\facade\Cache;
 use think\facade\Env;
 use think\facade\Log;
 use think\facade\Session;
 use think\Queue;
+use Tinywan\CPay\Gateways\Pay;
 
 class IndexController extends FrontendController
 {
@@ -333,9 +335,59 @@ class IndexController extends FrontendController
         var_dump($cache->cacheData("index_demo"));
     }
 
-    public function userHello(User $user){
-        return 'Hello,'.$user->account;
+    public function payTest()
+    {
+        $pay = new \Tinywan\CPay\Gateways\Pay();
+        $sign = $pay->sign(['mch_id'=>12001]);
+        $result = $pay->request('cpay.shop.pay',$sign);
+        var_dump($result);
     }
 
+    public function payTest01()
+    {
+        Log::debug('【新】开始请求接口 ');
+        $daiFuResult['status'] = 'fail';
+        if ($daiFuResult['status'] == 'fail') {
+            $prepaid_data = [
+              'mch_id' => 12001,
+              'order_no' => time(),
+              'mch_order_no' => $daiFuResult['time'],
+            ];
+            Log::debug('【新】创建一个预代付订单表记录 ' . json_encode($prepaid_data));
+            Db::name('order')->insert($prepaid_data);
+            return '接口调用失败';
+        }
+        Log::debug('【新】请求接口结束1 ');
+        Log::debug('【新】请求接口结束2 ');
+        Log::debug('【新】请求接口结束3 ');
+        return 1111111;
+    }
+
+    public function payTest02()
+    {
+        Log::debug('【新】开始请求接口 ');
+        $daiFuResult['status'] = 'fail';
+        if(isset($daiFuResult['err_code']) && $daiFuResult['err_code'] == -1){
+            Log::error('【新】 请求数据验证失败 ' . json_encode($daiFuResult));
+            return '请求数据验证失败';
+        }
+        if ($daiFuResult['status'] == 'fail') {
+            try{
+                $prepaid_data = [
+                  'mch_id' => 12001,
+                  'order_no' => time(),
+                  'mch_order_no' => $daiFuResult['time'],
+                ];
+                Log::debug('【新】创建一个预代付订单表记录 ' . json_encode($prepaid_data));
+                Db::name('order')->insert($prepaid_data);
+            }catch (Exception $e){
+                Log::debug('【新】发生异常 '.$e->getMessage());
+                return '【新】发生异常 ';
+            }
+            Log::debug('【新】接口调用失败 ');
+            return '接口调用失败';
+        }
+        Log::debug('【新】请求接口结束 ');
+    }
 }
 

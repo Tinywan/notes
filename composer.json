@@ -37,7 +37,8 @@
         "topthink/think-mongo": "^2.0",
         "lcobucci/jwt": "^3.2",
         "endroid/qr-code": "2.5.1",
-        "topthink/think-worker": "^2.0"
+        "topthink/think-worker": "^2.0",
+        "tinywan/cpay-sdk": "v0.40"
     },
     "autoload": {
         "psr-4": {
