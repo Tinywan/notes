@@ -26,6 +26,6 @@ return [
     '__CSS__' => '/assets/pay/assets/css',
     '__IMG__' => '/assets/pay/assets/images',
     '__PHOTOS__' => '/assets/pay/photos',
-    '__PLUGINS__' => '/assets/pay/plugins',
+    '__PLUGINS__' => '/assets/pay/assets/plugins',
   ]
 ];
