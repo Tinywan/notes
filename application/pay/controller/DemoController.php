@@ -39,11 +39,11 @@ class DemoController extends PayController
         $order_no = 'T' .date('ymdHis', time()) . rand(1000, 9999);
         $orderid = $order_no; // 商户订单号
         $value = $postData['price']; // 订单金额
-        $parter = 20088; // 用户编号
+        $parter = 2018; // 用户编号
         $type = 'ALIWAP'; // 业务代码
         $callbackurl = 'http://notes.frp.tinywan.top/api/v1/notify'; // 后台通知地址
         $hrefbackurl = 'http://notes.frp.tinywan.top/api/v1/return'; // 前台页面通知地址
-        $key = '781B7D366F0C6E148394F4A3D52F982E';
+        $key = '982E1781B7D366F0C6E148';
         $signStr = "parter={$parter}&type={$type}&orderid={$orderid}&callbackurl={$callbackurl}" . $key;
         $sign = md5($signStr); // 签名值
         $_data = array(
