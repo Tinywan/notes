@@ -4,17 +4,17 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/8/29 17:39
+ * |  DateTime: 2018/9/30 17:33
  * |  Mail: 756684177@qq.com
  * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\repositories\abstracts;
+namespace app\common\repositories\contracts;
 
 
-use app\common\repositories\contracts\RepositoryInterface;
+use app\common\repositories\abstracts\PayRepositoryInterface;
 
-interface ChannelRepositoryInterface extends RepositoryInterface
+abstract class PayRepositoryAbstract extends RepositoryAbstract implements PayRepositoryInterface
 {
 
 }

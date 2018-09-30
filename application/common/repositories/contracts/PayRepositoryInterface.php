@@ -14,7 +14,7 @@ namespace app\common\repositories\abstracts;
 
 use app\common\repositories\contracts\RepositoryInterface;
 
-interface ChannelRepositoryInterface extends RepositoryInterface
+interface PayRepositoryInterface extends RepositoryInterface
 {
-
+    public function pay($params);
 }

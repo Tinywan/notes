@@ -537,3 +537,14 @@ function rJson($success, $message, $data = [], $code = 0, $http_code = 200)
 
     return json($result, $http_code);
 }
+
+// 其他格式字符串装换为UTF-8
+function gbk_utf8($str)
+{
+    return mb_convert_encoding(urldecode($str), 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
+}
+
+function utf8_gb2312($str)
+{
+    return iconv("utf-8", "gbk//IGNORE", $str);
+}

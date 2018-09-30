@@ -4,17 +4,17 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/8/29 17:39
- * |  Mail: 756684177@qq.com
- * |  Desc: 描述信息
+ * |  DateTime: 2018/8/21 15:51
+ * |  Mail: Overcome.wan@Gmail.com
+ * |  Desc: 支付渠道接口
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\repositories\abstracts;
+namespace app\common\repositories\contracts;
 
 
-use app\common\repositories\contracts\RepositoryInterface;
-
-interface ChannelRepositoryInterface extends RepositoryInterface
+interface RepositoryInterface
 {
+    public function setError($success, $message);
 
+    public function getError();
 }
