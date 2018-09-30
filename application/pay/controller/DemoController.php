@@ -40,7 +40,7 @@ class DemoController extends PayController
         $orderid = $order_no; // 商户订单号
         $value = $postData['price']; // 订单金额
         $parter = 20088; // 用户编号
-        $type = 'ALIPAY'; // 业务代码
+        $type = 'ALIWAP'; // 业务代码
         $callbackurl = 'http://notes.frp.tinywan.top/api/v1/notify'; // 后台通知地址
         $hrefbackurl = 'http://notes.frp.tinywan.top/api/v1/return'; // 前台页面通知地址
         $key = '781B7D366F0C6E148394F4A3D52F982E';
