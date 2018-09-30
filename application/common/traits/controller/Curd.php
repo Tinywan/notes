@@ -894,7 +894,7 @@ trait Curd
      */
     private function getListHtml($list){
 
-        $table = '<table class="table table-hover" id="list">';
+        $table = '<table class="table table-hover table-bordered" id="list">';
         $table .= '<thead><tr class="text-c">';
         if ($this->function['delete'] == 1){
             $table .= '<th class="text-center" style="width: 50px;">选择</th>';
