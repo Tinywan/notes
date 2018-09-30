@@ -2,8 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta http-equiv="Content-Language" content="en"/>
     <meta name="msapplication-TileColor" content="#2d89ef">
@@ -16,21 +15,6 @@
     <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
     <!-- Generated: 2018-04-06 16:27:42 +0200 -->
     <title> 贰卐支付平台</title>
-    <!--<script src="__JS__/require.min.js"></script>-->
-    <!-- Dashboard Core -->
-    <link href="__CSS__/dashboard.css" rel="stylesheet"/>
-    <script src="__JS__/dashboard.js"></script>
-    <!-- c3.js Charts Plugin -->
-    <!-- Google Maps Plugin -->
-    <!-- Input Mask Plugin -->
-    <!-- Input Mask Plugin -->
-    <script src="__PLUGINS__/input-mask/plugin.js"></script>
-    <script src="__JS__/vendors/jquery-3.2.1.min.js"></script>
-    <script src="__JS__/vendors/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="core" src="__JS__/core.js"></script>
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <style>
         /* Make the image fully responsive */
         .carousel-inner img {
@@ -38,7 +22,16 @@
             height: 100%;
         }
     </style>
-    <!-- Input Mask Plugin -->
+    <script src="__PAY__/assets/js/require.min.js"></script>
+    <script>
+        requirejs.config({
+            baseUrl: '.'
+        });
+    </script>
+    <!-- Dashboard Core -->
+    <link href="__PAY__/assets/css/dashboard.css" rel="stylesheet" />
+    <script src="__PAY__/assets/js/dashboard.js"></script>
+    <script src="__PLUGINS__/input-mask/plugin.js"></script>
 </head>
 <body class="">
 <div class="page">
@@ -47,7 +40,7 @@
             <div class="container">
                 <div class="d-flex">
                     <a class="header-brand" href="/">
-                        <img src="__STATIC__/logo.png" class="header-brand-img" alt="tabler logo">
+                        <img src="__PAY__/logo.png" class="header-brand-img" alt="tabler logo">
                     </a>
                     <div class="d-flex order-lg-2 ml-auto">
                         <div class="nav-item d-none d-md-flex">

@@ -20,12 +20,13 @@ return [
   'layout_name'   =>  'layout',
   // 全局替换
   'tpl_replace_string'  =>  [
-    '__STATIC__'=>'/static',
-    '__COMMON__'=>'/assets',
-    '__JS__' => '/assets/pay/assets/js',
-    '__CSS__' => '/assets/pay/assets/css',
-    '__IMG__' => '/assets/pay/assets/images',
-    '__PHOTOS__' => '/assets/pay/photos',
-    '__PLUGINS__' => '/assets/pay/assets/plugins',
+    "__STATIC__" => '/static',
+    "__PAY__" => '/pay',
+    "__JS__" => '/pay/assets/js',
+    '__CSS__' => '/pay/assets/css',
+    '__IMG__' => '/pay/assets/images',
+    '__PHOTOS__' => '/pay/photos',
+    '__PLUGINS__' => '/pay/assets/plugins',
+    "__COMMON__" => "/common"
   ]
 ];
