@@ -5,7 +5,7 @@ namespace app\common\model;
 use think\Model;
 use traits\model\SoftDelete;
 
-class Merchant extends Model
+class ChannelMerchant extends Model
 {
     use SoftDelete;
 
