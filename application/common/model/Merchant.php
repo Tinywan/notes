@@ -3,7 +3,7 @@
 namespace app\common\model;
 
 use think\Model;
-use traits\model\SoftDelete;
+use think\model\concern\SoftDelete;
 
 class Merchant extends Model
 {

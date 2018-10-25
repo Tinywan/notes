@@ -2,11 +2,7 @@
 
 namespace app\admin\controller;
 
-use app\admin\validate\AgentsChannelPayment;
 use app\common\controller\Admin;
-use app\common\model\AgentsChannelConfig;
-use app\common\model\AgentsPayment;
-use app\common\model\ChannelMerchantAccount;
 use app\common\model\MerchantAccount;
 use app\common\model\MerchantBalanceRecord;
 use app\common\model\MerchantChannelConfig;
@@ -14,6 +10,7 @@ use app\common\model\MerchantPayment;
 use app\common\model\MerchantTransferAccount;
 use app\common\model\MerchantTransferConfig;
 use app\common\repositories\PayRepository;
+use app\common\traits\controller\Curd;
 use think\Log;
 use think\Validate;
 use app\common\model\Merchant as MerchantModel;
@@ -21,8 +18,7 @@ use app\common\model\Agents as AgentsModel;
 
 class MerchantController extends AdminController
 {
-
-    use \app\common\library\traits\controller\Curd;
+    use Curd;
 
     public function model()
     {
@@ -111,8 +107,6 @@ class MerchantController extends AdminController
         return [
             'username' => 'require|unique:merchant,username,' . $id,
             'phone' => 'require|unique:merchant,phone,' . $id,
-//            'password' => 'require',
-//            'email' => 'require',
             'key' => 'require',
             'status' => 'require',
         ];
@@ -149,7 +143,6 @@ class MerchantController extends AdminController
                 'route' => 'admin/merchant/channelConfig',
                 'model_x' => '80%',
                 'model_y' => '90%',
-//                'type' => 'href'
             ],
             [
                 'btn' => 'primary',
@@ -158,7 +151,6 @@ class MerchantController extends AdminController
                 'route' => 'admin/merchant/channelSelect',
                 'model_x' => '80%',
                 'model_y' => '90%',
-//                'type' => 'href'
             ],
             [
                 'btn' => 'success',
@@ -167,7 +159,6 @@ class MerchantController extends AdminController
                 'route' => 'admin/merchant/channelAccount',
                 'model_x' => '80%',
                 'model_y' => '90%',
-//                'type' => 'href'
             ],
             [
                 'btn' => 'info',
@@ -312,31 +303,6 @@ class MerchantController extends AdminController
                     $this->error('保存失败！');
                 }
             }
-//            // 1、代理商费率查询判断
-//            $agentsRates = \app\common\model\AgentsChannelPayment::where('agents_id','=',$agentsId)
-//                ->field('agents_rate as rate,payment_id,channel_id')
-//                ->select();
-//            $agentsArr = [];
-//            foreach ($agentsRates as $v){
-//                $agentsArr[] = [
-//                  $v['channel_id'] =>[
-//                      $v['payment_id'] =>$v['rate']
-//                  ]
-//                ];
-//            }
-//            Log::error('--代理费率--'.json_encode($agentsArr));
-//            // 2、查询商户开通的所有支付方式的费率
-//            $merchantRates = MerchantPayment::where('merchant_id','=',$mchId)
-//                ->field('rate,payment payment_id,channel_config_ids channel_id')
-//                ->select();
-//            $merchantArr = [];
-//            foreach ($merchantRates as $v){
-//                $merchantArr[] = [
-//                    $v['channel_id'] =>[
-//                        $v['payment_id'] =>$v['rate']
-//                    ]
-//                ];
-//            }
         }
     }
 
@@ -1260,7 +1226,7 @@ class MerchantController extends AdminController
             } catch (\Exception $e) {
                 $merchant_account->rollback();
                 $balance_record->rollback();
-                Log::error('操作失败=》' . $e->getTraceAsString());
+                \think\facade\Log::error('操作失败=》' . $e->getTraceAsString());
                 responseJson(false, 0, '系统异常');
             }
         }
