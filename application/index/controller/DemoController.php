@@ -461,6 +461,18 @@ luascript;
             exit('删除成功');
         }
         return "删除失败";
+    }
+
+    public function unsetFun()
+    {
+        //产生由255个0组成的字符串
+        $str = 'Tinywan';
+        $name = &$str;
+        //unset($str);
+        echo $str."<br/>"; // Tinywan
+        echo $name."<br/>"; // Tinywan
+        $name = 'Tinyaiai';
+        echo $str."<br/>"; // Tinyaiai
 
     }
 }
