@@ -19,7 +19,7 @@ use think\Validate;
 use app\common\model\Merchant as MerchantModel;
 use app\common\model\Agents as AgentsModel;
 
-class Merchant extends AdminController
+class MerchantController extends AdminController
 {
 
     use \app\common\library\traits\controller\Curd;
