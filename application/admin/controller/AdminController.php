@@ -1,5 +1,13 @@
 <?php
-
+/**.-------------------------------------------------------------------------------------------------------------------
+ * |  Github: https://github.com/Tinywan
+ * |  Blog: http://www.cnblogs.com/Tinywan
+ * |--------------------------------------------------------------------------------------------------------------------
+ * |  Author: Tinywan(ShaoBo Wan)
+ * |  DateTime: 2018/6/20 11:29
+ * |  Mail: Overcome.wan@Gmail.com
+ * |  Desc: 提现申请
+ * '------------------------------------------------------------------------------------------------------------------*/
 namespace app\admin\controller;
 
 use app\common\controller\AdminController as BaseController;

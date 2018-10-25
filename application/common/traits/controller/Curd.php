@@ -4,13 +4,10 @@ namespace app\common\traits\controller;
 
 use PHPExcel;
 use PHPExcel_IOFactory;
-use think\App;
 use think\Db;
-use think\facade\Config;
 use think\facade\Env;
 use think\facade\View;
 use think\Request;
-use think\Session;
 use think\Validate;
 use traits\controller\Jump;
 
@@ -32,10 +29,10 @@ trait Curd
      * @var array 视图文件
      */
     protected $views = [
-      'index' => 'curd/index',
-      'read' => 'curd/read',
-      'create' => 'curd/create',
-      'edit' => 'curd/edit',
+        'index' => 'curd/index',
+        'read' => 'curd/read',
+        'create' => 'curd/create',
+        'edit' => 'curd/edit',
     ];
 
     /**
@@ -151,11 +148,11 @@ trait Curd
      * @var array 操作按钮的显示与否
      */
     public $function = [
-      'read'                   => 1,
-      'create'                 => 1,
-      'edit'                   => 1,
-      'delete'                 => 1,
-      'search'                 => 0,
+        'read'                   => 1,
+        'create'                 => 1,
+        'edit'                   => 1,
+        'delete'                 => 1,
+        'search'                 => 0,
     ];
 
     protected $is_api = false;
@@ -172,6 +169,8 @@ trait Curd
         parent::__construct();
 
         $this->request = $request;
+        $this->init();
+
         // 初始化模型
         if ($this->model()) {
             $this->model = app($this->model());
@@ -179,14 +178,17 @@ trait Curd
 
         if (in_array($this->request->action(), ['index', 'read', 'create', 'edit'])){
             // 自定义视图路径
-            $this->view = View::init([
-              'view_path' => Env::get('root_path') . 'application/common/traits/view/'
-            ]);
+            if ($this->views[$this->request->action()] == 'curd/'.$this->request->action()){
+                $this->view = View::init([
+                    'view_path' => Env::get('root_path') . 'application/common/traits/view/'
+                ]);
+            }else{
+                $this->view = new View();
+            }
         }else{
             $this->view = new View();
         }
 
-        $this->init();
         $this->initField();
         $this->dbPre = config('database.prefix');
 
@@ -253,15 +255,15 @@ trait Curd
             $list = $this->getList();
 
             $this->view->assign([
-              'list' => $list,
-              'list_array' => $list->toArray(),
-              'table' => $this->getListHtml($list),
-              'search_html' => $this->getSearchHtml(),
-              'function' => $this->function,
-              'label' => $this->label,
-              'route' => $this->route,
-              'model_size' => $this->modelSize,
-              'default_search' => $this->getDefaultSearch()
+                'list' => $list,
+                'list_array' => $list->toArray(),
+                'table' => $this->getListHtml($list),
+                'search_html' => $this->getSearchHtml(),
+                'function' => $this->function,
+                'label' => $this->label,
+                'route' => $this->route,
+                'model_size' => $this->modelSize,
+                'default_search' => $this->getDefaultSearch()
             ]);
             return $this->view->fetch($this->views['index']);
         }
@@ -292,9 +294,9 @@ trait Curd
         }else{
             $data = $this->gatReadData($id);
             $this->view->assign([
-              'form_html' => $this->getReadHtml($data),
-              'label' => $this->label,
-              'route' => $this->route
+                'form_html' => $this->getReadHtml($data),
+                'label' => $this->label,
+                'route' => $this->route
             ]);
             return $this->view->fetch($this->views['read']);
         }
@@ -317,8 +319,8 @@ trait Curd
                     case 'join':
                         $field[] = $value['data']['alias'].'.'.$value['data']['show_field'];
                         $join[] = [
-                          'table' => $this->dbPre.$value['data']['table'].' '.$value['data']['alias'],
-                          'where' => $this->alias.'.'.$key.' = '.$value['data']['alias'].'.'.$value['data']['value_field']
+                            'table' => $this->dbPre.$value['data']['table'].' '.$value['data']['alias'],
+                            'where' => $this->alias.'.'.$key.' = '.$value['data']['alias'].'.'.$value['data']['value_field']
                         ];
                         break;
                     case 'alias':
@@ -481,8 +483,8 @@ trait Curd
                             $_where .= ' and ' . $value['data']['where'];
                         }
                         $join[] = [
-                          'table' => $this->dbPre.$value['data']['table'].' '.$value['data']['alias'],
-                          'where' => $_where
+                            'table' => $this->dbPre.$value['data']['table'].' '.$value['data']['alias'],
+                            'where' => $_where
                         ];
                         break;
                     case 'alias':
@@ -518,9 +520,9 @@ trait Curd
         if ($this->views['create'] != 'curd/create') $this->view = new View();
 
         $this->view->assign([
-          'form_html' => $this->getCreateHtml(),
-          'label' => $this->label,
-          'route' => $this->route
+            'form_html' => $this->getCreateHtml(),
+            'label' => $this->label,
+            'route' => $this->route
         ]);
         return $this->view->fetch($this->views['create']);
     }
@@ -568,6 +570,13 @@ trait Curd
                 }else{
                     $this->error($vali['err_msg']);
                 }
+            }
+        }
+
+        //剔除不保存数据
+        foreach ($data as $key => $item){
+            if (!in_array($key, $this->addFormFields)){
+                unset($data[$key]);
             }
         }
 
@@ -624,8 +633,8 @@ trait Curd
      */
     protected function saveOtherValidate($data){
         return [
-          'err_code' => 0,
-          'err_msg' => 'ok'
+            'err_code' => 0,
+            'err_msg' => 'ok'
         ];
     }
 
@@ -636,8 +645,8 @@ trait Curd
      */
     protected function updateOtherValidate($data){
         return [
-          'err_code' => 0,
-          'err_msg' => 'ok'
+            'err_code' => 0,
+            'err_msg' => 'ok'
         ];
     }
 
@@ -668,11 +677,11 @@ trait Curd
                         }
                         break;
                     case 'checkbox':
-                        if (!empty($value) && is_array($value)){
-                            $result[$key] = trim(implode(',', array_unique($value)), ',');
-                        }else{
-                            $result[$key] = '';
-                        }
+                            if (!empty($value) && is_array($value)){
+                                $result[$key] = trim(implode(',', array_unique($value)), ',');
+                            }else{
+                                $result[$key] = '';
+                            }
                         break;
                     default:
                         $result[$key] = $value;
@@ -753,10 +762,10 @@ trait Curd
         if ($this->views['edit'] != 'curd/edit') $this->view = new View();
 
         $this->view->assign([
-          'form_html' => $this->getEditHtml($info->toArray()),
-          'id' => $id,
-          'label' => $this->label,
-          'route' => $this->route
+            'form_html' => $this->getEditHtml($info->toArray()),
+            'id' => $id,
+            'label' => $this->label,
+            'route' => $this->route
         ]);
         return $this->view->fetch($this->views['edit']);
     }
@@ -809,6 +818,13 @@ trait Curd
                 }else{
                     $this->error($vali['err_msg']);
                 }
+            }
+        }
+
+        //剔除不保存数据
+        foreach ($data as $key => $item){
+            if (!in_array($key, $this->addFormFields)){
+                unset($data[$key]);
             }
         }
 
@@ -1016,21 +1032,21 @@ trait Curd
 //                            }
 //                        }
 //                    }else{
-                    if (!empty($item['type'])){
-                        if ($item['type'] == 'href'){
-                            $str = 'href = "'.url($item['route']).'?ids='.$value['id'].'"';
-                        }elseif($item['type'] == 'ajax'){
-                            $str = 'onclick="ajax(\''.url($item['route']).'?ids='.$value['id'].'\')"';
+                        if (!empty($item['type'])){
+                            if ($item['type'] == 'href'){
+                                $str = 'href = "'.url($item['route']).'?ids='.$value['id'].'"';
+                            }elseif($item['type'] == 'ajax'){
+                                $str = 'onclick="ajax(\''.url($item['route']).'?ids='.$value['id'].'\')"';
+                            }
+                        }else{
+                            $str = 'onclick="layeropen(\''.url($item['route']).'?ids='.$value['id'].'\', \''.$item['text'].'\', \''.$item['model_x'].'\', \''.$item['model_y'].'\', false, '.$full.')"';
                         }
-                    }else{
-                        $str = 'onclick="layeropen(\''.url($item['route']).'?ids='.$value['id'].'\', \''.$item['text'].'\', \''.$item['model_x'].'\', \''.$item['model_y'].'\', false, '.$full.')"';
-                    }
 
-                    if (!isset($item['where']) || (isset($item['where']) && $value[$item['where']['key']] == $item['where']['value'])){
-                        $table .= '<a '.$str.' class="btn btn-'.$item['btn'].' btn-xs" style="margin-bottom: 0;"><i class="'.$item['icon'].'"></i> '.$item['text'].'</a>&nbsp;&nbsp;';
-                    }else{
-                        $table .= '<button class="btn btn-default btn-xs disabled" style="margin-bottom: 0;" disabled><i class="'.$item['icon'].'"></i> '.$item['text'].'</button>&nbsp;&nbsp;';
-                    }
+                        if (!isset($item['where']) || (isset($item['where']) && $value[$item['where']['key']] == $item['where']['value'])){
+                            $table .= '<a '.$str.' class="btn btn-'.$item['btn'].' btn-xs" style="margin-bottom: 0;"><i class="'.$item['icon'].'"></i> '.$item['text'].'</a>&nbsp;&nbsp;';
+                        }else{
+                            $table .= '<button class="btn btn-default btn-xs disabled" style="margin-bottom: 0;" disabled><i class="'.$item['icon'].'"></i> '.$item['text'].'</button>&nbsp;&nbsp;';
+                        }
 //                    }
                 }
             }
@@ -1267,9 +1283,12 @@ trait Curd
                         $field = $this->translations[$item]['data']['show_field'];
                         $_value = $data->$field;
                         break;
+                    default:
+                        $_value = '<textarea class="form-control">'.$_value.'</textarea>';
+                        break;
                 }
             }else{
-                $_value = '<textarea>'.$_value.'</textarea>';
+                $_value = '<textarea class="form-control">'.$_value.'</textarea>';
             }
             if ($is_show) $html .= '<tr><td>'.$_key.'</td><td>'.$_value.'</td></tr>';
         }
@@ -1364,11 +1383,11 @@ trait Curd
 
                         $html .= '<input type="hidden" id="'.$v.'" name="'.$v.'" value="number">';
                         $_arr = [
-                          '1' => '>',
-                          '2' => '>=',
-                          '3' => '=',
-                          '4' => '<',
-                          '5' => '<=',
+                            '1' => '>',
+                            '2' => '>=',
+                            '3' => '=',
+                            '4' => '<',
+                            '5' => '<=',
                         ];
                         $html .= '&nbsp;&nbsp;<select class="form-control" id="'.$v.'_where_" name="'.$v.'_where_" AUTOCOMPLETE="off"  style="width: 120px; margin-left: 8px"><option value="">'.$this->translations[$v]['text'].'选择..</option>';
                         foreach ($_arr as $_key => $_item) {
@@ -1437,8 +1456,8 @@ trait Curd
      */
     protected function saveBeforeValidate($data){
         return [
-          'err_code' => '0',
-          'err_msg' => 'ok'
+            'err_code' => '0',
+            'err_msg' => 'ok'
         ];
     }
 
@@ -1447,8 +1466,8 @@ trait Curd
      */
     protected function updateBeforeValidate($id, $data){
         return [
-          'err_code' => '0',
-          'err_msg' => 'ok'
+            'err_code' => '0',
+            'err_msg' => 'ok'
         ];
     }
 
@@ -1459,8 +1478,8 @@ trait Curd
      */
     protected function deleteBeforeValidate($id){
         return [
-          'err_code' => '0',
-          'err_msg' => 'ok'
+            'err_code' => '0',
+            'err_msg' => 'ok'
         ];
     }
 
@@ -1473,12 +1492,12 @@ trait Curd
 
         $objPHPExcel = new PHPExcel();
         $objPHPExcel->getProperties()->setCreator("Maarten Balliauw")
-          ->setLastModifiedBy("Maarten Balliauw")
-          ->setTitle("Office 2007 XLSX Test Document")
-          ->setSubject("Office 2007 XLSX Test Document")
-          ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-          ->setKeywords("office 2007 openxml php")
-          ->setCategory("Test result file");
+            ->setLastModifiedBy("Maarten Balliauw")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
         $objPHPExcel->setActiveSheetIndex(0);
 
         $activeSheet = $objPHPExcel->getActiveSheet();
@@ -1567,10 +1586,10 @@ trait Curd
         }
 
         $rsp_data = [
-          'total' => $order['total'],
-          'per_page' => $order['per_page'],
-          'current_page' => $order['current_page'],
-          'last_page' => $order['last_page'],
+            'total' => $order['total'],
+            'per_page' => $order['per_page'],
+            'current_page' => $order['current_page'],
+            'last_page' => $order['last_page'],
         ];
 
         $data_list = [];
@@ -1661,6 +1680,7 @@ trait Curd
                 $rsp_data[$item] = $data->$item;
             }
         }
+
         return $rsp_data;
     }
 }
