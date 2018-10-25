@@ -151,4 +151,6 @@ return [
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
 
+    'ngrok_url' => 'clpay.ngrok.clnr.xyz',
+    'server_url' => 'https://notes.frp.tinywan.top',
 ];

@@ -548,3 +548,37 @@ function utf8_gb2312($str)
 {
     return iconv("utf-8", "gbk//IGNORE", $str);
 }
+
+/**
+ * Curl post请求
+ * @param $url
+ * @param array $data
+ * @return mixed
+ */
+function curl_post($url, $data = [],$header=["Expect:"])
+{
+    //初始化
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+    //设置抓取的url
+    curl_setopt($curl, CURLOPT_URL, $url);
+    //设置头文件的信息作为数据流输出
+    curl_setopt($curl, CURLOPT_HEADER, 0);
+    //设置获取的信息以文件流的形式返回，而不是直接输出。
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    //设置post方式提交
+    curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+    //设置post数据
+    $post_data = $data;
+    \think\facade\Log::debug('接口请求数据：(' . $url . ')：' . json_encode($post_data));
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+    //执行命令
+    $result = curl_exec($curl);
+    //关闭URL请求
+    curl_close($curl);
+    //显示获得的数据
+    \think\facade\Log::debug('接口返回数据：' . $result);
+    return $result;
+}

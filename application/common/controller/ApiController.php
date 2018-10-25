@@ -13,6 +13,7 @@ namespace app\common\controller;
 
 
 use app\api\service\PayService;
+use think\facade\Log;
 
 class ApiController extends BaseController
 {
@@ -31,4 +32,39 @@ class ApiController extends BaseController
 
     // 支付异步key
     const PAY_NOTICE_KEY = 'QUEUES:PAY:NOTICE';
+
+    // 缓存过期时间
+    const CACHE_EXPIRE = 86400; // 一天
+
+    // 限制列表最大长度
+    const LIMIT_LIST_MAX_LEN = 10;
+
+    // 该时间段内访问多少次，默认为60s
+    const LIMIT_TIME_INTERVAL = 60;
+
+    /**
+     * 签名认证
+     * @param array $data 签名字符串
+     * @param string $key 商户key
+     * @return bool
+     */
+    protected static function verifySign($data, $key)
+    {
+        $clientSign = $data['sign'];
+        unset($data['sign']);
+        ksort($data);
+        $decodeStr = urldecode(http_build_query($data));
+        $signStr = $decodeStr . '&key=' . $key;
+        Log::debug('[网关] 验签字符串：' . $signStr);
+        Log::debug('[网关] 客户端签名：' . $clientSign);
+        $serverSign = md5($signStr);
+        Log::debug('[网关] 服务端签名：' . $serverSign);
+        if ($serverSign == $clientSign) {
+            Log::debug('[网关] 签名验证通过');
+            return true;
+        } else {
+            Log::debug('[网关] 签名验证失败');
+            return false;
+        }
+    }
 }

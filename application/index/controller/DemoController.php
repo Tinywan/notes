@@ -12,6 +12,8 @@ namespace app\index\controller;
 
 use app\common\library\QrCodeComponent;
 use app\common\library\Rsa;
+use app\common\model\Merchant;
+use app\common\model\MerchantSubmch;
 use app\common\model\Order;
 use app\common\model\User;
 use app\common\presenter\DateFormatPresenter_tw;
@@ -24,16 +26,18 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Uuid;
 use redis\BaseRedis;
 use redis\lock\RedisLock;
+use think\Controller;
 use think\Db;
 use think\facade\Cache;
 use think\facade\Config;
 use think\facade\Env;
 use think\facade\Log;
+use think\facade\Session;
 use think\helper\Time;
 use think\Queue;
 use Yansongda\Pay\Pay;
 
-class DemoController
+class DemoController extends Controller
 {
     /**
      * 测试多任务队列
@@ -473,6 +477,240 @@ luascript;
         echo $name."<br/>"; // Tinywan
         $name = 'Tinyaiai';
         echo $str."<br/>"; // Tinyaiai
-
     }
+
+    /**
+     * 支付
+     */
+    public function pay()
+    {
+        if (request()->get('debug') != 'true') {
+            $this->redirect('http://www.tinywan.com/');
+            exit();
+        }
+
+        $is_pwd = Session::get('is_pwd');
+        if ($is_pwd != 'ok') {
+            $this->redirect('checkPwd');
+            exit();
+        }
+
+        $mch_id = request()->get('mch_id') ? request()->get('mch_id') : 12001;
+        $list = Db::name('test_order')
+            ->order('id', 'desc')
+            ->order('created_time', 'desc')
+            ->limit(0, 15)
+            ->select();
+        $this->assign('list', $list);
+        $this->assign('mch_id', $mch_id);
+        return $this->fetch();
+    }
+
+    /**
+     * 体验密码
+     */
+    public function checkPwd()
+    {
+        if (request()->isPost()) {
+            $pwd = request()->post('pwd');
+            if (empty($pwd) && $pwd == '') {
+                return json([
+                    'err_code' => -1,
+                    'err_msg' => '密码不能为空'
+                ]);
+            }
+            $db_pwd = '123456778';
+            if ($pwd == $db_pwd) {
+                Session::set('is_pwd', 'ok');
+                return json([
+                    'err_code' => 1,
+                    'err_msg' => '密码验证成功'
+                ]);
+            } else {
+                return json([
+                    'err_code' => -1,
+                    'err_msg' => '密码错误'
+                ]);
+            }
+        }
+        $is_pwd = Session::get('is_pwd');
+        if ($is_pwd == 'ok') {
+            echo "<script type='application/javascript'>window.location.href='http://notes.frp.tinywan.top/?debug=true'</script>";
+            exit();
+        }
+        return $this->fetch();
+    }
+
+    public function payDo(){
+        $params = request()->param();
+        if (!is_numeric($params['price'])) {
+            $this->error('支付金额必须为数字');
+        }
+        if (empty($params['price']) || $params['price'] <= 0) {
+            $this->error('支付金额必须大于0');
+        }
+        if (empty($params['pay_type'])) {
+            $this->error('请选择支付方式');
+        }
+        $mch_id = $params['mch_id'];
+        $params['third_order_id'] = rand(1000, 9999) . time();
+
+        $notify_url = config('server_url') . '/index/demo/notify';
+        $return_url = config('server_url') . '/index/demo/returnUrl';
+
+        if ($params['pay_type'] == 1) {
+            //支付宝支付(pc)(企业)
+            $result = $this->request('shop.company.pay', [
+                'total_fee' => $params['price'],
+                'order_sn' => $params['third_order_id'],
+                'goods' => '支付宝企业接口支付',
+                'pay_type' => 1,
+                'notify_url' => $notify_url,
+                'return_url' => $return_url,
+            ], $mch_id, $params['sub_mch_id']);
+
+        } elseif ($params['pay_type'] == 4) {
+            //支付宝支付(wap)(企业)
+            $result = $this->request('shop.company.pay', [
+                'total_fee' => $params['price'],
+                'order_sn' => $params['third_order_id'],
+                'goods' => '支付宝企业wap接口支付',
+                'pay_type' => 1,
+                'client' => 'wap',
+                'notify_url' => $notify_url,
+                'return_url' => $return_url,
+            ], $mch_id, $params['sub_mch_id']);
+
+        }elseif ($params['pay_type'] == 2) {
+            //支付宝转账(企业)
+            $result = $this->request('shop.company.transfer', [
+                'amount' => $params['price'],
+                'order_sn' => $params['third_order_id'],
+                'account' => $params['alipay_account'],
+                'realname' => $params['realname'],
+            ], $mch_id, $params['sub_mch_id']);
+
+        } elseif ($params['pay_type'] == 3) {
+            //支付宝转账查询(企业)
+            $result = $this->request('shop.company.transferQuery', [
+                'mch_order_no' => $params['order_sn'],
+                'order_no' => $params['order_sn'],
+            ], $mch_id, $params['sub_mch_id']);
+        }elseif ($params['pay_type'] == 5) {
+            //支付宝app转账支付
+            $result = $this->request('shop.transfer.pay', [
+                'total_fee' => $params['price'],
+                'order_sn' => $params['third_order_id'],
+                'goods' => '支付宝app转账',
+                'pay_type' => 1,
+                'user_id' => rand(10000, 99999),
+                'notify_url' => $notify_url,
+                'return_url' => $return_url,
+            ], $mch_id, $params['sub_mch_id']);
+        }elseif ($params['pay_type'] == 6) {
+            //微信app转账支付
+            $result = $this->request('shop.transfer.pay', [
+                'total_fee' => $params['price'],
+                'order_sn' => $params['third_order_id'],
+                'goods' => '微信app转账',
+                'pay_type' => 2,
+                'user_id' => rand(10000, 99999),
+                'notify_url' => $notify_url,
+                'return_url' => $return_url,
+            ], $mch_id, $params['sub_mch_id']);
+        }elseif ($params['pay_type'] == 7) {
+            //支付宝当面付
+            $result = $this->request('shop.f2f.pay', [
+                'total_fee' => $params['price'],
+                'order_sn' => $params['third_order_id'],
+                'goods' => '支付宝当面付',
+                'pay_type' => 1,
+                'notify_url' => $notify_url,
+                'return_url' => $return_url,
+            ], $mch_id, $params['sub_mch_id']);
+        } else {
+            //其他
+            $this->error('未知的支付方式');
+        }
+        if (isset($result['code']) && $result['code'] == 0) {
+            if (in_array($params['pay_type'], [1, 4, 5, 6, 7])) {
+                $this->redirect($result['data']['pay_url']);
+            } else {
+                echo "返回结果：<br/><hr>";
+                dump($result);
+            }
+        } else {
+            $this->error($result['msg']);
+        }
+    }
+
+    /**
+     * Api公共请求
+     * @param $api_name
+     * @param $data
+     * @return array|mixed
+     */
+    private function request($api_name, $data, $mch_id = 12001, $sub_mch_id = '')
+    {
+        $gate_way_url = config('server_url') . '/api/v1/gateway.do';
+        $data = [
+            'mch_id' => $mch_id,
+            'sub_mch_id' => $sub_mch_id,
+            'method' => $api_name,
+            'version' => '1.0',
+            'timestamp' => time(),
+            'content' => json_encode($data)
+        ];
+        $sign = $this->sign($data);
+        if (!$sign) {
+            return ['success' => false, 'message' => '签名失败', 'code' => -1, 'data' => []];
+        }
+        $data['sign'] = $sign;
+        //将所有参数urlcode编码，防止中文乱码
+        foreach ($data as &$item) {
+            $item = urlencode($item);
+        }
+        unset($item);
+        $result = curl_post($gate_way_url, $data); //post请求
+        return json_decode($result, true);
+    }
+
+
+    /**
+     * RSA签名
+     * @param $data
+     * @return bool|string
+     */
+    private function sign($data)
+    {
+        //解码
+        foreach ($data as $key => &$value) {
+            $value = urldecode($value);
+        }
+        unset($value);
+
+        if (isset($data['sign'])) {
+            unset($data['sign']);
+        }
+        if (!empty($data['sub_mch_id'])) {
+            $key = MerchantSubmch::where('id', '=', $data['sub_mch_id'])->value('key');
+        } else {
+            $key = Merchant::where('id', '=', $data['mch_id'])->value('key');
+        }
+        ksort($data);
+        $params_str = urldecode(http_build_query($data));
+        $params_str = $params_str . '&key=' . $key;
+        Log::debug('[客户端] 签名字符串 ' . $params_str);
+        return md5($params_str);
+    }
+
+    public function notify(){
+        echo 'success';
+    }
+
+    public function returnUrl(){
+        echo "同步通知数据：<br><hr/>";
+        dump($this->request->param());
+    }
+
 }

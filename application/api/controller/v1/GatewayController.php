@@ -18,20 +18,16 @@ use app\api\service\AgentService;
 use app\api\service\PayService;
 use app\common\controller\ApiController;
 use app\common\library\repositories\eloquent\PayRepository;
-use app\common\model\Agents;
-use app\common\repositories\channel\HeePay;
-use app\common\repositories\channel\SandPay;
-use app\common\repositories\contracts\ChannelRepositoryInterface;
-use app\common\services\payment\PaymentService;
-use think\Container;
+use app\common\model\Merchant;
+use app\common\model\MerchantSubmch;
 use think\Exception;
 use think\facade\App;
 use think\facade\Log;
 use think\facade\Response;
+use think\facade\Validate;
 
 class GatewayController extends ApiController
 {
-    private $_apiServiceClass = null;
     // 接口名称
     const API_LIST = [
         'pay.trade.web' => [PayService::class, 'web'],
@@ -54,31 +50,91 @@ class GatewayController extends ApiController
     ];
 
     /**
-     * 三方通道网关
-     * @return string
+     * @return \think\response\Json
+     * @throws \think\exception\DbException
      */
     public function payDo()
     {
-        // 1、公共参数验证
-        $post = $this->request->post();
-        Log::error('公共参数验证------------' . json_encode($post));
-        $data = [
-            'mch_id' => 11111111111,
-            'method' => 'pay.trade.web',
-        ];
-        Log::debug('公共参数验证22------------' . static::API_LIST[$data['method']][0]);
-        // 2、支付路由
-        $routeControl = App::invokeClass(static::API_LIST[$data['method']][0]);
-        $routeAction = static::API_LIST[$data['method']][1];
-        Log::debug('支付方式------------' . json_encode($routeAction));
-        $result = $routeControl->$routeAction($data);
-        Log::debug('支付结果------------' . json_encode($result));
-        if (!$result) {
-            $error = $result->getError();
-            Log::error(' 网关接口异步通知处理失败，错误原因: ' . json_encode($error));
-            return json($error);
+        $postData = $this->request->post();
+        Log::debug('[网关] 接受参数：' . json_encode($postData));
+        $validate = Validate::make([
+            'mch_id' => 'require',
+            'method' => 'require',
+            'version' => 'require',
+            'timestamp' => 'require',
+            'content' => 'require',
+            'sign' => 'require',
+        ], [], [
+            'mch_id' => '主商户ID',
+            'method' => 'api名称',
+            'version' => '版本号',
+            'timestamp' => '时间因子',
+            'content' => '请求参数',
+            'sign' => '签名',
+        ]);
+
+        foreach ($postData as &$item) {
+            $item = urldecode($item);
         }
-        return json($result);
+        unset($item);
+        if (!$validate->check($postData)) {
+            return jsonResponse(1001, $validate->getError());
+        }
+
+        $signData = [
+            'mch_id' => $postData['mch_id'],
+            'sub_mch_id' => $postData['sub_mch_id'],
+            'method' => $postData['method'],
+            'version' => $postData['version'],
+            'timestamp' => $postData['timestamp'],
+            'content' => $postData['content'],
+            'sign' => $postData['sign'],
+        ];
+        // 是否子账户
+        if (!empty($postData['sub_mch_id'])) {
+            $id = $postData['sub_mch_id'];
+            $cacheKey = get_cache_key('MerchantSubmch', $id);
+            $merchant = MerchantSubmch::where(['id' => $id, 'mch_id' => $postData['mch_id']])
+                ->cache($cacheKey, self::CACHE_EXPIRE)
+                ->find();
+            if (!$merchant) {
+                return jsonResponse(40007, self::errorList[40007]);
+            }
+        } else {
+            $id = $postData['mch_id'];
+            $cacheKey = get_cache_key('Merchant', $id);
+            $merchant = Merchant::where(['id' => $id])
+                ->cache($cacheKey, self::CACHE_EXPIRE)
+                ->find();
+            if (!$merchant) {
+                return jsonResponse(40004, self::errorList[40004]);
+            }
+        }
+        if (!self::verifySign($signData, $merchant->key)) {
+            return jsonResponse(40003, self::errorList[40003]);
+        }
+        if (empty(self::API_LIST[$postData['method']])) {
+            return jsonResponse(40002, self::errorList[40002]);
+        }
+
+        try {
+            $routeControl = App::invokeClass(static::API_LIST[$postData['method']][0]);
+            $routeAction = static::API_LIST[$postData['method']][1];
+            $reqContent = json_decode($postData['content'], true);
+            $reqContent['mch_id'] = $postData['mch_id'];
+            $reqContent['sub_mch_id'] = $postData['sub_mch_id'] ?? '';
+            $resp = $routeControl->$routeAction($reqContent);
+            if (!$resp['success']) {
+                Log::error('[网关] 失败: ' . json_encode($resp));
+                return jsonResponse(-1, $resp['message'], $resp['data']);
+            } else {
+                Log::debug('[网关] 成功: ' . json_encode($resp));
+                return jsonResponse(0, $resp['message'], $resp['data']);
+            }
+        } catch (Exception $e) {
+            Log::error('[网关] 异常: ' . $e->getMessage() . '=' . json_encode($e->getTrace()));
+            return jsonResponse(-1, self::errorList[-1]);
+        }
     }
 
     /**
@@ -94,8 +150,6 @@ class GatewayController extends ApiController
             'mch_id' => 12001,
             'method' => 'agents.trade.pay',
         ];
-        Log::debug("[新支付网关] 服务类 " . static::API_SERVICE_LIST[$data['method']][0]);
-        Log::debug("[新支付网关] 支付方式 " . static::API_SERVICE_LIST[$data['method']][1]);
         // 2、支付服务路由
         $routeControl = App::invokeClass(static::API_SERVICE_LIST[$data['method']][0]);
         $routeAction = static::API_SERVICE_LIST[$data['method']][1];
