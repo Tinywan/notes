@@ -713,4 +713,9 @@ luascript;
         dump($this->request->param());
     }
 
+    public function printError(){
+        Log::error('this is error log');
+        echo 1111111111111111;
+    }
+
 }

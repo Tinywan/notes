@@ -68,7 +68,7 @@ class GatewayController extends ApiController
             'mch_id' => '主商户ID',
             'method' => 'api名称',
             'version' => '版本号',
-            'timestamp' => '时间因子',
+            'timestamp' => '当前时间戳',
             'content' => '请求参数',
             'sign' => '签名',
         ]);
