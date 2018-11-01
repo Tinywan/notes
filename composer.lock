@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5a52102ee38b00bbc66282508a8de6c2",
+    "content-hash": "dc3d04359ddfe21680ad5a64c1ae96a4",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -672,16 +672,16 @@
         },
         {
             "name": "myclabs/php-enum",
-            "version": "1.6.2",
+            "version": "1.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/php-enum.git",
-                "reference": "ca2f4090a7ecae6f0c67fc9bd07cfb51cdf04219"
+                "reference": "550d2334d77f91b0816a5cbd6965272fe20146b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/php-enum/zipball/ca2f4090a7ecae6f0c67fc9bd07cfb51cdf04219",
-                "reference": "ca2f4090a7ecae6f0c67fc9bd07cfb51cdf04219",
+                "url": "https://api.github.com/repos/myclabs/php-enum/zipball/550d2334d77f91b0816a5cbd6965272fe20146b8",
+                "reference": "550d2334d77f91b0816a5cbd6965272fe20146b8",
                 "shasum": ""
             },
             "require": {
@@ -712,7 +712,7 @@
             "keywords": [
                 "enum"
             ],
-            "time": "2018-08-01T21:05:54+00:00"
+            "time": "2018-10-30T14:36:18+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -1563,7 +1563,7 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.9.0",
+            "version": "v1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
@@ -1621,16 +1621,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.9.0",
+            "version": "v1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8"
+                "reference": "c79c051f5b3a46be09205c73b80b346e4153e494"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/d0cd638f4634c16d8df4508e847f14e9e43168b8",
-                "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/c79c051f5b3a46be09205c73b80b346e4153e494",
+                "reference": "c79c051f5b3a46be09205c73b80b346e4153e494",
                 "shasum": ""
             },
             "require": {
@@ -1676,7 +1676,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-08-06T14:22:27+00:00"
+            "time": "2018-09-21T13:07:52+00:00"
         },
         {
             "name": "symfony/property-access",
@@ -1810,16 +1810,16 @@
         },
         {
             "name": "tinywan/cpay-sdk",
-            "version": "v0.40",
+            "version": "v0.41",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Tinywan/cpay-sdk.git",
-                "reference": "4ebce3eb07f127c6446df55a7e57f045d69d6b14"
+                "reference": "174bd2a80a57f6efee7ef05c0ab1be4fb0f928eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Tinywan/cpay-sdk/zipball/4ebce3eb07f127c6446df55a7e57f045d69d6b14",
-                "reference": "4ebce3eb07f127c6446df55a7e57f045d69d6b14",
+                "url": "https://api.github.com/repos/Tinywan/cpay-sdk/zipball/174bd2a80a57f6efee7ef05c0ab1be4fb0f928eb",
+                "reference": "174bd2a80a57f6efee7ef05c0ab1be4fb0f928eb",
                 "shasum": ""
             },
             "require": {
@@ -1847,20 +1847,20 @@
                 "gateway",
                 "pay"
             ],
-            "time": "2018-09-23T15:56:05+00:00"
+            "time": "2018-09-24T04:21:42+00:00"
         },
         {
             "name": "topthink/framework",
-            "version": "v5.1.27",
+            "version": "v5.1.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/framework.git",
-                "reference": "f607b8fd51cc25e4da7e2f4ef0d5e64f390d36bd"
+                "reference": "b5077520855a1f406205687c73cdeaee1ed618c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/framework/zipball/f607b8fd51cc25e4da7e2f4ef0d5e64f390d36bd",
-                "reference": "f607b8fd51cc25e4da7e2f4ef0d5e64f390d36bd",
+                "url": "https://api.github.com/repos/top-think/framework/zipball/b5077520855a1f406205687c73cdeaee1ed618c2",
+                "reference": "b5077520855a1f406205687c73cdeaee1ed618c2",
                 "shasum": ""
             },
             "require": {
@@ -1898,7 +1898,7 @@
                 "orm",
                 "thinkphp"
             ],
-            "time": "2018-10-22T02:10:08+00:00"
+            "time": "2018-10-29T02:52:45+00:00"
         },
         {
             "name": "topthink/think-captcha",
@@ -2300,16 +2300,16 @@
         },
         {
             "name": "yansongda/pay",
-            "version": "v2.5.1",
+            "version": "v2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yansongda/pay.git",
-                "reference": "c0466d7762f5fbb761478f6b20453256fb8706f2"
+                "reference": "bab711f0de5f455403e3280afe9ee8fe3fa1267a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yansongda/pay/zipball/c0466d7762f5fbb761478f6b20453256fb8706f2",
-                "reference": "c0466d7762f5fbb761478f6b20453256fb8706f2",
+                "url": "https://api.github.com/repos/yansongda/pay/zipball/bab711f0de5f455403e3280afe9ee8fe3fa1267a",
+                "reference": "bab711f0de5f455403e3280afe9ee8fe3fa1267a",
                 "shasum": ""
             },
             "require": {
@@ -2346,7 +2346,7 @@
                 "pay",
                 "wechat"
             ],
-            "time": "2018-10-10T16:05:22+00:00"
+            "time": "2018-10-30T14:00:13+00:00"
         },
         {
             "name": "yansongda/supports",

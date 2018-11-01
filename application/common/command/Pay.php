@@ -16,8 +16,8 @@
 namespace app\common\command;
 
 use app\index\controller\DemoController;
-use app\index\controller\NsqController;
-use app\pay\controller\OrderController;
+use app\index\controller\Nsq;
+use app\pay\controller\Order;
 use app\pay\service\AccountsService;
 use app\pay\service\RedisSubscribe;
 use think\console\Command;
@@ -115,7 +115,7 @@ class Pay extends Command
      */
     private function orderDelayMessage()
     {
-        $order = new OrderController();
+        $order = new Order();
         //$order->consumerDelayMessage();
         $order->messageTest();
     }
@@ -125,17 +125,17 @@ class Pay extends Command
      */
     public function nsqSubMessage()
     {
-        $nsq = new NsqController();
+        $nsq = new Nsq();
         $nsq->nsqSubMessage();
     }
 
     // 测试
     public function fastCgi()
     {
-//        $obj = new DemoController();
+//        $obj = new Demo();
 //        $obj->fastCgi();
 
-        $nsq = new OrderController();
+        $nsq = new Order();
         $nsq->test33();
     }
 
