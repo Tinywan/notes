@@ -25,6 +25,7 @@ use think\facade\App;
 use think\facade\Log;
 use think\facade\Response;
 use think\facade\Validate;
+use think\response\Json;
 
 class Gateway extends ApiController
 {
@@ -57,30 +58,29 @@ class Gateway extends ApiController
     {
         $postData = $this->request->post();
         Log::debug('[网关] 接受参数：' . json_encode($postData));
-        $validate = Validate::make([
-            'mch_id' => 'require',
-            'method' => 'require',
-            'version' => 'require',
-            'timestamp' => 'require',
-            'content' => 'require',
-            'sign' => 'require',
-        ], [], [
-            'mch_id' => '主商户ID',
-            'method' => 'api名称',
-            'version' => '版本号',
-            'timestamp' => '当前时间戳',
-            'content' => '请求参数',
-            'sign' => '签名',
-        ]);
+//        $validate = Validate::make([
+//            'mch_id' => 'require',
+//            'method' => 'require',
+//            'version' => 'require',
+//            'timestamp' => 'require',
+//            'content' => 'require',
+//            'sign' => 'require',
+//        ], [], [
+//            'mch_id' => '主商户ID',
+//            'method' => 'api名称',
+//            'version' => '版本号',
+//            'timestamp' => '当前时间戳',
+//            'content' => '请求参数',
+//            'sign' => '签名',
+//        ]);
 
-        foreach ($postData as &$item) {
-            $item = urldecode($item);
-        }
-        unset($item);
-        if (!$validate->check($postData)) {
-            return jsonResponse(1001, $validate->getError());
-        }
-
+//        foreach ($postData as &$item) {
+//            $item = urldecode($item);
+//        }
+//        unset($item);
+//        if (!$validate->check($postData)) {
+//            return json(1001, $validate->getError());
+//        }
         $signData = [
             'mch_id' => $postData['mch_id'],
             'sub_mch_id' => $postData['sub_mch_id'],
@@ -88,8 +88,8 @@ class Gateway extends ApiController
             'version' => $postData['version'],
             'timestamp' => $postData['timestamp'],
             'content' => $postData['content'],
-            'sign' => $postData['sign'],
         ];
+        return jsonResponse(40007, self::errorList[-1004],$signData);
         // 是否子账户
         if (!empty($postData['sub_mch_id'])) {
             $id = $postData['sub_mch_id'];

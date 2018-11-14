@@ -485,28 +485,6 @@ PopB7i04RiwfcYdT
     return $decrypted;
 }
 
-/**
- * 返回json数据
- * @param int $code
- * @param string $msg
- * @param array $data
- * @param int $http_code
- * @param bool $is_object
- * @return \think\response\Json
- */
-function jsonResponse($code = 0, $msg = '', $data = [], $http_code = 200, $is_object = true)
-{
-    if (empty($data) && $is_object) {
-        $data = (object)$data;
-    }
-    $result = [
-      'code' => $code,
-      'msg' => $msg,
-      'data' => $data,
-    ];
-    \think\facade\Log::debug('Api Return：' . json_encode($result));
-    return json($result, $http_code);
-}
 
 /**
  * 后台json输出

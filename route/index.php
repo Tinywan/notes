@@ -18,3 +18,7 @@ Route::any('/admin/login', 'index/auth/adminLogin');
 Route::any('/merchant/login', 'index/auth/merchantLogin');
 Route::any('/agents/login', 'index/auth/agentsLogin');
 Route::get('user/:id','index/Index/userHello')->model(\app\common\model\User::class);
+
+// 中间件路由配置,注册多个中间件
+Route::rule('index/hello/:name','index/user/ruleLogin')
+    ->middleware(['Check']);

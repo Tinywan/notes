@@ -33,6 +33,7 @@ use think\facade\Cache;
 use think\facade\Env;
 use think\facade\Log;
 use think\facade\Session;
+use think\helper\Time;
 use think\Queue;
 use Tinywan\CPay\Gateways\Pay;
 
@@ -388,6 +389,16 @@ class Index extends FrontendController
             return '接口调用失败';
         }
         Log::debug('【新】请求接口结束 ');
+    }
+
+    /**
+     * Redis 缓存
+     */
+    public function redisCache()
+    {
+        $key = 'NAME';
+        Cache::store('redis')->set($key,'Tinywan');
+        halt(Cache::store('redis')->get($key));
     }
 }
 

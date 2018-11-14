@@ -32,7 +32,6 @@ class Nsq extends Controller
         }
         $nsq->closeNsqdConnection();
 
-        halt($isTrue);
         // Deferred publish
         //function : deferredPublish(string topic,string message, int millisecond);
         //millisecond default : [0 < millisecond < 3600000]
