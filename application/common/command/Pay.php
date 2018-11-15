@@ -40,6 +40,7 @@ class Pay extends Command
     // 订单延迟消息
     const TYPE_ORDER_DELAY_MESSAGE = 'orderDelayMessage';
 
+    // NSQ分布式消息
     const NSQ_SUB_MESSAGE = 'nsq';
 
     // 配置指令

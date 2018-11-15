@@ -18,7 +18,7 @@ class Nsq extends Controller
 {
     public function index()
     {
-        ini_set('memory_limit', '8M');
+        ini_set('memory_limit', '100M');
         $nsqdAddr = [
             "127.0.0.1:4151",
             "127.0.0.1:4150"
