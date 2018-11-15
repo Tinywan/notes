@@ -18,6 +18,7 @@ class Nsq extends Controller
 {
     public function index()
     {
+        ini_set('memory_limit', '100M');
         $nsqdAddr = [
             "127.0.0.1:4151",
             "127.0.0.1:4150"
@@ -37,7 +38,7 @@ class Nsq extends Controller
 
         $deferred = new \Nsq();
         $isTrue = $deferred->connectNsqd($nsqdAddr);
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $deferred->deferredPublish("test", "message daly", 3000);
         }
         $deferred->closeNsqdConnection();
