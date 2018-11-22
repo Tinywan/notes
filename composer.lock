@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc3d04359ddfe21680ad5a64c1ae96a4",
+    "content-hash": "f977e0c61da9b2c7a352930965a1f30b",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -92,6 +92,43 @@
             "description": "BaconQrCode is a QR code generator for PHP.",
             "homepage": "https://github.com/Bacon/BaconQrCode",
             "time": "2017-10-17T09:59:25+00:00"
+        },
+        {
+            "name": "delz/xfyun",
+            "version": "0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/delznet/xfyun-php-sdk.git",
+                "reference": "89826a9e28a68ac6ea1ededc96507ff2eb6b98c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/delznet/xfyun-php-sdk/zipball/89826a9e28a68ac6ea1ededc96507ff2eb6b98c6",
+                "reference": "89826a9e28a68ac6ea1ededc96507ff2eb6b98c6",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.3.0",
+                "php": ">=7.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Delz\\XFYun\\": "Delz/XFYun/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "徐威",
+                    "email": "sheawey@gmail.com"
+                }
+            ],
+            "description": "科大讯飞 REST API PHP SDK",
+            "time": "2018-04-19T16:28:39+00:00"
         },
         {
             "name": "endroid/qr-code",

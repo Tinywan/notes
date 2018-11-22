@@ -226,8 +226,8 @@ function send_email_qq($address, $subject, $content)
 
 /**
  * 多任务队列
- * @param $taskType
- * @param $data
+ * @param $taskType int 任务类型
+ * @param $data array 处理数据
  * @return string
  */
 function multi_task_Queue($taskType, $data)
