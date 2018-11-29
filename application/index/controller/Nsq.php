@@ -21,8 +21,8 @@ class Nsq extends Controller
     {
         ini_set('memory_limit', '100M');
         $nsqdAddr = [
-            "127.0.0.1:4151",
-            "127.0.0.1:4150"
+            "59.110.213.20:4151",
+            "59.110.213.20:4150"
         ];
 
         $nsq = new \Nsq();
@@ -48,7 +48,7 @@ class Nsq extends Controller
 
     public function nsqSubMessage()
     {
-        $nsq_lookupd = new \NsqLookupd("127.0.0.1:4161"); //the nsqlookupd http addr
+        $nsq_lookupd = new \NsqLookupd("59.110.213.20:4161"); //the nsqlookupd http addr
         $nsq = new \Nsq();
         $config = array(
             "topic" => "test",
