@@ -24,8 +24,6 @@ class Nsq extends Controller
             "59.110.213.20:4151",
             "59.110.213.20:4150"
         ];
-        halt($nsqdAddr);
-
         $nsq = new \Nsq();
         $isTrue = $nsq->connectNsqd($nsqdAddr);
 
