@@ -24,13 +24,13 @@ class Nsq extends Controller
             "59.110.213.20:4151",
             "59.110.213.20:4150"
         ];
-        $nsq = new \Nsq();
-        $isTrue = $nsq->connectNsqd($nsqdAddr);
+//        $nsq = new \Nsq();
+//        $isTrue = $nsq->connectNsqd($nsqdAddr);
 
-        for ($i = 0; $i < 6; $i++) {
-            $nsq->publish("test", "Hi Tinywan");
-        }
-        $nsq->closeNsqdConnection();
+//        for ($i = 0; $i < 6; $i++) {
+//            $nsq->publish("test", "Hi Tinywan");
+//        }
+//        $nsq->closeNsqdConnection();
 
         // Deferred publish
         //function : deferredPublish(string topic,string message, int millisecond);
