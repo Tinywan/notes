@@ -12,6 +12,8 @@
 namespace app\common\library;
 
 
+use think\facade\Log;
+
 class Rsa
 {
     private $_config = [
@@ -88,7 +90,7 @@ ljBaUGvvdYJ3CGZ32Xk12Te2fMJj5h/yLyEr8uzpzw==
         if (!is_string($data)) {
             return null;
         }
-        return openssl_private_encrypt($data, $encrypted, $this->_getPrivateKey()) ? base64_encode($encrypted) : null;
+        return openssl_private_encrypt($data, $encrypted, $this->_getPrivateKey(),OPENSSL_ALGO_SHA256) ? base64_encode($encrypted) : null;
     }
 
     /**

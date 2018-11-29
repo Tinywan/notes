@@ -13,6 +13,7 @@ namespace app\index\controller;
 
 
 use think\Controller;
+use think\facade\Log;
 
 class Nsq extends Controller
 {
@@ -38,9 +39,10 @@ class Nsq extends Controller
 
         $deferred = new \Nsq();
         $isTrue = $deferred->connectNsqd($nsqdAddr);
-        for ($i = 0; $i < 5; $i++) {
-            $deferred->deferredPublish("test", "message daly", 3000);
-        }
+//        for ($i = 0; $i < 5; $i++) {
+//            $deferred->deferredPublish("test", "message daly", 3000);
+//        }
+        $deferred->deferredPublish("test", "message daly".time(), 6000);
         $deferred->closeNsqdConnection();
     }
 
@@ -57,6 +59,7 @@ class Nsq extends Controller
             "auto_finish" => true, //default true
         );
         $nsq->subscribe($nsq_lookupd, $config, function ($msg, $bev) {
+            Log::info('[nsqSubMessage] msg'.$msg->payload);
             echo $msg->payload . "\n";
             echo $msg->attempts . "\n";
             echo $msg->messageId . "\n";

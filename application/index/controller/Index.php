@@ -13,6 +13,7 @@ namespace app\index\controller;
 use app\common\controller\FrontendController;
 use app\common\library\exception\UserException;
 use app\common\library\Oss;
+use app\common\library\Rsa;
 use app\common\model\User;
 use app\common\queue\MultiTask;
 use app\common\queue\Worker;
@@ -399,6 +400,20 @@ class Index extends FrontendController
         $key = 'NAME';
         Cache::store('redis')->set($key,'Tinywan');
         halt(Cache::store('redis')->get($key));
+    }
+
+    public function rsaTest()
+    {
+        var_dump(md5($_SERVER['REQUEST_TIME'] . mt_rand(1, 10000000)));
+        $rsa = new Rsa();
+        $origin_data = '9D151AA3AE9C61F8AC6EDFC03E7A348C';
+        $encrypt_data = $rsa->privateEncrypt($origin_data);
+        $decrypt_data = $rsa->publicDecrypt($encrypt_data);
+
+        echo '私钥加密后的数据为：' . $encrypt_data;
+        echo PHP_EOL;
+        echo '公钥解密后的数据为: ' . $decrypt_data;
+        echo PHP_EOL;
     }
 }
 

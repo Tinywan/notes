@@ -27,7 +27,7 @@ return [
     'path' => Env::get('ROOT_PATH') . '/logs/index',
     // 日志记录级别，使用数组表示，设置只记录需要的日志
     'level' => [
-        'debug',
+        'info',
         'error',
         'sql'
     ],

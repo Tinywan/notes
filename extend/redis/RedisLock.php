@@ -9,14 +9,14 @@
  * |  Desc: 使用Redis实现分布式锁
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace redis\lock;
+namespace redis;
 
 
 class RedisLock
 {
     /**
      * 获取锁
-     * @param string $lock_name 锁名
+     * @param string $lock_name 锁名 表示分布式锁的key
      * @param int $acquire_time 重复请求次数
      * @param int $lock_timeout 请求超时时间
      * @return bool|string
