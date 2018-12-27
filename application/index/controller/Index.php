@@ -402,18 +402,92 @@ class Index extends FrontendController
         halt(Cache::store('redis')->get($key));
     }
 
+    /**
+     * 私钥加密、公钥解密
+     */
     public function rsaTest()
     {
-        var_dump(md5($_SERVER['REQUEST_TIME'] . mt_rand(1, 10000000)));
+//        var_dump(openssl_get_cipher_methods());
         $rsa = new Rsa();
-        $origin_data = '9D151AA3AE9C61F8AC6EDFC03E7A348C';
-        $encrypt_data = $rsa->privateEncrypt($origin_data);
-        $decrypt_data = $rsa->publicDecrypt($encrypt_data);
+        // 加密明文
+        $crypt_text = '私钥加密、公钥解密';
+        echo '加密明文：' . $crypt_text.PHP_EOL;
 
-        echo '私钥加密后的数据为：' . $encrypt_data;
-        echo PHP_EOL;
-        echo '公钥解密后的数据为: ' . $decrypt_data;
-        echo PHP_EOL;
+        $private_encrypt_data = $rsa->privateEncrypt($crypt_text);
+        echo '私钥加密后数据：' . $private_encrypt_data.PHP_EOL; // 不变
+
+        $public_decrypt_data = $rsa->publicDecrypt($private_encrypt_data);
+        echo '公钥解密数据: ' . $public_decrypt_data.PHP_EOL;
+    }
+
+    /**
+     * 公钥加密、私钥解密
+     */
+    public function rsaTest2()
+    {
+        $rsa = new Rsa();
+        // 加密明文
+        $crypt_text = '公钥加密、私钥解密';
+        echo '加密明文：' . $crypt_text.PHP_EOL;
+
+        $public_encrypt_data = $rsa->publicEncrypt($crypt_text);
+        echo '公钥加密后数据：' . $public_encrypt_data.PHP_EOL; // 一直在变化
+
+        $private_decrypt_data = $rsa->privateDecrypt($public_encrypt_data);
+        echo '私钥解密数据: ' . $private_decrypt_data.PHP_EOL;
+    }
+
+    public function rsaTest3()
+    {
+        $_config = [
+        'public_key' => '-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCbtLA7lMfUvpBgfgzouiPgcnbL
+DnEcuCK0gMub/EAEqmr82sl+9tH1iQb1w/hgQLptVRxAuUOa03XqlnG3wkAegtQt
+4Q5ZtHSSomE8/5FXJvQfGTCz5RARyM0MiLTMZJGhLdVT6O8uCYIrPRQq7u6NVLs9
+6YDmtzX2do/sTsWCAwIDAQAB
+-----END PUBLIC KEY-----',
+        'private_key' => '-----BEGIN RSA PRIVATE KEY-----
+MIICWwIBAAKBgQCbtLA7lMfUvpBgfgzouiPgcnbLDnEcuCK0gMub/EAEqmr82sl+
+9tH1iQb1w/hgQLptVRxAuUOa03XqlnG3wkAegtQt4Q5ZtHSSomE8/5FXJvQfGTCz
+5RARyM0MiLTMZJGhLdVT6O8uCYIrPRQq7u6NVLs96YDmtzX2do/sTsWCAwIDAQAB
+AoGAfnO3zCuAPp6k0jiMc1T4XgeXwkDwS8qfJMiUkxHBTAi66q8khSAeU7H9HQsS
+Y9ktji1YzJeo98xULzgPEpWHS/uhA8VZa16TLy9Yfadn2t+wpWpEJ9ZA4jjEqfQj
+DDxcUc/pEv5siaE/bU8uls4o2nAiuWnI2n5FGrQa2OziGUECQQDPOh3KD2AOZtEF
+p7i0yxYXe4dCKwenfw5q7l933RgqMXsVR1EAGzAUdIs71hTye6ibhva+eJRfndoV
+Jq2IHjOdAkEAwFpOZR8j3Cl4zEk/9D9WEnSa8VWLe76vb7DfgfwkSAhs/f2MNF1I
+zy9W5tPHRiMzaHNgPBFX9tw2u5QzsgOqHwJAPl3zUTjHZA41okoUIPVuNKsMzjE9
+IH/wyuXq/ZwhBbHWpVTNYAbOtZlNvjh0HXZyDDzWTgTkQtKzK+J0H59XUQJARukD
+vYOdVKx1O9pFGWW/9U3HUPCYWyYQxrwNqX2qYmO4ymmOJj+9d6OcBbxM2i5f5UGj
+WIGMTBUimEQqSpXPQQJAIkHC2GknUv8HaBRLXxYTIAjj78a0pQT2bYlI6R04AwUZ
+ljBaUGvvdYJ3CGZ32Xk12Te2fMJj5h/yLyEr8uzpzw==
+-----END RSA PRIVATE KEY-----',
+    ];
+        $pi_key = openssl_pkey_get_private($_config['private_key']);
+        var_dump($pi_key);
+        $crypttext = '9D151AA3AE9C61F8AC6EDFC03E7A348C';
+        // 私钥加密
+        $encrypted = '';
+        openssl_private_encrypt($crypttext, $encrypted, $pi_key);
+        // 转码，这里的$encrypted就是私钥加密的字符串
+        $encrypted = base64_encode($encrypted);
+        var_dump($encrypted);
+    }
+
+    function encrypt_RSA($plainData, $privatePEMKey)
+    {
+        $encrypted = '';
+        $plainData = str_split($plainData, $this->ENCRYPT_BLOCK_SIZE);
+        foreach($plainData as $chunk)
+        {
+            $partialEncrypted = '';
+
+            //using for example OPENSSL_PKCS1_PADDING as padding
+            $encryptionOk = openssl_private_encrypt($chunk, $partialEncrypted, $privatePEMKey, OPENSSL_PKCS1_PADDING);
+
+            if($encryptionOk === false){return false;}//also you can return and error. If too big this will be false
+            $encrypted .= $partialEncrypted;
+        }
+        return base64_encode($encrypted);//encoding the whole binary String as MIME base 64
     }
 }
 

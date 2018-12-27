@@ -12,18 +12,19 @@
 namespace app\common\library;
 
 
-use think\facade\Log;
-
 class Rsa
 {
+    /**
+     * @var array 默认配置
+     */
     private $_config = [
-      'public_key' => '-----BEGIN PUBLIC KEY-----
+        'public_key' => '-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCbtLA7lMfUvpBgfgzouiPgcnbL
 DnEcuCK0gMub/EAEqmr82sl+9tH1iQb1w/hgQLptVRxAuUOa03XqlnG3wkAegtQt
 4Q5ZtHSSomE8/5FXJvQfGTCz5RARyM0MiLTMZJGhLdVT6O8uCYIrPRQq7u6NVLs9
 6YDmtzX2do/sTsWCAwIDAQAB
 -----END PUBLIC KEY-----',
-      'private_key' => '-----BEGIN RSA PRIVATE KEY-----
+        'private_key' => '-----BEGIN RSA PRIVATE KEY-----
 MIICWwIBAAKBgQCbtLA7lMfUvpBgfgzouiPgcnbLDnEcuCK0gMub/EAEqmr82sl+
 9tH1iQb1w/hgQLptVRxAuUOa03XqlnG3wkAegtQt4Q5ZtHSSomE8/5FXJvQfGTCz
 5RARyM0MiLTMZJGhLdVT6O8uCYIrPRQq7u6NVLs96YDmtzX2do/sTsWCAwIDAQAB
@@ -40,12 +41,17 @@ ljBaUGvvdYJ3CGZ32Xk12Te2fMJj5h/yLyEr8uzpzw==
 -----END RSA PRIVATE KEY-----',
     ];
 
-    public function __construct()
+    /**
+     * 构造函数
+     * Rsa constructor.
+     * @param $private_key_filepath
+     * @param $public_key_filepath
+     */
+    public function __construct($private_key_filepath = null, $public_key_filepath = null)
     {
-        if ($rsa = config('security.rsa')) {
-            // 可设置配置项 auth_config, 此配置项为数组。
-            $this->_config['private_key'] = $this->_getContents($rsa['private_key_path']);
-            $this->_config['public_key'] = $this->_getContents($rsa['public_key_path']);
+        if(!empty($private_key_filepath) && !empty($public_key_filepath)){
+            $this->_config['private_key'] = $this->_getContents($private_key_filepath);
+            $this->_config['public_key'] = $this->_getContents($public_key_filepath);
         }
     }
 
@@ -81,54 +87,117 @@ ljBaUGvvdYJ3CGZ32Xk12Te2fMJj5h/yLyEr8uzpzw==
     }
 
     /**
-     * @uses 私钥加密
+     * 私钥加密 （使用公钥解密）
      * @param string $data
      * @return null|string
      */
-    public function privateEncrypt($data = '')
+    public function privateEncrypt($data = '', $padding = OPENSSL_PKCS1_PADDING)
     {
-        if (!is_string($data)) {
-            return null;
+        if (!is_string($data)) return null;
+        $encrypted = '';
+        $chunks = str_split($data, 117);
+        foreach ($chunks as $chunk) {
+            $partialEncrypted = '';
+            $encryptionOk = openssl_private_encrypt($chunk, $partialEncrypted, $this->_getPrivateKey(), $padding);
+            if ($encryptionOk === false) {
+                return null;
+            }
+            $encrypted .= $partialEncrypted;
         }
-        return openssl_private_encrypt($data, $encrypted, $this->_getPrivateKey(),OPENSSL_ALGO_SHA256) ? base64_encode($encrypted) : null;
+        $encrypted = base64_encode($encrypted);
+        return $encrypted;
     }
 
     /**
-     * @uses 公钥加密
-     * @param string $data
+     * 公钥加密（使用私钥解密）
+     * @param string $data 加密字符串
+     * @param int $padding
      * @return null|string
      */
-    public function publicEncrypt($data = '')
+    public function publicEncrypt($data = '', $padding = OPENSSL_PKCS1_PADDING)
     {
-        if (!is_string($data)) {
-            return null;
+        if (!is_string($data)) return null;
+        $encrypted = '';
+        $chunks = str_split($data, 117);
+        foreach ($chunks as $chunk) {
+            $partialEncrypted = '';
+            $encryptionOk = openssl_public_encrypt($chunk, $partialEncrypted, $this->_getPublicKey(), $padding);
+            if ($encryptionOk === false) {
+                return null;
+            }
+            $encrypted .= $partialEncrypted;
         }
-        return openssl_public_encrypt($data, $encrypted, $this->_getPublicKey()) ? base64_encode($encrypted) : null;
+        $encrypted = base64_encode($encrypted);
+        return $encrypted;
     }
 
     /**
-     * @uses 私钥解密
+     * @uses 私钥解密 （使用公钥加密）
      * @param string $encrypted
      * @return null
      */
     public function privateDecrypt($encrypted = '')
     {
-        if (!is_string($encrypted)) {
-            return null;
+        if (!is_string($encrypted)) return null;
+        $decrypted = '';
+        $chunks = str_split(base64_decode($encrypted), 128);
+        foreach ($chunks as $chunk) {
+            $partial = '';
+            $decryptIsTrue = openssl_private_decrypt($chunk, $partial, $this->_getPrivateKey());
+            if ($decryptIsTrue === false) {
+                return null;
+            }
+            $decrypted .= $partial;
         }
-        return (openssl_private_decrypt(base64_decode($encrypted), $decrypted, $this->_getPrivateKey())) ? $decrypted : null;
+        return $decrypted;
     }
 
     /**
-     * @uses 公钥解密
-     * @param string $encrypted
+     * 公钥解密 （使用私钥解密）
+     * @param string $encrypted 被解密字符串
      * @return null
      */
     public function publicDecrypt($encrypted = '')
     {
-        if (!is_string($encrypted)) {
-            return null;
+        if (!is_string($encrypted)) return null;
+        $decrypted = '';
+        $chunks = str_split(base64_decode($encrypted), 128);
+        foreach ($chunks as $chunk) {
+            $partial = '';
+            $decryptIsTrue = openssl_public_decrypt($chunk, $partial, $this->_getPublicKey());
+            if ($decryptIsTrue === false) {
+                return null;
+            }
+            $decrypted .= $partial;
         }
-        return (openssl_public_decrypt(base64_decode($encrypted), $decrypted, $this->_getPublicKey())) ? $decrypted : null;
+        return $decrypted;
+    }
+
+    /**
+     * 私钥验签
+     * @param $data string 验签内容
+     * @param $signature string 签名字符串
+     * @param int $signature_alg
+     * @return bool
+     */
+    public function privateSign($data, $signature, $signature_alg = OPENSSL_ALGO_SHA1)
+    {
+        $result = openssl_sign($data, base64_decode($signature), $this->_getPrivateKey(), $signature_alg);
+        openssl_free_key($this->_getPrivateKey());
+        return $result === 1 ? true : false;
+    }
+
+    /**
+     * 公钥验签
+     * @param $data string 验签内容
+     * @param $signature string 签名字符串
+     * @param int $signature_alg
+     * @return bool
+     */
+    public function publicSign($data, $signature, $signature_alg = OPENSSL_ALGO_SHA1)
+    {
+        $result = openssl_verify($data, base64_decode($signature), $this->_getPublicKey(), $signature_alg);
+        openssl_free_key($this->_getPublicKey());
+        return $result === 1 ? true : false;
     }
 }
