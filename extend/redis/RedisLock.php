@@ -121,4 +121,29 @@ luascript;
             return true;
         }
     }
+
+    /**
+     * 获取远程服务端IP
+     * @return array|false|null|string
+     */
+    public static function getRemoteIp()
+    {
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            if(isset($_SERVER['HTTP_X_REAL_IP'])){
+                $ip = $_SERVER['HTTP_X_REAL_IP'];
+            }
+        } elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (getenv('HTTP_X_FORWARDED_FOR')) {
+            $ip = getenv('HTTP_X_FORWARED_FOR');
+        } elseif (getenv('HTTP_CLIENT_IP')) {
+            $ip = getenv('HTTP_CLIENT_IP');
+        } elseif ($_SERVER['REMOTE_ADDR']) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $ip = null;
+        }
+        return $ip;
+    }
 }

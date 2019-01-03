@@ -40,7 +40,8 @@
         "topthink/think-worker": "^2.0",
         "phpoffice/phpword": "^0.15.0",
         "tinywan/cpay-sdk": "^0.41.0",
-        "delz/xfyun": "^0.2.0"
+        "delz/xfyun": "^0.2.0",
+        "geoip2/geoip2": "^2.9"
     },
     "autoload": {
         "psr-4": {

@@ -20,6 +20,7 @@ use app\common\queue\Worker;
 use app\common\repositories\channel\SandPay;
 use app\common\services\payment\PaymentService;
 use app\common\traits\LogRecord;
+use GeoIp2\Database\Reader;
 use patterns\di\Comment;
 use patterns\di\FileCache;
 use patterns\di\GmailSender;
@@ -27,6 +28,7 @@ use patterns\di\SendEmail163;
 use patterns\di\SendEmailQq;
 use patterns\di\TencentSender;
 use patterns\di\UserDi;
+use redis\RedisLock;
 use think\Controller;
 use think\Db;
 use think\Exception;
@@ -488,6 +490,26 @@ ljBaUGvvdYJ3CGZ32Xk12Te2fMJj5h/yLyEr8uzpzw==
             $encrypted .= $partialEncrypted;
         }
         return base64_encode($encrypted);//encoding the whole binary String as MIME base 64
+    }
+
+    public function clientIp()
+    {
+        $ip = RedisLock::getRemoteIp();
+        $reader = new Reader(Env::get('ROOT_PATH') . 'public/GeoLite2-City.mmdb',$locales = ['zh-CN']);
+        $record = $reader->city($ip);
+        print("<h1>当前IP地址：".$ip . "</h1>");
+        echo "<br/>";
+        print("<h1>所属城市：".$record->country->name .'、'.$record->mostSpecificSubdivision->name.'、'.$record->city->name."</h1>");
+        echo "<br/>";
+        print("<h1>经度纬度：".$record->location->latitude . '-'.$record->location->longitude."</h1>"); // 44.9733
+        echo "<br/>";
+        var_dump($record->location->accuracyRadius); // 100
+        var_dump($record->location->timeZone); // 'Asia/Shanghai'
+
+        echo "<br/>";
+        var_dump($record->country);
+        var_dump($record->mostSpecificSubdivision);
+        var_dump($record->city);
     }
 }
 
