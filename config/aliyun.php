@@ -9,10 +9,10 @@
  * |  Desc: 阿里云专用配置
  * '------------------------------------------------------------------------------------------------------------------*/
 
-return [
+return 
     // 公共配置
-    'accessKeyId' => 'LTAIQkWsqzzxvOjB',
-    'accessKeySecret' => 'oIlscoaMtJ6HMxt9VnL0JYLABY0YTC',
+    'accessKeyId' => '',
+    'accessKeySecret' => '',
     // 短信配置
     'dysms' => [
         'sign' => 'Tinywan工作室',
